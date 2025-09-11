@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Domain>
+@using RTWEB.Enum
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">Sl</th>
+                                <th>Domain Name</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th style="width:20px;text-align:center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int count = 1;
+                            }
+                            @foreach (Domain item in Model)
+                            {
+                                <tr>
+                                    <td>@count</td>
+                                    <td>@item.DomainName</td>
+                                    <td>@(item.DomainType == DomainEnum.Test ? "Test" : item.DomainType == DomainEnum.Live ? "Live" : "Unknown")</td>
+                                    <td>@(item.Status== true?"Active" : "Inactive")</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center btn-group-sm ">
+
+                                            <a class="btn btn-primary ms-2" asp-route-id="@item.Id" asp- controller="Appointment" asp-action="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                            <a class="btn btn-danger ms-2"
+                                               asp-route-id="@item.Id"
+                                               asp-controller="Appointment" asp-action="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                                        count++;
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    @* @await Html.PartialAsync("_Pagination", Model) *@
+                </div>
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</div>

@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RTWEB.Models;
 
 namespace RTWEB.Data
 {
     public class Db:DbContext
     {
-        public static string ConnectionString = "Server=localhost;Database=hmsystem;User Id=sa;Password=Test_123;Encrypt=False";
+        public static string ConnectionString = "Server=localhost;Database=RTSYSTEM;User Id=sa;Password=Test_123;Encrypt=False";
 
         //public static string ConnectionString = "Server=103.125.252.243;Database=ebikeuat;User Id=oct_ebikeuat;Password=foabwl7pdigzystxecvq;Encrypt=False";
 
@@ -27,6 +28,12 @@ namespace RTWEB.Data
         {
 
         }
+
+        public DbSet<Domain> Domains { get; set; }
+        public DbSet<Issue> Issues { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<Update> Updates { get; set; }
 
 
     }

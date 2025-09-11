@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using RTWEB.Data;
+using RTWEB.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<Db>(options=>options.UseSqlServer(Db.ConnectionString));
+builder.Services.AddScoped<IUnitofWork, UnitOfWork>();
 
 var app = builder.Build();
 

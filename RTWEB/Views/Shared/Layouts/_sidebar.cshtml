@@ -13,9 +13,7 @@
 }
 
 
-<!--begin::Sidebar-->
-@if (User.Identity.IsAuthenticated)
-{
+
     <aside class="app-sidebar sidebarUser shadow" data-bs-theme="dark">
     <!--begin::Sidebar Brand-->
     <div class="sidebar-brand">
@@ -25,8 +23,8 @@
             <!--begin::Brand Image-->
                 <img src="~/assets/img/MainLogo.png"
                  alt="Hospital"
-                 class="brand-image opacity-75 shadow" /> 
-                <span class="brand-text fw-light">Hospital Management</span>
+                 class="brand-image opacity-75 shadow" />
+            <span class="brand-text fw-light">RT  Management</span>
         </a>
       
         <!--end::Brand Link-->
@@ -43,7 +41,6 @@
 
                     <partial name="Layouts/Menus/_Appointment" />
                         
-
             </ul>
             <!--end::Sidebar Menu-->
         </nav>
@@ -52,4 +49,3 @@
 </aside>
 <!--end::Sidebar-->
 
-}
