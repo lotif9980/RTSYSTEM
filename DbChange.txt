@@ -1,0 +1,84 @@
+USE [RTSYSTEM]
+GO
+/****** Object:  Table [dbo].[Domains]    Script Date: 11-Sep-25 3:34:17 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Domains](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[DomainName] [nvarchar](50) NULL,
+	[DomainType] [int] NULL,
+	[Status] [bit] NULL,
+ CONSTRAINT [PK_Domains] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Issues]    Script Date: 11-Sep-25 3:34:17 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Issues](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Title] [nvarchar](30) NULL,
+	[Description] [nvarchar](250) NULL,
+	[AssignedTo] [int] NULL,
+	[ProjectId] [int] NULL,
+	[Status] [int] NULL,
+ CONSTRAINT [PK_Issues] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Projects]    Script Date: 11-Sep-25 3:34:17 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Projects](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ProjectName] [nvarchar](50) NULL,
+ CONSTRAINT [PK_Projects] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Teams]    Script Date: 11-Sep-25 3:34:17 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Teams](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](250) NULL,
+	[Status] [int] NULL,
+ CONSTRAINT [PK_Teams] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Updates]    Script Date: 11-Sep-25 3:34:17 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Updates](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[DomainId] [int] NULL,
+	[UpdateDate] [datetime] NULL,
+	[BranchId] [int] NULL,
+	[DeveloperId] [int] NULL,
+	[TesterId] [int] NULL,
+	[Status] [int] NULL,
+ CONSTRAINT [PK_Updates] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
