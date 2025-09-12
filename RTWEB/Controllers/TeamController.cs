@@ -1,26 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RTWEB.Models;
 using RTWEB.Repository;
-using RTWEB.ViewModel;
 
 namespace RTWEB.Controllers
 {
-    public class DomainController : Controller
+    public class TeamController : Controller
     {
         protected readonly IUnitofWork _unitofWork;
-
-        public DomainController(IUnitofWork unitofWork)
+        public TeamController(IUnitofWork unitofWork)
         {
-            this._unitofWork = unitofWork;
+           _unitofWork = unitofWork;
         }
 
 
         public IActionResult Index()
         {
-            var data =_unitofWork.DomainRepository.GetAll();
+            var data=_unitofWork.TeamRepository.GetTeams();
             return View(data);
         }
-
 
         [HttpGet]
         public IActionResult Save()
@@ -29,17 +26,16 @@ namespace RTWEB.Controllers
         }
 
         [HttpPost]
-        public IActionResult Save(Domain domain)
+        public IActionResult Save(Team team)
         {
-            _unitofWork.DomainRepository.Save(domain);
+            _unitofWork.TeamRepository.Save(team);
             return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int id)
         {
-            _unitofWork.DomainRepository.Delete(id);
+            _unitofWork.TeamRepository.Delete(id);
             return RedirectToAction("Index");
         }
-
     }
 }

@@ -15,5 +15,18 @@ namespace RTWEB.Repository
         {
            return _db.Domains.ToList();
         }
+
+        public void Save(Domain domain)
+        {
+           _db.Add(domain);
+           _db.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var data =_db.Domains.Find(id);
+            _db.Domains.Remove(data);
+            _db.SaveChanges();
+        }
     }
 }

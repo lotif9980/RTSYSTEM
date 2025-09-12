@@ -8,7 +8,7 @@ namespace RTWEB.Models
         public int Id { get; set; }
         public string ? DomainName { get; set; }
         //public int? DomainType { get; set; }
-        public bool? Status { get; set; }
+        public bool? Status { get; set; } = true;
         public DomainEnum DomainType { get; set; }
 
     }

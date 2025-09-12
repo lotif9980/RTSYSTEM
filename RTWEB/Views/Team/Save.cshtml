@@ -1,0 +1,62 @@
+﻿@model Team
+@using RTWEB.Enum
+@{
+    var teamType = Enum.GetValues(typeof(TeamType)).Cast<TeamType>();
+}
+
+
+<div class="d-flex justify-content-center mt-3">
+    <div class="col-md-6">
+
+        <!--begin::Horizontal Form-->
+        <div class="card card-warning card-outline mb-4">
+            <!--begin::Header-->
+            <div class="btn-group-sm">
+                <a class="btn btn-primary" asp-route-id="" asp-controller="Domain" asp-action="Index">
+                    <i class="fa fa-list"></i>
+                    Domain List
+                </a>
+            </div>
+            <div class="card-header"><div class="card-title">Domain Information</div></div>
+            <!--end::Header-->
+            <!--begin::Form-->
+            <form asp-action="Save" id="myForm" method="post">
+                <!--begin::Body-->
+                <div class="card-body">
+
+                    <div class="row mb-3">
+                        <label asp-for="Name" class="col-sm-3 col-form-label">Domain Name</label>
+                        <div class="col-sm-9">
+                            <input asp-for="Name" class="form-control" id="name">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="Status" class="col-sm-3 col-form-label">Type</label>
+                        <div class="col-sm-9">
+                            <select asp-for="Status" class="form-select role-dropdown" id="type">
+                                <option value="">-- Select Team Type --</option>
+                                @foreach (var type in teamType)
+                                {
+                                    <option value="@(Convert.ToInt32(type))">@type</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!--end::Body-->
+                <!--begin::Footer-->
+                <div class="card-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-warning me-2">Save</button>
+                    <button type="reset" class="btn btn-danger me-2">Reset</button>
+                </div>
+                <!--end::Footer-->
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Horizontal Form-->
+    </div>
+</div>

@@ -34,6 +34,7 @@ namespace RTWEB.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Update> Updates { get; set; }
+        public DbSet<UpdateDetail> UpdateDetails {  get; set; }
 
 
     }
