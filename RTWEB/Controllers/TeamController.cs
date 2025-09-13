@@ -29,12 +29,20 @@ namespace RTWEB.Controllers
         public IActionResult Save(Team team)
         {
             _unitofWork.TeamRepository.Save(team);
+
+            TempData["Message"] = "✅ Save Successful";
+            TempData["MessageType"] = "success";
+
             return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int id)
         {
             _unitofWork.TeamRepository.Delete(id);
+
+            TempData["Message"] = "✅ Successfully Delete!";
+            TempData["MessageType"] = "danger";
+
             return RedirectToAction("Index");
         }
     }

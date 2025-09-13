@@ -38,12 +38,20 @@ namespace RTWEB.Controllers
         public IActionResult Save(IssueSaveVm vm)
         {
             _unitofWork.IssueRepository.Save(vm.Issue);
+
+            TempData["Message"] = "✅ Save Successful";
+            TempData["MessageType"] = "success";
+
             return RedirectToAction("Save");
         }
 
         public IActionResult Delete(int id)
         {
             _unitofWork.IssueRepository.Delete(id);
+
+            TempData["Message"] = "✅ Successfully Delete!";
+            TempData["MessageType"] = "danger";
+
             return RedirectToAction("Index");
         }
     }

@@ -32,12 +32,20 @@ namespace RTWEB.Controllers
         public IActionResult Save(Domain domain)
         {
             _unitofWork.DomainRepository.Save(domain);
+
+            TempData["Message"] = "✅ Save Successful";
+            TempData["MessageType"] = "success";
+
             return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int id)
         {
             _unitofWork.DomainRepository.Delete(id);
+
+            TempData["Message"] = "✅ Successfully Delete!";
+            TempData["MessageType"] = "danger";
+
             return RedirectToAction("Index");
         }
 

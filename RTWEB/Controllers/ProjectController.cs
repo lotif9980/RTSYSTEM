@@ -31,6 +31,9 @@ namespace RTWEB.Controllers
         {
             _unitofWork.ProjectRepository.Save(project);
 
+            TempData["Message"] = "✅ Save Successful";
+            TempData["MessageType"] = "success";
+
             return RedirectToAction("Save");
         }
 
@@ -38,6 +41,9 @@ namespace RTWEB.Controllers
         public IActionResult Delete(int id)
         {
             _unitofWork.ProjectRepository.Delete(id);
+
+            TempData["Message"] = "✅ Successfully Delete!";
+            TempData["MessageType"] = "danger";
 
             return RedirectToAction("Index");
         }

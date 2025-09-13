@@ -1,8 +1,14 @@
 ﻿@model IEnumerable<Team>
 @using RTWEB.Enum
+@{
+    ViewData["Title"] = "Team";
+}
 
 
 <div class="container-fluid mt-3">
+    <div class="d-flex justify-content-end">
+        <a asp-controller="Team" asp-action="Save" class="btn btn-primary">Add Team</a>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
@@ -14,7 +20,7 @@
                             <tr>
                                 <th style="width: 10px">Sl</th>
                                 <th>Name</th>
-                                <th>Status</th>
+                                <th>Postion</th>
                                 <th style="width:20px;text-align:center">Action</th>
                             </tr>
                         </thead>
@@ -27,7 +33,7 @@
                                 <tr>
                                     <td>@count</td>
                                     <td>@item.Name</td>
-                                    <td>@(item.Status == TeamType.Engineer ? "Engineer" : item.Status == TeamType.SQA ? "SQA" : "Unknown")</td>
+                                    <td>@(item.Status == TeamType.Engineer ? "Engineer" : item.Status == TeamType.SQA ? "SQA" : item.Status==TeamType.SupportEngineer?"Support Engineer" : "Unknown")</td>
                                     
                                     <td>
                                         <div class="d-flex justify-content-center btn-group-sm ">

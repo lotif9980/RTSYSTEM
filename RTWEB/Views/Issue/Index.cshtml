@@ -1,8 +1,13 @@
 ﻿@using RTWEB.ViewModel
 @model IEnumerable<IssueVM>
-
+@{
+    ViewData["Title"] = "Issue"; 
+}
 
 <div class="container-fluid mt-3">
+    <div class="d-flex justify-content-end">
+        <a asp-controller="Issue" asp-action="Save" class="btn btn-primary">Add Issue</a>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
