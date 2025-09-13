@@ -7,7 +7,7 @@
         public string? Description { get; set; }
         //public int AssignedTo { get; set; }
         public int ProjectId {  get; set; }
-        public int Status { get; set; }
+        public int Status { get; set; } = 1;
 
     }
 }

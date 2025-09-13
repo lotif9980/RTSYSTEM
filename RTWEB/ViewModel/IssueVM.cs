@@ -12,4 +12,11 @@ namespace RTWEB.ViewModel
         public int Status { get; set; }
 
     }
+
+    public class IssueSaveVm
+    {
+        public Issue Issue { get; set; }
+        public IEnumerable<Project> Projects { get; set; }
+      
+    }
 }

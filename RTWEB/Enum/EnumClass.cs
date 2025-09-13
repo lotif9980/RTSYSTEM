@@ -22,7 +22,6 @@ namespace RTWEB.Enum
     public enum IssueStatus
     {
         pending=1,
-        progress=2,
-        solved=3
+        solved=2
     }
 }

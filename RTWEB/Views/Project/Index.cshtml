@@ -3,6 +3,9 @@
 
 
 <div class="container-fluid mt-3">
+    <div class="d-flex justify-content-end">
+        <a asp-controller="Project" asp-action="Save" class="btn btn-primary">Add Project</a>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
@@ -36,7 +39,7 @@
 
                                             <a class="btn btn-danger ms-2"
                                                asp-route-id="@item.Id"
-                                               asp-controller="Appointment" asp-action="Delete">
+                                               asp-controller="Project" asp-action="Delete">
                                                 <i class="fa fa-trash"></i>
                                             </a>
                                         </div>

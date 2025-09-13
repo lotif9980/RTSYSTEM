@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RTWEB.Models;
 using RTWEB.Repository;
+using RTWEB.ViewModel;
 
 namespace RTWEB.Controllers
 {
@@ -17,6 +19,32 @@ namespace RTWEB.Controllers
         {
             var data = _unitofWork.IssueRepository.GetIssues();
             return View(data);
+        }
+
+        [HttpGet]
+        public IActionResult Save()
+        {
+            var vm = new IssueSaveVm
+            {
+                Issue = new Models.Issue(),
+                Projects=_unitofWork.ProjectRepository.GetProjects()
+            };
+
+            return View(vm);
+        }
+
+
+        [HttpPost]
+        public IActionResult Save(IssueSaveVm vm)
+        {
+            _unitofWork.IssueRepository.Save(vm.Issue);
+            return RedirectToAction("Save");
+        }
+
+        public IActionResult Delete(int id)
+        {
+            _unitofWork.IssueRepository.Delete(id);
+            return RedirectToAction("Index");
         }
     }
 }

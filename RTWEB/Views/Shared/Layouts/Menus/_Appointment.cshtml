@@ -15,8 +15,30 @@
     <ul class="nav nav-treeview">
         <li class="nav-item">
             <a asp-controller="Domain" asp-action="Index" class="nav-link">
-                <i class="ms-4 bi bi-clock"></i>
+                @* <i class="ms-4 bi bi-clock"></i> *@
+                <i class="ms-4 bi bi-globe"></i>
                 <p>Domain List</p>
+            </a>
+        </li>
+
+    </ul>
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a asp-controller="Project" asp-action="Index" class="nav-link">
+                @* <i class="ms-4 bi bi-clock"></i> *@
+                <i class="ms-4 bi bi-folder-fill"></i>
+                @* <i class="ms-4 bi bi-globe"></i> *@
+                <p>Project List</p>
+            </a>
+        </li>
+
+    </ul>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a asp-controller="Team" asp-action="Index" class="nav-link">
+                <i class="ms-4 bi bi-people"></i>
+                <p>Team List</p>
             </a>
         </li>
 
