@@ -37,12 +37,22 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(IssueSaveVm vm)
         {
-            _unitofWork.IssueRepository.Save(vm.Issue);
+            if (ModelState.IsValid)
+            {
+                _unitofWork.IssueRepository.Save(vm.Issue);
 
-            TempData["Message"] = "✅ Save Successful";
-            TempData["MessageType"] = "success";
+                TempData["Message"] = "✅ Save Successful";
+                TempData["MessageType"] = "success";
 
-            return RedirectToAction("Save");
+                return RedirectToAction("Save");
+            }
+
+            var returnVm = new IssueSaveVm
+            {
+                Issue = new Models.Issue(),
+                Projects = _unitofWork.ProjectRepository.GetProjects()
+            };
+            return View(returnVm);
         }
 
         public IActionResult Delete(int id)

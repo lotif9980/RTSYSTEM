@@ -30,7 +30,7 @@ namespace RTWEB.Repository
 
         public void Save(Issue issue)
         {
-            _db.Add(issue);
+            _db.Issues.Add(issue);
             _db.SaveChanges();
         }
 

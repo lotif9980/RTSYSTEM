@@ -31,12 +31,16 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(Domain domain)
         {
-            _unitofWork.DomainRepository.Save(domain);
+            if (ModelState.IsValid)
+            {
+                _unitofWork.DomainRepository.Save(domain);
 
-            TempData["Message"] = "✅ Save Successful";
-            TempData["MessageType"] = "success";
+                TempData["Message"] = "✅ Save Successful";
+                TempData["MessageType"] = "success";
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            return View(domain);
         }
 
         public IActionResult Delete(int id)

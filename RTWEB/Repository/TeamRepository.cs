@@ -19,7 +19,7 @@ namespace RTWEB.Repository
 
         public void Save(Team team)
         {
-            _db.Add(team);
+            _db.Teams.Add(team);
             _db.SaveChanges();
         }
 

@@ -29,12 +29,17 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(Project project)
         {
-            _unitofWork.ProjectRepository.Save(project);
+            if (ModelState.IsValid)
+            {
+                _unitofWork.ProjectRepository.Save(project);
 
-            TempData["Message"] = "✅ Save Successful";
-            TempData["MessageType"] = "success";
+                TempData["Message"] = "✅ Save Successful";
+                TempData["MessageType"] = "success";
 
-            return RedirectToAction("Save");
+                return RedirectToAction("Save");
+            }
+
+            return View(project);
         }
 
 

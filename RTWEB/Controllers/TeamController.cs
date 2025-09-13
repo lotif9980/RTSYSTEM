@@ -28,12 +28,16 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(Team team)
         {
-            _unitofWork.TeamRepository.Save(team);
+            if (ModelState.IsValid)
+            {
+                _unitofWork.TeamRepository.Save(team);
 
-            TempData["Message"] = "✅ Save Successful";
-            TempData["MessageType"] = "success";
+                TempData["Message"] = "✅ Save Successful";
+                TempData["MessageType"] = "success";
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            return View(team);
         }
 
         public IActionResult Delete(int id)
