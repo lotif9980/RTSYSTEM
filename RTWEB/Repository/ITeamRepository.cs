@@ -7,5 +7,7 @@ namespace RTWEB.Repository
         public IEnumerable<Team> GetTeams();
         public void Save(Team team);
         public void Delete(int id);
+        public IEnumerable<Team> GetDeveleper();
+        public IEnumerable<Team> GetTester();
     }
 }

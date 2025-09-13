@@ -1,4 +1,5 @@
 ﻿using RTWEB.Data;
+using RTWEB.Enum;
 using RTWEB.Models;
 
 namespace RTWEB.Repository
@@ -30,6 +31,22 @@ namespace RTWEB.Repository
             _db.SaveChanges();
         }
 
+        public IEnumerable<Team> GetDeveleper()
+        {
+            var data = _db.Teams
+                   .Where(p => p.Status ==TeamType.Engineer)
+                   .ToList();
 
+            return data;
+        }
+
+        public IEnumerable<Team> GetTester()
+        {
+            var data = _db.Teams
+                   .Where(p => p.Status == TeamType.SQA)
+                   .ToList();
+
+            return data;
+        }
     }
 }
