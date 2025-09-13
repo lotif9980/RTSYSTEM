@@ -6,5 +6,6 @@
         IIssueRepository IssueRepository { get; }
         ITeamRepository TeamRepository { get; }
         IProjectRepository ProjectRepository { get; }
+        IUpdateRepository UpdateRepository { get; }
     }
 }

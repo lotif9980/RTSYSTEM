@@ -12,7 +12,7 @@ namespace RTWEB.Repository
         public IIssueRepository IssueRepository { get; set; }
         public ITeamRepository TeamRepository {  get; set; }   
         public IProjectRepository ProjectRepository {  get; set; }
-
+        public IUpdateRepository UpdateRepository { get; set; }
 
 
         public UnitOfWork(Db db)
@@ -22,6 +22,7 @@ namespace RTWEB.Repository
             IssueRepository= new IssueRepository(db);
             TeamRepository= new TeamRepository(db);
             ProjectRepository = new ProjectRepository(db);
+            UpdateRepository = new UpdateRepository(db);
         }
       
     }
