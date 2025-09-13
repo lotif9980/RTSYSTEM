@@ -27,9 +27,24 @@ namespace RTWEB.Controllers
             {
                 Update=new Update(),
                 Tester=_unitofwork.TeamRepository.GetTester() ,
-                Developer=_unitofwork.TeamRepository.GetDeveleper() 
+                Developer=_unitofwork.TeamRepository.GetDeveleper(),
             };
+            var project = _unitofwork.ProjectRepository.GetProjects().ToList();
+            ViewBag.Project = project;
+
             return View(data);
+        }
+
+        public IActionResult GetProjectByIssue(int projectId)
+        {
+            var project = _unitofwork.IssueRepository.GetAll()
+                .Where(p => p.ProjectId == projectId).Select(b=> new
+                {
+                    b.Id,
+                    b.Title
+                });
+
+            return Json(project);
         }
     }
 }

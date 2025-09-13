@@ -41,5 +41,9 @@ namespace RTWEB.Repository
             _db.SaveChanges();
         }
 
+        public IEnumerable<Issue> GetAll()
+        {
+            return _db.Issues;
+        }
     }
 }

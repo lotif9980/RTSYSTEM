@@ -19,5 +19,6 @@ namespace RTWEB.ViewModel
         public Update Update { get; set; }
         public IEnumerable<Team> Developer {  get; set; }
         public IEnumerable<Team> Tester { get; set; }
+      
     }
 }

@@ -8,6 +8,6 @@ namespace RTWEB.Repository
         public IEnumerable<IssueVM> GetIssues();
         public void Save(Issue issue);
         public void Delete(int id);
-
+        public IEnumerable<Issue> GetAll();
     }
 }
