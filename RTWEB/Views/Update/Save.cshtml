@@ -8,10 +8,21 @@
 <div class="container mt-3">
     <form asp-action="Save" id="myForm" method="post">
         <div class="row">
+
+            <div class="d-flex justify-content-end">
+                <a class="btn btn-primary" asp-action="Index">Update List</a>
+            </div>
+           
             <!-- Left Column: Fixed Info -->
             <div class="col-md-7">
                 <div class="card mb-3">
-                    <div class="card-header bg-light"><strong>Update Information</strong></div>
+                    
+                    <div class="card-header">
+                        <div>
+                            <strong>Update Information</strong>
+                        </div>
+                        
+                    </div>
                     <div class="card-body">
 
                         <div class="row mb-3">

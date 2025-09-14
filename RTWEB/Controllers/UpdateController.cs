@@ -80,5 +80,11 @@ namespace RTWEB.Controllers
 
             return RedirectToAction("Save");
         }
+
+        public IActionResult Delete(int id)
+        {
+
+            return RedirectToAction("Index");
+        }
     }
 }

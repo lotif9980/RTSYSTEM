@@ -12,6 +12,7 @@ namespace RTWEB.Repository
             _db = db;
         }
 
+      
         public IEnumerable<UpdateVM> GetUpdates()
         {
             var data =(from up in _db.Updates
@@ -34,6 +35,11 @@ namespace RTWEB.Repository
         {
             _db.Updates.Add(update);
             _db.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
