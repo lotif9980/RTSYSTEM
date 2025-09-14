@@ -1,4 +1,5 @@
-﻿using RTWEB.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RTWEB.Data;
 using RTWEB.Models;
 
 namespace RTWEB.Repository
@@ -30,5 +31,9 @@ namespace RTWEB.Repository
             _db.SaveChanges();
         }
 
+        public Task<bool> IsIssueUsedAsync(int id)
+        {
+           return _db.Issues.AnyAsync(x=>x.ProjectId == id);
+        }
     }
 }

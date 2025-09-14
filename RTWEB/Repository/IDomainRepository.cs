@@ -7,6 +7,7 @@ namespace RTWEB.Repository
         public List<Domain> GetAll();
         public void Save(Domain domain);
         public void Delete(int id);
+        public Task<bool> IsDomainUseAsync(int id);
 
     }
 }

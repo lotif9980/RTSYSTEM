@@ -43,8 +43,16 @@ namespace RTWEB.Controllers
         }
 
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var isUsed=await _unitofWork.ProjectRepository.IsIssueUsedAsync(id);
+            if (isUsed)
+            {
+                TempData["Message"] = "✅ Porject Used in Issue!";
+                TempData["MessageType"] = "danger";
+
+                return RedirectToAction("Index");
+            }
             _unitofWork.ProjectRepository.Delete(id);
 
             TempData["Message"] = "✅ Successfully Delete!";

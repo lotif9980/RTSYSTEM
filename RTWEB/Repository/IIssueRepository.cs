@@ -9,5 +9,6 @@ namespace RTWEB.Repository
         public void Save(Issue issue);
         public void Delete(int id);
         public IEnumerable<Issue> GetAll();
+        public Task<bool> IsUsedAsync(int id);
     }
 }

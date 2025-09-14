@@ -1,4 +1,5 @@
-﻿using RTWEB.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RTWEB.Data;
 using RTWEB.Models;
 
 namespace RTWEB.Repository
@@ -27,6 +28,11 @@ namespace RTWEB.Repository
             var data =_db.Domains.Find(id);
             _db.Domains.Remove(data);
             _db.SaveChanges();
+        }
+
+        public Task<bool> IsDomainUseAsync(int id)
+        {
+            return _db.Updates.AnyAsync(x=>x.DomainId== id);
         }
     }
 }

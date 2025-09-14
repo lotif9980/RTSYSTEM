@@ -9,5 +9,6 @@ namespace RTWEB.Repository
         public void Delete(int id);
         public IEnumerable<Team> GetDeveleper();
         public IEnumerable<Team> GetTester();
+        public Task<bool> IsUsedInAsync(int id);
     }
 }

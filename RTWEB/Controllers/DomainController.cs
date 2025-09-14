@@ -2,6 +2,7 @@
 using RTWEB.Models;
 using RTWEB.Repository;
 using RTWEB.ViewModel;
+using System.Threading.Tasks;
 
 namespace RTWEB.Controllers
 {
@@ -43,8 +44,15 @@ namespace RTWEB.Controllers
             return View(domain);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var isUsed=await _unitofWork.DomainRepository.IsDomainUseAsync(id);
+            if (isUsed)
+            {
+                TempData["Message"] = "✅ Domain Used in Updates!";
+                TempData["MessageType"] = "danger";
+                return RedirectToAction("Index");
+            }
             _unitofWork.DomainRepository.Delete(id);
 
             TempData["Message"] = "✅ Successfully Delete!";

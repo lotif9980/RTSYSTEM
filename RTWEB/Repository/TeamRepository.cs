@@ -1,4 +1,5 @@
-﻿using RTWEB.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RTWEB.Data;
 using RTWEB.Enum;
 using RTWEB.Models;
 
@@ -47,6 +48,11 @@ namespace RTWEB.Repository
                    .ToList();
 
             return data;
+        }
+
+        public Task<bool> IsUsedInAsync(int id)
+        {
+            return _db.Updates.AnyAsync(p=>p.TesterId == id || p.DeveloperId==id);
         }
     }
 }

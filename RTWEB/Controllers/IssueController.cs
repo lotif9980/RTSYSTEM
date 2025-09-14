@@ -2,6 +2,7 @@
 using RTWEB.Models;
 using RTWEB.Repository;
 using RTWEB.ViewModel;
+using System.Threading.Tasks;
 
 namespace RTWEB.Controllers
 {
@@ -59,8 +60,17 @@ namespace RTWEB.Controllers
          
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var IsUsed=await _unitofWork.IssueRepository.IsUsedAsync(id);
+            if (IsUsed)
+            {
+
+                TempData["Message"] = "✅ Issue Used in Updates!";
+                TempData["MessageType"] = "danger";
+
+                return RedirectToAction("Index");
+            }
             _unitofWork.IssueRepository.Delete(id);
 
             TempData["Message"] = "✅ Successfully Delete!";

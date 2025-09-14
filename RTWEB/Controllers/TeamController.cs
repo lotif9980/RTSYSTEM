@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RTWEB.Models;
 using RTWEB.Repository;
+using System.Threading.Tasks;
 
 namespace RTWEB.Controllers
 {
@@ -40,8 +41,15 @@ namespace RTWEB.Controllers
             return View(team);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var IsUsed=await _unitofWork.TeamRepository.IsUsedInAsync(id);
+            if (IsUsed)
+            {
+                TempData["Message"] = "✅ Team Used in Updates!";
+                TempData["MessageType"] = "danger";
+                return RedirectToAction("Index");
+            }
             _unitofWork.TeamRepository.Delete(id);
 
             TempData["Message"] = "✅ Successfully Delete!";

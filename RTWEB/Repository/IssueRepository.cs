@@ -1,4 +1,5 @@
-﻿using RTWEB.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RTWEB.Data;
 using RTWEB.Models;
 using RTWEB.ViewModel;
 
@@ -44,6 +45,11 @@ namespace RTWEB.Repository
         public IEnumerable<Issue> GetAll()
         {
             return _db.Issues;
+        }
+
+        public Task<bool> IsUsedAsync(int id)
+        {
+            return _db.UpdateDetails.AnyAsync(x => x.IssueId == id);
         }
     }
 }
