@@ -12,6 +12,7 @@ namespace RTWEB.ViewModel
         public string? DeveloperName { get; set; }
         public string? TesterName { get; set; }
         public int? Status { get; set; }
+        public List<UpdateDetailsVM> UpdateDetails { get; set; } = new List<UpdateDetailsVM>();
     }
 
     public class UpdateSaveVM
@@ -28,6 +29,7 @@ namespace RTWEB.ViewModel
         public int Id { get; set; }
         public int UpdateId { get; set; }
         public int IssueId { get; set; }
+        public string IssueName { get; set; }
     }
 
 }

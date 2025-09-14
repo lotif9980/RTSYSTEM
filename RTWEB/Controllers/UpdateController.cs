@@ -83,8 +83,18 @@ namespace RTWEB.Controllers
 
         public IActionResult Delete(int id)
         {
+            _unitofwork.UpdateRepository.Delete(id);
+
+            TempData["Message"] = "✅ Delete Successful";
+            TempData["MessageType"] = "danger";
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Details(int id)
+        {
+            var data =_unitofwork.UpdateRepository.GetDetails(id);
+            return View(data);
         }
     }
 }

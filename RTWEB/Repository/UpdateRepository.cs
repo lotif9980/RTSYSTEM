@@ -1,4 +1,5 @@
-﻿using RTWEB.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RTWEB.Data;
 using RTWEB.Models;
 using RTWEB.ViewModel;
 
@@ -21,6 +22,7 @@ namespace RTWEB.Repository
                        join te in _db.Teams on up.TesterId equals te.Id
                        select new UpdateVM
                        {
+                        Id=up.Id,
                         DomainName=de.DomainName,
                         UpdateDate=up.UpdateDate ?? DateTime.Now,
                         BranchName=up.BranchName,
@@ -39,7 +41,41 @@ namespace RTWEB.Repository
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+           var data =_db.Updates.Include(p=>p.UpdateDetails).FirstOrDefault(p=>p.Id==id);
+
+            _db.UpdateDetails.RemoveRange(data.UpdateDetails);
+            _db.Updates.Remove(data);
+            _db.SaveChanges();
+        }
+
+        public UpdateVM GetDetails(int id)
+        {
+            var data = (from up in _db.Updates
+                        join team in _db.Teams on up.TesterId equals team.Id
+                        join dom in _db.Domains on up.DomainId equals dom.Id
+                        join en in _db.Teams on up.DeveloperId equals en.Id
+                        where up.Id == id
+                        select new UpdateVM
+                        {
+                           Id=up.Id,
+                           DomainName=dom.DomainName,
+                           TesterName=team.Name,
+                           DeveloperName=en.Name,
+                           BranchName=up.BranchName,
+                           UpdateDate=up.UpdateDate?? DateTime.Now,
+
+                        }).FirstOrDefault();
+
+            data.UpdateDetails=(from upd in _db.UpdateDetails
+                                join iss in _db.Issues on upd.IssueId equals iss.Id
+                                where upd.UpdateId==id 
+                                select new UpdateDetailsVM
+                                {
+                                    IssueName = iss.Title,
+                                    UpdateId=upd.UpdateId
+                                }).ToList();
+
+            return data;
         }
     }
 }

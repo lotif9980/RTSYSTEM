@@ -41,6 +41,9 @@
                                     <td>@item.TesterName</td>
                                     <td>
                                         <div class="d-flex justify-content-center btn-group-sm ">
+                                            <a class="btn btn-success ms-2" asp-route-id="@item.Id" asp-controller="Update" asp-action="Details">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
 
                                             <a class="btn btn-primary ms-2" asp-route-id="@item.Id" asp- controller="Update" asp-action="Edit">
                                                 <i class="fa fa-edit"></i>
@@ -50,6 +53,7 @@
                                                asp-route-id="@item.Id"
                                                asp-controller="Update" asp-action="Delete">
                                                 <i class="fa fa-trash"></i>
+
                                             </a>
                                         </div>
                                     </td>
