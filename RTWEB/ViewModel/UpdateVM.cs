@@ -19,6 +19,15 @@ namespace RTWEB.ViewModel
         public Update Update { get; set; }
         public IEnumerable<Team> Developer {  get; set; }
         public IEnumerable<Team> Tester { get; set; }
-      
+        public IEnumerable<Domain> Domain { get; set; }
+        public List<UpdateDetailsVM> UpdateDetails { get; set; } = new List<UpdateDetailsVM>();
     }
+
+    public class UpdateDetailsVM
+    {
+        public int Id { get; set; }
+        public int UpdateId { get; set; }
+        public int IssueId { get; set; }
+    }
+
 }

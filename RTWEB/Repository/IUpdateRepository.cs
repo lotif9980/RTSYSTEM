@@ -6,5 +6,7 @@ namespace RTWEB.Repository
     public interface IUpdateRepository
     {
         public IEnumerable<UpdateVM> GetUpdates();
+        public void Save(Update update);
+
     }
 }

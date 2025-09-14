@@ -21,6 +21,7 @@ namespace RTWEB.Controllers
             return View(data);
         }
 
+        [HttpGet]
         public IActionResult Save()
         {
             var data = new UpdateSaveVM
@@ -28,6 +29,7 @@ namespace RTWEB.Controllers
                 Update=new Update(),
                 Tester=_unitofwork.TeamRepository.GetTester() ,
                 Developer=_unitofwork.TeamRepository.GetDeveleper(),
+                Domain=_unitofwork.DomainRepository.GetAll()
             };
             var project = _unitofwork.ProjectRepository.GetProjects().ToList();
             ViewBag.Project = project;
@@ -45,6 +47,38 @@ namespace RTWEB.Controllers
                 });
 
             return Json(project);
+        }
+
+        [HttpPost]
+        public IActionResult Save(UpdateSaveVM model) 
+        {
+            var update = new Update
+            {
+                DomainId=model.Update.DomainId,
+                UpdateDate = model.Update.UpdateDate ?? DateTime.Now,
+                BranchName =model.Update.BranchName,
+                DeveloperId=model.Update.DeveloperId,
+                TesterId=model.Update.TesterId,
+                Status=model.Update.Status
+            };
+
+            if(model.Update.UpdateDetails !=null && model.Update.UpdateDetails.Count > 0)
+            {
+                update.UpdateDetails = model.Update.UpdateDetails
+                   
+                   .Select(d=> new UpdateDetail
+                   {
+                       IssueId=d.IssueId,
+
+                   }).ToList();
+            }
+
+            _unitofwork.UpdateRepository.Save(update);
+
+            TempData["Message"] = "✅ Save Successful";
+            TempData["MessageType"] = "success";
+
+            return RedirectToAction("Save");
         }
     }
 }

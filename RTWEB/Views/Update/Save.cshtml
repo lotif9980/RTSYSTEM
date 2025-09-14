@@ -23,6 +23,15 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label asp-for="Update.DomainId" class="col-sm-4 col-form-label">Domain</label>
+                            <div class="col-sm-8">
+                                <select asp-for="Update.DomainId" class="form-control" asp-items="@(new SelectList(Model.Domain, "Id", "DomainName"))">
+                                    <option value="">---Select Developer---</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <label asp-for="Update.DeveloperId" class="col-sm-4 col-form-label">Developer</label>
                             <div class="col-sm-8">
                                 <select asp-for="Update.DeveloperId" class="form-control" asp-items="@(new SelectList(Model.Developer, "Id", "Name"))">
@@ -117,12 +126,12 @@
         });
     });
 
-    // Project -> Load Issues
+   
     $(document).ready(function () {
         $('#projectId').on('change', function () {
             var projectId = $(this).val();
             if (projectId) {
-                $(this).prop('disabled', true); // একবার select করলে disable হবে
+                $(this).prop('disabled', true); 
                 $.ajax({
                     url: '/Update/GetProjectByIssue',
                     type: 'GET',
@@ -144,28 +153,32 @@
         });
 
         // Auto add issue on select
-        $('#issueId').on('change', function () {
-            var issueName = $('#issueId option:selected').text();
-            var issueId = $('#issueId').val();
+            $('#issueId').on('change', function () {
+        var issueName = $('#issueId option:selected').text();
+        var issueId = $('#issueId').val();
 
-            if (issueId) {
-                // Duplicate check
-                if ($('#issueTable tbody tr td input[value="' + issueId + '"]').length > 0) {
-                    alert("This issue is already added!");
-                    $(this).val('');
-                    return;
-                }
-
-                $('#issueTable tbody').append(
-                    '<tr>' +
-                    '<td>' + issueName + '<input type="hidden" name="IssueIds" value="' + issueId + '"/></td>' +
-                    '<td><button type="button" class="btn btn-danger btn-sm removeIssue">Remove</button></td>' +
-                    '</tr>'
-                );
-
-                $(this).val(''); // Reset dropdown
+        if (issueId) {
+            // Duplicate check
+            if ($('#issueTable tbody tr td input[value="' + issueId + '"]').length > 0) {
+                alert("This issue is already added!");
+                $(this).val('');
+                return;
             }
-        });
+
+            var index = $('#issueTable tbody tr').length;
+
+            $('#issueTable tbody').append(
+                '<tr>' +
+                '<td>' + issueName +
+                '<input type="hidden" name="Update.UpdateDetails[' + index + '].IssueId" value="' + issueId + '" />' +
+                '</td>' +
+                '<td><button type="button" class="btn btn-danger btn-sm removeIssue">Remove</button></td>' +
+                '</tr>'
+            );
+
+            $(this).val('');
+        }
+    });
 
         // Remove Issue
         $(document).on('click', '.removeIssue', function () {

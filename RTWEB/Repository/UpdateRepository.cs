@@ -21,7 +21,7 @@ namespace RTWEB.Repository
                        select new UpdateVM
                        {
                         DomainName=de.DomainName,
-                        UpdateDate=up.UpdateDate,
+                        UpdateDate=up.UpdateDate ?? DateTime.Now,
                         BranchName=up.BranchName,
                         DeveloperName=dev.Name,
                         TesterName=te.Name
@@ -30,6 +30,10 @@ namespace RTWEB.Repository
             return data;
         }
 
-        
+        public void Save(Update update)
+        {
+            _db.Updates.Add(update);
+            _db.SaveChanges();
+        }
     }
 }
