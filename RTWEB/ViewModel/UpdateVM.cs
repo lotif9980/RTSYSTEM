@@ -30,6 +30,7 @@ namespace RTWEB.ViewModel
         public int UpdateId { get; set; }
         public int IssueId { get; set; }
         public string IssueName { get; set; }
+        public string ProjectName{get;set;}
     }
 
 }

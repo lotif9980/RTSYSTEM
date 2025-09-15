@@ -68,11 +68,13 @@ namespace RTWEB.Repository
 
             data.UpdateDetails=(from upd in _db.UpdateDetails
                                 join iss in _db.Issues on upd.IssueId equals iss.Id
+                                join proj in _db.Projects on iss.ProjectId equals proj.Id
                                 where upd.UpdateId==id 
                                 select new UpdateDetailsVM
                                 {
                                     IssueName = iss.Title,
-                                    UpdateId=upd.UpdateId
+                                    UpdateId=upd.UpdateId,
+                                    ProjectName=proj.ProjectName
                                 }).ToList();
 
             return data;

@@ -9,23 +9,35 @@
         <div class="card-header">
             <h4 class="mb-0">Update Details</h4>
         </div>
-        <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-3">Domain:</dt>
-                <dd class="col-sm-9">@Model.DomainName</dd>
+        <div class="card-body d-flex justify-content-between">
+            <div>
+                <dl class="row">
+                    <dt class="col-sm-4">Code </dt>
+                    <dd class="col-sm-8">: N/A</dd>
 
-                <dt class="col-sm-3">Tester:</dt>
-                <dd class="col-sm-9">@Model.TesterName</dd>
+                    <dt class="col-sm-4">Date</dt>
+                    <dd class="col-sm-8">: @Model.UpdateDate.ToString("dd-MMM-yyyy")</dd>
 
-                <dt class="col-sm-3">Developer:</dt>
-                <dd class="col-sm-9">@Model.DeveloperName</dd>
+                    <dt class="col-sm-4">Domain</dt>
+                    <dd class="col-sm-8">: @Model.DomainName</dd>
+                
+                </dl>
+            </div>
 
-                <dt class="col-sm-3">Branch:</dt>
-                <dd class="col-sm-9">@Model.BranchName</dd>
+            <div>
+                <dl class="row">
 
-                <dt class="col-sm-3">Update Date:</dt>
-                <dd class="col-sm-9">@Model.UpdateDate.ToString("dd-MMM-yyyy")</dd>
-            </dl>
+                    <dt class="col-sm-3">Developer</dt>
+                    <dd class="col-sm-9">: @Model.DeveloperName</dd>
+
+                    <dt class="col-sm-3">Tester</dt>
+                    <dd class="col-sm-9">: @Model.TesterName</dd>
+       
+
+                    <dt class="col-sm-3">Branch</dt>
+                    <dd class="col-sm-9">: @Model.BranchName</dd>
+                </dl>
+            </div>
         </div>
     </div>
 
@@ -41,6 +53,7 @@
                         <tr>
                             <th>SL</th>
                             <th>Issue Name</th>
+                            <th>Project Name</th>
                         </tr>
                     </thead>
                     <tbody class="table table-hover">
@@ -49,6 +62,7 @@
                             <tr>
                                 <td>@(i + 1)</td>
                                 <td>@Model.UpdateDetails[i].IssueName</td>
+                                <td>@Model.UpdateDetails[i].ProjectName</td>
                             </tr>
                         }
                     </tbody>
