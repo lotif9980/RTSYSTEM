@@ -164,18 +164,27 @@
                 @RenderBody()
             </main>
       
-        <footer class="app-footer">
-            <!--begin::To the end-->
-            <div class="float-end d-none d-sm-inline">Anything you want</div>
-            <!--end::To the end-->
-            <!--begin::Copyright-->
-            <strong>
-                Copyright &copy; 2025-2026&nbsp;
-                <a href="/Home/Index" class="text-decoration-none">Release Tracking Management</a>.
-            </strong>
-            All rights reserved.
-            <!--end::Copyright-->
-        </footer>
+        @if (Context.Session.GetString("IsLoggedIn") == "true")
+        {
+            <footer class="app-footer">
+                <!--begin::To the end-->
+                <div class="float-end d-none d-sm-inline">Anything you want</div>
+                <!--end::To the end-->
+                <!--begin::Copyright-->
+                <strong>
+                    Copyright &copy; 2025-2026&nbsp;
+                    <a href="/Home/Index" class="text-decoration-none">Release Tracking Management</a>.
+                </strong>
+                All rights reserved.
+                <!--end::Copyright-->
+            </footer>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+            </li>
+        }
     </div>
     <!--end::App Wrapper-->
     <!--begin::Script-->
