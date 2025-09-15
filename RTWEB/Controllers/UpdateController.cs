@@ -62,9 +62,9 @@ namespace RTWEB.Controllers
                 Status=model.Update.Status
             };
 
-            if(model.Update.UpdateDetails !=null && model.Update.UpdateDetails.Count > 0)
+            if(model.UpdateDetails !=null && model.UpdateDetails.Count > 0)
             {
-                update.UpdateDetails = model.Update.UpdateDetails
+                update.UpdateDetails = model.UpdateDetails
                    
                    .Select(d=> new UpdateDetail
                    {
@@ -91,7 +91,7 @@ namespace RTWEB.Controllers
 
         public IActionResult Delete(int id)
         {
-            _unitofwork.UpdateRepository.Delete(id);
+          
 
             var updateDetails = _unitofwork.UpdateRepository.GetbyUpdateId(id);
 
@@ -102,6 +102,8 @@ namespace RTWEB.Controllers
                     _unitofwork.IssueRepository.UpdateStatus(d.IssueId, Enum.IssueStatus.pending);
                 }
             }
+
+            _unitofwork.UpdateRepository.Delete(id);
 
             TempData["Message"] = "✅ Delete Successful";
             TempData["MessageType"] = "danger";
