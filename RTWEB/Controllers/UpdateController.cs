@@ -92,7 +92,6 @@ namespace RTWEB.Controllers
         public IActionResult Delete(int id)
         {
           
-
             var updateDetails = _unitofwork.UpdateRepository.GetbyUpdateId(id);
 
             if(updateDetails !=null && updateDetails.Any())

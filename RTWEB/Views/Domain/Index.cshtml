@@ -1,14 +1,17 @@
-﻿@model IEnumerable<Domain>
+﻿@* @model IEnumerable<Domain> *@
+@model HMSYSTEM.ViewModels.PagedResult<Domain>
 @using RTWEB.Enum
 
 <div class="container-fluid mt-3">
-    <div class="d-flex justify-content-end">
-        <a asp-controller="Domain" asp-action="Save" class="btn btn-primary">Add Domain</a>
+    <div class="">
+       
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
-                
+                <div class="card-header d-flex justify-content-end">
+                    <a asp-controller="Domain" asp-action="Save" class="btn btn-primary">Add Domain</a>
+                </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                     <table class="table table-bordered table-hover">
@@ -23,9 +26,9 @@
                         </thead>
                         <tbody>
                             @{
-                                int count = 1;
+                                int count = ((Model.CurrentPage - 1) * Model.PageSize) + 1;
                             }
-                            @foreach (Domain item in Model)
+                            @foreach (Domain item in Model.Items)
                             {
                                 <tr>
                                     <td>@count</td>
@@ -47,7 +50,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                                        count++;
+                                  count++;
                             }
 
                         </tbody>
@@ -55,7 +58,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    @* @await Html.PartialAsync("_Pagination", Model) *@
+                     @await Html.PartialAsync("_Pagination", Model) 
                 </div>
             </div>
             <!-- /.card -->
