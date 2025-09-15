@@ -32,7 +32,7 @@
                     <div class="row mb-3">
                         <label asp-for="Issue.ProjectId" class="col-sm-3 col-form-label">Project</label>
                         <div class="col-sm-9">
-                            <select asp-for="Issue.ProjectId" id="type" class="form-control" asp-items="@(new SelectList(Model.Projects, "Id", "ProjectName"))"></select>
+                            <select asp-for="Issue.ProjectId" id="type" class="form-control project-dropdown" asp-items="@(new SelectList(Model.Projects, "Id", "ProjectName"))"></select>
                             <span asp-validation-for="Issue.Title" class="text-danger"></span>
                         </div>
                     </div>
@@ -65,4 +65,18 @@
             if(project==="")offset=createAlert("❌ Project is Required" ,container,offset);
         })
     })
+
+
+     $(document).ready(function () {
+         $(".project-dropdown").select2({
+             placeholder: "--Select Project--",
+             allowClear: true,
+             width: '100%'
+         });
+
+
+         $(document).on('select2:open', () => {
+             document.querySelector('.select2-search__field').focus();
+         });
+     });
 </script>

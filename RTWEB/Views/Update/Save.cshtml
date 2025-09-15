@@ -36,7 +36,7 @@
                         <div class="row mb-3">
                             <label asp-for="Update.DomainId" class="col-sm-4 col-form-label">Domain</label>
                             <div class="col-sm-8">
-                                <select asp-for="Update.DomainId" class="form-control" asp-items="@(new SelectList(Model.Domain, "Id", "DomainName"))">
+                                <select asp-for="Update.DomainId" class="form-control domain-dropdown" asp-items="@(new SelectList(Model.Domain, "Id", "DomainName"))">
                                     <option value="">---Select Developer---</option>
                                 </select>
                             </div>
@@ -45,7 +45,7 @@
                         <div class="row mb-3">
                             <label asp-for="Update.DeveloperId" class="col-sm-4 col-form-label">Developer</label>
                             <div class="col-sm-8">
-                                <select asp-for="Update.DeveloperId" class="form-control" asp-items="@(new SelectList(Model.Developer, "Id", "Name"))">
+                                <select asp-for="Update.DeveloperId" class="form-control developer-dropdown" asp-items="@(new SelectList(Model.Developer, "Id", "Name"))">
                                     <option value="">---Select Developer---</option>
                                 </select>
                             </div>
@@ -54,7 +54,7 @@
                         <div class="row mb-3">
                             <label asp-for="Update.TesterId" class="col-sm-4 col-form-label">Tester</label>
                             <div class="col-sm-8">
-                                <select asp-for="Update.TesterId" class="form-control" asp-items="@(new SelectList(Model.Tester, "Id", "Name"))">
+                                <select asp-for="Update.TesterId" class="form-control tester-dropdown" asp-items="@(new SelectList(Model.Tester, "Id", "Name"))">
                                     <option value="">---Select Tester---</option>
                                 </select>
                             </div>
@@ -71,7 +71,7 @@
                         <div class="row mb-3">
                             <label class="col-sm-4 col-form-label">Project</label>
                             <div class="col-sm-8">
-                                <select id="projectId" name="ProjectId" class="form-select ward-dropdown">
+                                <select id="projectId" name="ProjectId" class="form-select project-dropdown">
                                     <option value="">-- Select Project --</option>
                                     @foreach (var p in project)
                                     {
@@ -84,7 +84,7 @@
                         <div class="row mb-3">
                             <label class="col-sm-4 col-form-label">Select Issue</label>
                             <div class="col-sm-8">
-                                <select id="issueId" class="form-select">
+                                <select id="issueId" class="form-select issue-dropdown">
                                     <option value="">--Select Issue--</option>
                                 </select>
                             </div>
@@ -128,6 +128,45 @@
 </div>
 
 <script>
+
+     $(document).ready(function () {
+         $(".domain-dropdown").select2({
+             placeholder: "--Select Domain--",
+             allowClear: true,
+             width: '100%'
+         });
+
+         $(".developer-dropdown").select2({
+             placeholder: "--Select Developer--",
+             allowClear: true,
+             width: '100%'
+         });
+
+         $(".tester-dropdown").select2({
+             placeholder: "--Select Tester--",
+             allowClear: true,
+             width: '100%'
+         });
+
+         $(".project-dropdown").select2({
+             placeholder: "--Select Project--",
+             allowClear: true,
+             width: '100%'
+         });
+
+         $(".issue-dropdown").select2({
+             placeholder: "--Select Issue--",
+             allowClear: true,
+             width: '100%'
+         });
+
+
+         $(document).on('select2:open', () => {
+             document.querySelector('.select2-search__field').focus();
+         });
+      });
+
+
     // ================= Datepicker =================
     $(function () {
         $("#updateDate").datepicker({
