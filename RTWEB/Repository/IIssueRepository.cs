@@ -1,5 +1,6 @@
 ﻿using RTWEB.Models;
 using RTWEB.ViewModel;
+using RTWEB.Enum;
 
 namespace RTWEB.Repository
 {
@@ -10,5 +11,7 @@ namespace RTWEB.Repository
         public void Delete(int id);
         public IEnumerable<Issue> GetAll();
         public Task<bool> IsUsedAsync(int id);
+        public void UpdateStatus(int id, IssueStatus status);
+
     }
 }

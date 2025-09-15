@@ -40,7 +40,7 @@ namespace RTWEB.Controllers
         public IActionResult GetProjectByIssue(int projectId)
         {
             var project = _unitofwork.IssueRepository.GetAll()
-                .Where(p => p.ProjectId == projectId).Select(b=> new
+                .Where(p => p.ProjectId == projectId && p.Status==Enum.IssueStatus.pending).Select(b=> new
                 {
                     b.Id,
                     b.Title
@@ -74,6 +74,14 @@ namespace RTWEB.Controllers
             }
 
             _unitofwork.UpdateRepository.Save(update);
+             if(model.UpdateDetails !=null && model.UpdateDetails.Count > 0)
+             {
+                foreach(var detail in model.UpdateDetails)
+                {
+                    _unitofwork.IssueRepository.UpdateStatus(detail.IssueId, Enum.IssueStatus.solved);
+                }
+             }
+           
 
             TempData["Message"] = "✅ Save Successful";
             TempData["MessageType"] = "success";
@@ -87,6 +95,8 @@ namespace RTWEB.Controllers
 
             TempData["Message"] = "✅ Delete Successful";
             TempData["MessageType"] = "danger";
+
+
 
             return RedirectToAction("Index");
         }

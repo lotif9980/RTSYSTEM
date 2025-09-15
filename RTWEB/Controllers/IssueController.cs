@@ -47,8 +47,10 @@ namespace RTWEB.Controllers
 
             var data = new Issue
             {
-                Title=vm.Issue.Title,
-                ProjectId=vm.Issue.ProjectId
+                Title = vm.Issue.Title,
+                ProjectId = vm.Issue.ProjectId,
+                Status = vm.Issue.Status = Enum.IssueStatus.pending
+
             };
 
                 _unitofWork.IssueRepository.Save(data);

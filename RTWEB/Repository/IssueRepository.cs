@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RTWEB.Data;
+using RTWEB.Enum;
 using RTWEB.Models;
 using RTWEB.ViewModel;
 
@@ -50,6 +51,16 @@ namespace RTWEB.Repository
         public Task<bool> IsUsedAsync(int id)
         {
             return _db.UpdateDetails.AnyAsync(x => x.IssueId == id);
+        }
+
+        public void UpdateStatus(int id, IssueStatus status)
+        {
+           var data= _db.Issues.Find(id);
+            if(data  != null)
+            {
+                data.Status = status;
+                _db.SaveChanges();
+            }
         }
     }
 }

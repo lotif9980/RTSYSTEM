@@ -128,7 +128,7 @@
 </div>
 
 <script>
-    // Datepicker
+    // ================= Datepicker =================
     $(function () {
         $("#updateDate").datepicker({
             dateFormat: "dd-mm-yy",
@@ -137,12 +137,19 @@
         });
     });
 
-   
+    // ================= Project & Issue Handling =================
     $(document).ready(function () {
+
+        // Project Change
         $('#projectId').on('change', function () {
             var projectId = $(this).val();
+
             if (projectId) {
-                $(this).prop('disabled', true); 
+                // শুধু তখনই disable করবো যদি issue select করা হয়ে থাকে
+                if ($('#issueTable tbody tr').length > 0) {
+                    $(this).prop('disabled', true);
+                }
+
                 $.ajax({
                     url: '/Update/GetProjectByIssue',
                     type: 'GET',
@@ -153,7 +160,10 @@
                         $issueDropdown.empty();
                         $issueDropdown.append('<option value="">-- Select Issue --</option>');
                         $.each(data, function (index, issue) {
-                            $issueDropdown.append($('<option>', { value: issue.id, text: issue.title }));
+                            $issueDropdown.append($('<option>', {
+                                value: issue.id,
+                                text: issue.title
+                            }));
                         });
                     },
                     error: function (xhr, status, error) {
@@ -163,44 +173,49 @@
             }
         });
 
-        // Auto add issue on select
-            $('#issueId').on('change', function () {
-        var issueName = $('#issueId option:selected').text();
-        var issueId = $('#issueId').val();
+        // Issue Select → Auto Add
+        $('#issueId').on('change', function () {
+            var issueName = $('#issueId option:selected').text();
+            var issueId = $('#issueId').val();
 
-        if (issueId) {
-            // Duplicate check
-            if ($('#issueTable tbody tr td input[value="' + issueId + '"]').length > 0) {
-                alert("This issue is already added!");
+            if (issueId) {
+                // Duplicate check
+                if ($('#issueTable tbody tr td input[value="' + issueId + '"]').length > 0) {
+                    alert("This issue is already added!");
+                    $(this).val('');
+                    return;
+                }
+
+                var index = $('#issueTable tbody tr').length;
+
+                $('#issueTable tbody').append(
+                    '<tr>' +
+                        '<td>' + issueName +
+                            '<input type="hidden" name="UpdateDetails[' + index + '].IssueId" value="' + issueId + '" />' +
+                        '</td>' +
+                        '<td><button type="button" class="btn btn-danger btn-sm removeIssue">Remove</button></td>' +
+                    '</tr>'
+                );
+
+                // projectId এখন lock হয়ে যাবে
+                $('#projectId').prop('disabled', true);
+
                 $(this).val('');
-                return;
             }
+        });
 
-            var index = $('#issueTable tbody tr').length;
-
-            $('#issueTable tbody').append(
-                '<tr>' +
-                '<td>' + issueName +
-                '<input type="hidden" name="Update.UpdateDetails[' + index + '].IssueId" value="' + issueId + '" />' +
-                '</td>' +
-                '<td><button type="button" class="btn btn-danger btn-sm removeIssue">Remove</button></td>' +
-                '</tr>'
-            );
-
-            $(this).val('');
-        }
-    });
-
-        // Remove Issue
+        // Issue Remove
         $(document).on('click', '.removeIssue', function () {
             $(this).closest('tr').remove();
+
+            // যদি আর কোনো issue না থাকে → project আবার enable হবে
+            if ($('#issueTable tbody tr').length === 0) {
+                $('#projectId').prop('disabled', false);
+            }
         });
     });
 
-
-
-
-   
+    // ================= Form Validation =================
     $(document).ready(function () {
         $("#myForm").on('submit', function (e) {
             var offset = 20;
@@ -254,6 +269,4 @@
             }
         });
     });
-
-
 </script>
