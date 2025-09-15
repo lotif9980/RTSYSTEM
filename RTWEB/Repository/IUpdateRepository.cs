@@ -9,5 +9,6 @@ namespace RTWEB.Repository
         public void Save(Update update);
         public void Delete(int id);
         public UpdateVM GetDetails(int id);
+        public IEnumerable<UpdateDetail> GetbyUpdateId(int id);
     }
 }

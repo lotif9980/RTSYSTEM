@@ -93,9 +93,18 @@ namespace RTWEB.Controllers
         {
             _unitofwork.UpdateRepository.Delete(id);
 
+            var updateDetails = _unitofwork.UpdateRepository.GetbyUpdateId(id);
+
+            if(updateDetails !=null && updateDetails.Any())
+            {
+                foreach(var d in updateDetails)
+                {
+                    _unitofwork.IssueRepository.UpdateStatus(d.IssueId, Enum.IssueStatus.pending);
+                }
+            }
+
             TempData["Message"] = "✅ Delete Successful";
             TempData["MessageType"] = "danger";
-
 
 
             return RedirectToAction("Index");

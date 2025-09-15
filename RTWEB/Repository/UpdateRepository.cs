@@ -77,5 +77,10 @@ namespace RTWEB.Repository
 
             return data;
         }
+
+        public IEnumerable<UpdateDetail> GetbyUpdateId(int id)
+        {
+            return _db.UpdateDetails.Where(p => p.UpdateId == id).ToList();
+        }
     }
 }
