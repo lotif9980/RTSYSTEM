@@ -19,6 +19,7 @@ namespace RTWEB.Repository
         {
             var data=(from issue in _db.Issues
                       join project in _db.Projects on issue.ProjectId equals project.Id
+                      where issue.Status==Enum.IssueStatus.pending
                       select new IssueVM
                       {
                           Id= issue.Id,
@@ -30,6 +31,22 @@ namespace RTWEB.Repository
            return data;
         }
 
+        public IEnumerable<IssueVM> GetSolved()
+        {
+            var data = (from issue in _db.Issues
+                        join project in _db.Projects on issue.ProjectId equals project.Id
+                        where issue.Status == Enum.IssueStatus.solved
+                        select new IssueVM
+                        {
+                            Id = issue.Id,
+                            Title = issue.Title,
+                            Description = issue.Description,
+                            ProjectName = project.ProjectName,
+                            //Status=issue.Status
+                        }).ToList();
+
+            return data;
+        }
         public void Save(Issue issue)
         {
             _db.Issues.Add(issue);

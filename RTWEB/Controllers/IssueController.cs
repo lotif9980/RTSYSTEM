@@ -22,9 +22,19 @@ namespace RTWEB.Controllers
         public IActionResult Index(int page=1, int pageSize = 10)
         {
             var data = _unitofWork.IssueRepository.GetIssues()
-                .OrderByDescending(d=>d.Id)
+                .OrderByDescending(d=>d.Id )
                 .AsQueryable()
                 .ToPagedList(page,pageSize);
+            return View(data);
+        }
+
+        [Authorize]
+        public IActionResult Solved(int page = 1, int pageSize = 10)
+        {
+            var data = _unitofWork.IssueRepository.GetSolved()
+                .OrderByDescending(d => d.Id)
+                .AsQueryable()
+                .ToPagedList(page, pageSize);
             return View(data);
         }
 
