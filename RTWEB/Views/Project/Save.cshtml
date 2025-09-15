@@ -22,7 +22,7 @@
                     <div class="row mb-3">
                         <label asp-for="ProjectName" class="col-sm-3 col-form-label">Project Name</label>
                         <div class="col-sm-9">
-                            <input asp-for="ProjectName" class="form-control" id="name">
+                            <input asp-for="ProjectName" class="form-control" id="projectName">
                             <span asp-validation-for="ProjectName" class="text-danger"></span>
                         </div>
                     </div>
@@ -41,3 +41,20 @@
         <!--end::Horizontal Form-->
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function(){
+        $("#myForm").on('submit',function(){
+            var project=$("#projectName").val().trim();
+
+              var offset=20;
+              var container=$("body");
+
+              if(project==="")offset=createAlert("❌ Project Name is Required",container,offset);
+                if($(".field-alert").length >0) return false;
+
+                this.submit();
+        })
+    })
+</script>

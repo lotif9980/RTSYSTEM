@@ -196,4 +196,64 @@
             $(this).closest('tr').remove();
         });
     });
+
+
+
+
+   
+    $(document).ready(function () {
+        $("#myForm").on('submit', function (e) {
+            var offset = 20;
+            var container = $("body");
+
+            // Date
+            var updateDate = $("#updateDate").val().trim();
+            if (updateDate === "") {
+                offset = createAlert("❌ Update Date is Required", container, offset);
+            }
+
+            // Domain
+            var domainId = $("#Update_DomainId").val();
+            if (domainId === "") {
+                offset = createAlert("❌ Domain is Required", container, offset);
+            }
+
+            // Developer
+            var developerId = $("#Update_DeveloperId").val();
+            if (developerId === "") {
+                offset = createAlert("❌ Developer is Required", container, offset);
+            }
+
+            // Tester
+            var testerId = $("#Update_TesterId").val();
+            if (testerId === "") {
+                offset = createAlert("❌ Tester is Required", container, offset);
+            }
+
+            // Branch name
+            var branchName = $("#name").val().trim();
+            if (branchName === "") {
+                offset = createAlert("❌ Branch Name is Required", container, offset);
+            }
+
+            // Project
+            var projectId = $("#projectId").val();
+            if (projectId === "") {
+                offset = createAlert("❌ Project is Required", container, offset);
+            }
+
+            // At least 1 issue required
+            if ($("#issueTable tbody tr").length === 0) {
+                offset = createAlert("❌ At least 1 Issue is Required", container, offset);
+            }
+
+            // যদি alert show হয়ে থাকে submit বন্ধ করবে
+            if ($(".field-alert").length > 0) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    });
+
+
 </script>

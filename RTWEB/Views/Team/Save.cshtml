@@ -30,7 +30,7 @@
                     <div class="row mb-3">
                         <label asp-for="Name" class="col-sm-3 col-form-label">Name</label>
                         <div class="col-sm-9">
-                            <input asp-for="Name" class="form-control" id="name">
+                            <input asp-for="Name" class="form-control" id="teamName">
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                     </div>
@@ -63,3 +63,21 @@
         <!--end::Horizontal Form-->
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        $("#myForm").on('submit',function(){
+            var teamname=$("#teamName").val().trim();
+            var type=$("#type").val().trim();
+            
+            var offset=20;
+            var container=$("body");
+
+            if(teamname==="")offset=createAlert("❌ Name is Required",container,offset);
+            if(type==="")offset=createAlert("❌ Type is Required",container,offset);
+            if($(".field-alert").length >0) return false;
+
+            this.submit();
+        })
+    })
+</script>
