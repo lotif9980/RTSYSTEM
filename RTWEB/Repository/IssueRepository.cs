@@ -25,7 +25,8 @@ namespace RTWEB.Repository
                           Id= issue.Id,
                           Title= issue.Title,
                           Description= issue.Description,
-                          ProjectName=project.ProjectName
+                          ProjectName=project.ProjectName,
+                          Status=Enum.IssueStatus.pending
                       }).ToList();
 
            return data;
@@ -42,7 +43,8 @@ namespace RTWEB.Repository
                             Title = issue.Title,
                             Description = issue.Description,
                             ProjectName = project.ProjectName,
-                            //Status=issue.Status
+                            Status=Enum.IssueStatus.solved
+                           
                         }).ToList();
 
             return data;

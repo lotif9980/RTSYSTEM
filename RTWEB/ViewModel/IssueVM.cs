@@ -1,4 +1,5 @@
-﻿using RTWEB.Models;
+﻿using RTWEB.Enum;
+using RTWEB.Models;
 
 namespace RTWEB.ViewModel
 {
@@ -9,7 +10,7 @@ namespace RTWEB.ViewModel
         public string? Description { get; set; }
         public string AssignPersion { get; set; }
         public string ProjectName { get; set; }
-        public int Status { get; set; }
+        public IssueStatus Status { get; set; }
 
     }
 
