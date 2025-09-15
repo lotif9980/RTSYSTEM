@@ -21,6 +21,19 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddAuthentication("MyCookieAuth")
+    .AddCookie("MyCookieAuth", options =>
+    {
+        options.LoginPath = "/Account/Login"; // login redirect path
+        options.LogoutPath = "/Account/Logout";
+        options.ExpireTimeSpan = TimeSpan.FromHours(1);
+    });
+
+
+
+builder.Services.AddAuthorization();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,11 +47,16 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+
+
 app.UseRouting();
 
 // 🔹 Use session middleware before authorization
 app.UseSession();
 
+
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

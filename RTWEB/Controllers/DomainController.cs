@@ -1,4 +1,5 @@
 ﻿using HMSYSTEM.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RTWEB.Models;
 using RTWEB.Repository;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace RTWEB.Controllers
 {
+    [Authorize]
     public class DomainController : Controller
     {
         protected readonly IUnitofWork _unitofWork;

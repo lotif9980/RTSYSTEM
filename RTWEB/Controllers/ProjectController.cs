@@ -1,4 +1,5 @@
 ﻿using HMSYSTEM.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using RTWEB.Models;
@@ -6,6 +7,7 @@ using RTWEB.Repository;
 
 namespace RTWEB.Controllers
 {
+    [Authorize]
     public class ProjectController : Controller
     {
         protected readonly IUnitofWork _unitofWork;

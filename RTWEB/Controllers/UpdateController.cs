@@ -1,4 +1,5 @@
 ﻿using HMSYSTEM.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RTWEB.Data;
 using RTWEB.Models;
@@ -7,6 +8,7 @@ using RTWEB.ViewModel;
 
 namespace RTWEB.Controllers
 {
+    [Authorize]
     public class UpdateController : Controller
     {
         protected readonly IUnitofWork _unitofwork;

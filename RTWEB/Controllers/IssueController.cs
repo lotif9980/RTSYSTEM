@@ -1,4 +1,5 @@
 ﻿using HMSYSTEM.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RTWEB.Models;
 using RTWEB.Repository;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace RTWEB.Controllers
 {
+    [Authorize]
     public class IssueController : Controller
     {
         protected readonly IUnitofWork _unitofWork;
@@ -16,7 +18,7 @@ namespace RTWEB.Controllers
             _unitofWork = unitofWork;
         }
 
-
+        [Authorize]
         public IActionResult Index(int page=1, int pageSize = 10)
         {
             var data = _unitofWork.IssueRepository.GetIssues()

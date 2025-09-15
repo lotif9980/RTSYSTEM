@@ -1,84 +1,113 @@
-﻿
-<li class="nav-item">
-    <a href="#" class="nav-link">
-        <i class="bi bi-calendar-check"></i>
+﻿@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
 
-        <p>
-            Basic
-            <i class="nav-arrow bi bi-chevron-right"></i>
-        </p>
-    </a>
+    <li class="nav-item">
+        <a href="#" class="nav-link">
+            <i class="bi bi-calendar-check"></i>
 
-   
-
-
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a asp-controller="Domain" asp-action="Index" class="nav-link">
-                @* <i class="ms-4 bi bi-clock"></i> *@
-                <i class="ms-4 bi bi-globe"></i>
-                <p>Domain List</p>
-            </a>
-        </li>
-
-    </ul>
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a asp-controller="Project" asp-action="Index" class="nav-link">
-                @* <i class="ms-4 bi bi-clock"></i> *@
-                <i class="ms-4 bi bi-folder-fill"></i>
-                @* <i class="ms-4 bi bi-globe"></i> *@
-                <p>Project List</p>
-            </a>
-        </li>
-
-    </ul>
-
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a asp-controller="Team" asp-action="Index" class="nav-link">
-                <i class="ms-4 bi bi-people"></i>
-                <p>Team List</p>
-            </a>
-        </li>
-
-    </ul>
-
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a asp-controller="Issue" asp-action="Index" class="nav-link">
-                @* <i class="ms-4 bi bi-people"></i> *@
-                <i class="ms-4 bi bi-exclamation-triangle"></i>
-                <p>Issue List</p>
-            </a>
-        </li>
-
-    </ul>
-
-</li>
-
-
-<li class="nav-item">
-    <a href="#" class="nav-link">
-        <i class="bi bi-bar-chart-line"></i>
-
-        <p>
-            Update List
-            <i class="nav-arrow bi bi-chevron-right"></i>
-        </p>
-    </a>
+            <p>
+                Basic
+                <i class="nav-arrow bi bi-chevron-right"></i>
+            </p>
+        </a>
 
 
 
 
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a asp-controller="Update" asp-action="Index" class="nav-link">
-                <i class="ms-4 bi bi-pie-chart"></i>
-                <p>Update List</p>
-            </a>
-        </li>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a asp-controller="Domain" asp-action="Index" class="nav-link">
+                    @* <i class="ms-4 bi bi-clock"></i> *@
+                    <i class="ms-4 bi bi-globe"></i>
+                    <p>Domain List</p>
+                </a>
+            </li>
 
-    </ul>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a asp-controller="Project" asp-action="Index" class="nav-link">
+                    @* <i class="ms-4 bi bi-clock"></i> *@
+                    <i class="ms-4 bi bi-folder-fill"></i>
+                    @* <i class="ms-4 bi bi-globe"></i> *@
+                    <p>Project List</p>
+                </a>
+            </li>
 
-</li>
+        </ul>
+
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a asp-controller="Team" asp-action="Index" class="nav-link">
+                    <i class="ms-4 bi bi-people"></i>
+                    <p>Team List</p>
+                </a>
+            </li>
+
+        </ul>
+
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a asp-controller="Issue" asp-action="Index" class="nav-link">
+                    @* <i class="ms-4 bi bi-people"></i> *@
+                    <i class="ms-4 bi bi-exclamation-triangle"></i>
+                    <p>Issue List</p>
+                </a>
+            </li>
+
+        </ul>
+
+    </li>
+
+
+    <li class="nav-item">
+        <a href="#" class="nav-link">
+            <i class="bi bi-bar-chart-line"></i>
+
+            <p>
+                Update List
+                <i class="nav-arrow bi bi-chevron-right"></i>
+            </p>
+        </a>
+
+
+
+
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a asp-controller="Update" asp-action="Index" class="nav-link">
+                    <i class="ms-4 bi bi-pie-chart"></i>
+                    <p>Update List</p>
+                </a>
+            </li>
+
+        </ul>
+
+    </li>
+
+
+    <li class="nav-item">
+        <a href="#" class="nav-link">
+            <i class="bi bi-person"></i>
+
+            <p>
+                User
+                <i class="nav-arrow bi bi-chevron-right"></i>
+            </p>
+        </a>
+
+
+
+
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a asp-controller="Account" asp-action="Logout" class="nav-link">
+                    <i class="ms-4 bi bi-door-open"></i>
+                    <p>LogOut</p>
+                </a>
+            </li>
+
+        </ul>
+
+    </li>
+}
