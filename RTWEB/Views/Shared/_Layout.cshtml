@@ -146,12 +146,19 @@
 
     <div class="app-wrapper">
         <!--begin::Header-->
-       
+        @if (Context.Session.GetString("IsLoggedIn") == "true")
+        {
             <partial name="Layouts/_navbar" />
             <partial name="Layouts/_sidebar" />
-            <partial name="Layouts/_AlertMessage" /> 
+            <partial name="Layouts/_AlertMessage" />
 
-
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+            </li>
+        }
 
             <main class="app-main">
                 @RenderBody()

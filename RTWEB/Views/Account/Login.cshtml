@@ -181,14 +181,29 @@ h1 {
         text-transform:uppercase;right:0;transform:translateY(-50%)}
 
 </style>
+@{
+    ViewData["Title"] = "Login";
+}
 
-<form class="box" action="index.html" method="post">
+@* <form class="box" asp-action="Login" method="post">
     <h1>Login</h1>
     <input type="text" name="" placeholder="Username">
     <input type="password" name="" placeholder="Password">
-    <a href=""  type="submit">Login</a>
-</form>
+    @* <a href=""  type="submit">Login</a> 
+    @* <button type="submit">Save</button> 
+</form> *@
 
+<form class="box" asp-controller="Account" asp-action="Login" method="post">
+    <h1>Login</h1>
+    <input type="text" name="username" placeholder="Username" />
+    <input type="password" name="password" placeholder="Password" />
+    <button type="submit">Login</button>
+
+    @if (ViewBag.Error != null)
+    {
+        <p style="color:red">@ViewBag.Error</p>
+    }
+</form>
 
 
 <div class="lines">
