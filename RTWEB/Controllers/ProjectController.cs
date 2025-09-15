@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HMSYSTEM.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using RTWEB.Models;
 using RTWEB.Repository;
@@ -14,9 +15,12 @@ namespace RTWEB.Controllers
             _unitofWork = unitofwork;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page=1 , int pageSize=10)
         {
-            var data = _unitofWork.ProjectRepository.GetProjects();
+            var data = _unitofWork.ProjectRepository.GetProjects()
+                .OrderByDescending(d=>d.Id)
+                .AsQueryable()
+                .ToPagedList(page,pageSize);
             return View(data);
         }
 

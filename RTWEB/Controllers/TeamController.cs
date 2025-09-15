@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HMSYSTEM.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using RTWEB.Models;
 using RTWEB.Repository;
 using System.Threading.Tasks;
@@ -14,9 +15,12 @@ namespace RTWEB.Controllers
         }
 
 
-        public IActionResult Index()
+        public IActionResult Index(int page=1,int pageSize=10)
         {
-            var data=_unitofWork.TeamRepository.GetTeams();
+            var data=_unitofWork.TeamRepository.GetTeams()
+                .OrderByDescending(d=>d.Id)
+                .AsQueryable()
+                .ToPagedList(page, pageSize);
             return View(data);
         }
 
@@ -36,7 +40,7 @@ namespace RTWEB.Controllers
                 TempData["Message"] = "✅ Save Successful";
                 TempData["MessageType"] = "success";
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Save");
             }
             return View(team);
         }

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Team>
+﻿@* @model IEnumerable<Team> *@
+@model HMSYSTEM.ViewModels.PagedResult<Team>
 @using RTWEB.Enum
 @{
     ViewData["Title"] = "Team";
@@ -6,13 +7,15 @@
 
 
 <div class="container-fluid mt-3">
-    <div class="d-flex justify-content-end">
-        <a asp-controller="Team" asp-action="Save" class="btn btn-primary">Add Team</a>
-    </div>
+   
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
-
+                <div class="card-header">
+                    <div class="d-flex justify-content-end">
+                        <a asp-controller="Team" asp-action="Save" class="btn btn-primary">Add Team</a>
+                    </div>
+                </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                     <table class="table table-bordered table-hover">
@@ -26,9 +29,9 @@
                         </thead>
                         <tbody>
                             @{
-                                int count = 1;
+                                int count = ((Model.CurrentPage - 1) * Model.PageSize) + 1;
                             }
-                            @foreach (Team item in Model)
+                            @foreach (Team item in Model.Items)
                             {
                                 <tr>
                                     <td>@count</td>
@@ -58,7 +61,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    @* @await Html.PartialAsync("_Pagination", Model) *@
+                    @await Html.PartialAsync("_Pagination", Model)
                 </div>
             </div>
             <!-- /.card -->
