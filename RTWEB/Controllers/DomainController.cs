@@ -1,6 +1,7 @@
 ﻿using HMSYSTEM.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RTWEB.Enum;
 using RTWEB.Models;
 using RTWEB.Repository;
 using RTWEB.ViewModel;
@@ -68,5 +69,29 @@ namespace RTWEB.Controllers
             return RedirectToAction("Index");
         }
 
+
+        public IActionResult Search(string name)
+        {
+            name = name?.Trim().ToLower() ?? "";
+
+            var data=_unitofWork.DomainRepository.GetAll()
+                .OrderByDescending(d=>d.Id)
+                .Where(m=> !string.IsNullOrEmpty(m.DomainName) && m.DomainName.ToLower().Contains(name))
+                .Select(m => new
+                {
+                    domainName=m.DomainName,
+                    updateBranch=string.IsNullOrEmpty (m.UpdateBranch) ? "N/A" :m.UpdateBranch,
+                    updateDate=m.LastUpdateDate.HasValue?m.LastUpdateDate.Value.ToString("dd-MM-yyyy") :"N/A",
+                    domainType= m.DomainType == DomainEnum.Test
+                                ? "Test"
+        :                       m.DomainType == DomainEnum.Live
+                                ? "Live"
+                                : "Unknown",
+                    status =m.Status==true?"Active":"Inactive"
+                });
+
+            return Json(data);
+        }
+        
     }
 }
