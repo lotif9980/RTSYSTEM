@@ -67,5 +67,25 @@ namespace RTWEB.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Search(string name)
+        {
+            name=name?.Trim().ToLower() ?? "";
+
+            var data = _unitofWork.ProjectRepository.GetProjects()
+                        .OrderByDescending(p=>p.Id)
+                       .Where(m => !string.IsNullOrEmpty(m.ProjectName) && m.ProjectName.ToLower().Contains(name))
+                       .Select(m=> new
+                       {
+                          id= m.Id,
+                          projectName= m.ProjectName,
+                          updateBrnach= string.IsNullOrEmpty(m.UpdateBranch) ? "N/A" : m.UpdateBranch,
+                          updateDate = m.LastUpdateDate.HasValue
+                                ? m.LastUpdateDate.Value.ToString("dd-MM-yyyy")
+                                : "N/A"
+                       }).ToList();
+
+            return Json(data);
+        }
+
     }
 }

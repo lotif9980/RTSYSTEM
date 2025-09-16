@@ -7,8 +7,15 @@
 
 
 <div class="container-fluid mt-3">
-    <div class="d-flex justify-content-end">
-        <a asp-controller="Project" asp-action="Save" class="btn btn-primary">Add Project</a>
+    <div class="d-flex justify-content-sm-between mb-2">
+        <div>
+            <input type="text" id="searchBox" class="form-control" placeholder="Search Project" />
+        </div>
+
+        <div class="">
+            <a asp-controller="Project" asp-action="Save" class="btn btn-primary">Add Project</a>
+        </div>
+        
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -21,11 +28,13 @@
                             <tr>
                                 <th style="width: 10px">Sl</th>
                                 <th>Name</th>
+                                <th>Update Brnach</th>
+                                <th>Last Update Date</th>
                                 
                                 <th style="width:20px;text-align:center">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="projectBoady">
                             @{
                                 int count = ((Model.CurrentPage - 1) * Model.PageSize) + 1;
                             }
@@ -34,6 +43,8 @@
                                 <tr>
                                     <td>@count</td>
                                     <td>@item.ProjectName</td>
+                                    <td>@(item.UpdateBranch ?? "N/A")</td>
+                                    <td>@(item.LastUpdateDate?.ToString("dd-MM-yyyy") ?? "N/A")</td>
                                     <td>
                                         <div class="d-flex justify-content-center btn-group-sm ">
 
@@ -64,3 +75,46 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#searchBox').on('keyup', function () {
+            var name = $(this).val();
+
+            $.ajax({
+                url: '/Project/Search',
+                data: {
+                    name: name,
+                },
+
+                success: function (data) {
+                    let rows = '';
+
+                    data.forEach((item,index) => {
+                        rows += `<tr>
+                            <td>${index + 1}</td>
+                            <td>${item.projectName}</td>
+                            <td>${item.updateBrnach}</td>
+                            <td>${item.updateDate}</td>
+                             <td>
+                                        <div class="d-flex justify-content-center btn-group-sm ">
+
+                                            <a class="btn btn-primary ms-2" asp-route-id="item.Id" asp- controller="Medicine" asp-action="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                            <a class="btn btn-danger ms-2" asp-route-id="item.Id" asp-controller="Medicine" asp-action="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                        </tr>`;
+                    });
+
+                    $('#projectBoady').html(rows);
+                }
+            });
+        });
+    });
+</script>
