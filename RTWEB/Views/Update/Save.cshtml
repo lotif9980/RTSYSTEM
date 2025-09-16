@@ -71,7 +71,7 @@
                         <div class="row mb-3">
                             <label class="col-sm-4 col-form-label">Project</label>
                             <div class="col-sm-8">
-                                <select id="projectId" name="ProjectId" class="form-select project-dropdown">
+                                <select id="projectId" asp-for="ProjectId" class="form-select project-dropdown">
                                     <option value="">-- Select Project --</option>
                                     @foreach (var p in project)
                                     {
@@ -79,6 +79,7 @@
                                     }
                                 </select>
                             </div>
+                            <input type="hidden" name="ProjectId" id="hiddenProjectId" />
                         </div>
 
                         
@@ -239,6 +240,7 @@
 
                 // projectId এখন lock হয়ে যাবে
                 $('#projectId').prop('disabled', true);
+                    $('#hiddenProjectId').val($('#projectId').val());
 
                 $(this).val('');
             }
@@ -251,6 +253,7 @@
             // যদি আর কোনো issue না থাকে → project আবার enable হবে
             if ($('#issueTable tbody tr').length === 0) {
                 $('#projectId').prop('disabled', false);
+                 $('#hiddenProjectId').val('');
             }
         });
     });

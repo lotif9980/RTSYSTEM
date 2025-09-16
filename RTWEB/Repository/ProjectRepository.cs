@@ -35,5 +35,22 @@ namespace RTWEB.Repository
         {
            return _db.Issues.AnyAsync(x=>x.ProjectId == id);
         }
+
+        public Project Find(int id)
+        {
+            return _db.Projects.FirstOrDefault(p=>p.Id==id);
+        }
+
+        public void Update(Project project)
+        {
+            //var data = _db.Projects.Where(p => p.Id == project.Id);
+            var data =_db.Projects.FirstOrDefault(p=>p.Id==project.Id);
+            if(data != null)
+            {
+                data.UpdateBranch = project.UpdateBranch;
+                data.LastUpdateDate= project.LastUpdateDate;
+                _db.SaveChanges();
+            }
+        }
     }
 }

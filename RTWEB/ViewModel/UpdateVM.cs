@@ -22,6 +22,7 @@ namespace RTWEB.ViewModel
         public IEnumerable<Team> Tester { get; set; }
         public IEnumerable<Domain> Domain { get; set; }
         public List<UpdateDetailsVM> UpdateDetails { get; set; } = new List<UpdateDetailsVM>();
+        public int ProjectId { get; set; }
     }
 
     public class UpdateDetailsVM

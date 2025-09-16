@@ -58,6 +58,7 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(UpdateSaveVM model) 
         {
+            var projectId = model.ProjectId;
             var update = new Update
             {
                 DomainId=model.Update.DomainId,
@@ -87,7 +88,17 @@ namespace RTWEB.Controllers
                     _unitofwork.IssueRepository.UpdateStatus(detail.IssueId, Enum.IssueStatus.solved);
                 }
              }
+
+            var project = _unitofwork.ProjectRepository.Find(projectId);
+            if(project != null)
+            {
+                project.UpdateBranch = model.Update.BranchName;
+                project.LastUpdateDate=model.Update.UpdateDate;
+
+                _unitofwork.ProjectRepository.Update(project);
+            }
            
+             
 
             TempData["Message"] = "✅ Save Successful";
             TempData["MessageType"] = "success";
