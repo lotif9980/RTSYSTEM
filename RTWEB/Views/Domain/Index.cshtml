@@ -19,6 +19,8 @@
                             <tr>
                                 <th style="width: 10px">Sl</th>
                                 <th>Domain Name</th>
+                                <th>Update Branch</th>
+                                <th>Update Date</th>
                                 <th>Type</th>
                                 <th>Status</th>
                                 <th style="width:20px;text-align:center">Action</th>
@@ -33,6 +35,8 @@
                                 <tr>
                                     <td>@count</td>
                                     <td>@item.DomainName</td>
+                                    <td>@(item.UpdateBranch ?? "N/A")</td>
+                                    <td>@(item.LastUpdateDate?.ToString("dd-MM-yyyy") ?? "N/A")</td>
                                     <td>@(item.DomainType == DomainEnum.Test ? "Test" : item.DomainType == DomainEnum.Live ? "Live" : "Unknown")</td>
                                     <td>@(item.Status== true?"Active" : "Inactive")</td>
                                     <td>

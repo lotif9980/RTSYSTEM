@@ -58,6 +58,7 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(UpdateSaveVM model) 
         {
+            //var domainAId = model.Update.DomainId;
             var projectId = model.ProjectId;
             var update = new Update
             {
@@ -90,14 +91,23 @@ namespace RTWEB.Controllers
              }
 
             var project = _unitofwork.ProjectRepository.Find(projectId);
-            if(project != null)
+            if (project != null)
             {
                 project.UpdateBranch = model.Update.BranchName;
-                project.LastUpdateDate=model.Update.UpdateDate;
+                project.LastUpdateDate = model.Update.UpdateDate;
 
                 _unitofwork.ProjectRepository.Update(project);
             }
-           
+
+
+            var domain = _unitofwork.DomainRepository.Find(model.Update.DomainId);
+            if(domain != null)
+            {
+                domain.UpdateBranch = model.Update.BranchName;
+                domain.LastUpdateDate= model.Update.UpdateDate;
+
+                _unitofwork.DomainRepository.Update(domain);
+            }
              
 
             TempData["Message"] = "✅ Save Successful";

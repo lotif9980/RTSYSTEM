@@ -8,6 +8,8 @@ namespace RTWEB.Repository
         public void Save(Domain domain);
         public void Delete(int id);
         public Task<bool> IsDomainUseAsync(int id);
+        public void Update(Domain domain);
+        public Domain Find(int id);
 
     }
 }

@@ -34,5 +34,23 @@ namespace RTWEB.Repository
         {
             return _db.Updates.AnyAsync(x=>x.DomainId== id);
         }
+
+        public void Update(Domain domain)
+        {
+            var data =_db.Domains.FirstOrDefault(p=>p.Id== domain.Id);
+
+            if (data != null)
+            {
+                data.UpdateBranch = domain.UpdateBranch;
+                data.LastUpdateDate= domain.LastUpdateDate;
+
+                _db.SaveChanges();
+            }
+        }
+
+        public Domain Find(int id)
+        {
+            return _db.Domains.FirstOrDefault(p=>p.Id==id);
+        }
     }
 }

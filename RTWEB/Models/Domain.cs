@@ -10,6 +10,7 @@ namespace RTWEB.Models
         //public int? DomainType { get; set; }
         public bool? Status { get; set; } = true;
         public DomainEnum DomainType { get; set; }
-
+        public string? UpdateBranch {  get; set; }
+        public DateTime? LastUpdateDate { get; set; }
     }
 }
