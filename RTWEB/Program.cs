@@ -21,12 +21,28 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+//builder.Services.AddAuthentication("MyCookieAuth")
+//    .AddCookie("MyCookieAuth", options =>
+//    {
+//        options.LoginPath = "/Account/Login"; // login redirect path
+//        options.LogoutPath = "/Account/Logout";
+//        options.ExpireTimeSpan = TimeSpan.FromHours(1);
+//    });
+
 builder.Services.AddAuthentication("MyCookieAuth")
     .AddCookie("MyCookieAuth", options =>
     {
-        options.LoginPath = "/Account/Login"; // login redirect path
+        options.LoginPath = "/Account/Login";
         options.LogoutPath = "/Account/Logout";
-        options.ExpireTimeSpan = TimeSpan.FromHours(1);
+
+        
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+
+        
+        options.Cookie.IsEssential = true;
+        options.Cookie.HttpOnly = true;
+        options.SlidingExpiration = true;
+        options.Cookie.MaxAge = null;  
     });
 
 

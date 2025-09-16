@@ -43,7 +43,6 @@ namespace RTWEB.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string username, string password)
         {
-            // কেবল demo fixed credentials
             if (username == DefaultUsername && password == DefaultPassword)
             {
                 var claims = new List<Claim>
@@ -53,16 +52,24 @@ namespace RTWEB.Controllers
 
                 var claimsIdentity = new ClaimsIdentity(claims, "MyCookieAuth");
 
-                await HttpContext.SignInAsync("MyCookieAuth",
-                    new ClaimsPrincipal(claimsIdentity));
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = false, // 🔹 browser বন্ধ করলে cookie থাকবে না
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30) // optional timeout
+                };
+
+                await HttpContext.SignInAsync(
+                    "MyCookieAuth",
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
 
                 return RedirectToAction("Index", "Home");
             }
 
-            // invalid credentials
             ModelState.AddModelError("", "Invalid username or password");
             return View();
         }
+
 
         public async Task<IActionResult> Logout()
         {
