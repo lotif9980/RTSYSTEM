@@ -82,13 +82,18 @@ namespace RTWEB.Controllers
             }
 
             _unitofwork.UpdateRepository.Save(update);
-             if(model.UpdateDetails !=null && model.UpdateDetails.Count > 0)
-             {
-                foreach(var detail in model.UpdateDetails)
+
+            if (model.IsSpecialAction)
+            {
+                if (model.UpdateDetails != null && model.UpdateDetails.Count > 0)
                 {
-                    _unitofwork.IssueRepository.UpdateStatus(detail.IssueId, Enum.IssueStatus.solved);
+                    foreach (var detail in model.UpdateDetails)
+                    {
+                        _unitofwork.IssueRepository.UpdateStatus(detail.IssueId, Enum.IssueStatus.solved);
+                    }
                 }
-             }
+            }
+            
 
             var project = _unitofwork.ProjectRepository.Find(projectId);
             if (project != null)

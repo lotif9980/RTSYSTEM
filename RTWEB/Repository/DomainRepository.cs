@@ -36,7 +36,7 @@ namespace RTWEB.Repository
         }
 
         public void Update(Domain domain)
-        {
+            {
             var data =_db.Domains.FirstOrDefault(p=>p.Id== domain.Id);
 
             if (data != null)
