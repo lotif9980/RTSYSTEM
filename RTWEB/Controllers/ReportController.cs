@@ -36,7 +36,7 @@ namespace RTWEB.Controllers
         }
 
         [HttpPost]
-        public IActionResult IssuePendingDataShow(int ? projectId)
+        public IActionResult IssuePendingReport(int ? projectId)
         {
             var project = _unitofWork.ProjectRepository.GetProjects()
                .Select(w => new SelectListItem
@@ -69,7 +69,7 @@ namespace RTWEB.Controllers
         }
 
         [HttpPost]
-        public IActionResult DomainWiseUpdateData(int?domainId=null)
+        public IActionResult DominWiseUpdate(int?domainId=null)
         {
             var domain = _unitofWork.DomainRepository.GetAll()
                    .Select(w => new SelectListItem
