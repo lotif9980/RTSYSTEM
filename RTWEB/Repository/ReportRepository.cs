@@ -13,10 +13,7 @@ namespace RTWEB.Repository
             _db = db;
         }
 
-        public IEnumerable<DomainReportVM> DomainWiseUpdate(int? domainId = null)
-        {
-            throw new NotImplementedException();
-        }
+     
 
         public IEnumerable<IssueVM> PendingIssueReport(int? projectId = null)
         {
@@ -35,12 +32,23 @@ namespace RTWEB.Repository
         }
 
 
-        //public IEnumerable<DomainReportVM> DomainWiseUpdate(int? domainId = null)
-        //{
-        //   var data =(from up in _db.Updates 
-        //              join d in _db.Domains on up.DomainId equals d.Id
-        //              join dev in _db.Teams on up.DeveloperId equals  dev.Id
-        //              join )
-        //}
+        public IEnumerable<DomainReportVM> DomainWiseUpdate(int? domainId = null)
+        {
+            var data = (from up in _db.Updates
+                        where !domainId.HasValue || up.DomainId==domainId.Value
+                        join d in _db.Domains on up.DomainId equals d.Id
+                        join dev in _db.Teams on up.DeveloperId equals dev.Id
+                        join tes in _db.Teams on up.TesterId equals tes.Id
+                        select new DomainReportVM
+                        {
+                         BranchName=up.BranchName,
+                         TesterName=tes.Name,
+                         DeveloperName=dev.Name,
+                         DomainName=d.DomainName,
+                         DateTime=up.UpdateDate
+                        }).ToList();
+
+            return data;
+        }
     }
 }

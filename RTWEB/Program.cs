@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RTWEB.Data;
 using RTWEB.Repository;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,13 +22,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-//builder.Services.AddAuthentication("MyCookieAuth")
-//    .AddCookie("MyCookieAuth", options =>
-//    {
-//        options.LoginPath = "/Account/Login"; // login redirect path
-//        options.LogoutPath = "/Account/Logout";
-//        options.ExpireTimeSpan = TimeSpan.FromHours(1);
-//    });
+
 
 builder.Services.AddAuthentication("MyCookieAuth")
     .AddCookie("MyCookieAuth", options =>
@@ -59,6 +54,17 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+
+// ------------------ Culture Config ------------------
+var cultureInfo = new CultureInfo("en-GB"); // dd/MM/yyyy
+cultureInfo.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+cultureInfo.DateTimeFormat.LongTimePattern = "HH:mm:ss";
+
+// Apply globally
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+// ----------------------------------------------------
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

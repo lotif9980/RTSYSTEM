@@ -94,17 +94,12 @@ namespace RTWEB.Controllers
                 }
             }
 
-            var updateDate = model.Update.UpdateDate.HasValue
-               && model.Update.UpdateDate.Value > DateTime.MinValue
-               ? model.Update.UpdateDate.Value
-               : DateTime.Now;
-            update.UpdateDate = updateDate;
-
+         
             var project = _unitofwork.ProjectRepository.Find(projectId);
             if (project != null)
             {
                 project.UpdateBranch = model.Update.BranchName;
-                project.LastUpdateDate = updateDate;
+                project.LastUpdateDate =model.Update.UpdateDate;
 
                 _unitofwork.ProjectRepository.Update(project);
             }
@@ -114,7 +109,7 @@ namespace RTWEB.Controllers
             if(domain != null)
             {
                 domain.UpdateBranch = model.Update.BranchName;
-                domain.LastUpdateDate=updateDate;
+                domain.LastUpdateDate= model.Update.UpdateDate;
 
                 _unitofwork.DomainRepository.Update(domain);
             }

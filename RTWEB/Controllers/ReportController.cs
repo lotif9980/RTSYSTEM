@@ -51,9 +51,38 @@ namespace RTWEB.Controllers
             return View("IssuePendingReport", data);
         }
         #endregion
-    
-    
 
+
+        [HttpGet]
+        public IActionResult DominWiseUpdate()
+        {
+            var domain = _unitofWork.DomainRepository.GetAll()
+                   .Select(w => new SelectListItem
+                   {
+                       Value = w.Id.ToString(),
+                       Text = w.DomainName
+                   }).ToList();
+
+            ViewBag.Domain = domain;
+
+            return View(new List<DomainReportVM>());
+        }
+
+        [HttpPost]
+        public IActionResult DomainWiseUpdateData(int?domainId=null)
+        {
+            var domain = _unitofWork.DomainRepository.GetAll()
+                   .Select(w => new SelectListItem
+                   {
+                       Value = w.Id.ToString(),
+                       Text = w.DomainName
+                   }).ToList();
+
+            ViewBag.Domain = domain;
+
+            var data=_unitofWork.ReportRepository.DomainWiseUpdate(domainId);
+            return View("DominWiseUpdate", data);
+        }
     
     }
 }
