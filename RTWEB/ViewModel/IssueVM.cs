@@ -16,8 +16,10 @@ namespace RTWEB.ViewModel
 
     public class IssueSaveVm
     {
-        public Issue Issue { get; set; }
+        //public Issue Issue { get; set; }
+        public List<Issue> Issues { get; set; } = new List<Issue>();
         public IEnumerable<Project> Projects { get; set; }
-      
+        public int ProjectId { get; set; }
+
     }
 }

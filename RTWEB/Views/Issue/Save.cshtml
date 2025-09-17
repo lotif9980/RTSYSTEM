@@ -1,56 +1,52 @@
 ﻿@using RTWEB.ViewModel
 @model IssueSaveVm
-
-
-<div class="d-flex justify-content-center mt-3">
-    <div class="col-md-6">
-
-        <!--begin::Horizontal Form-->
-        <div class="card card-warning card-outline mb-4">
-            <!--begin::Header-->
-            <div class="btn-group-sm">
-                <a class="btn btn-primary" asp-route-id="" asp-controller="Issue" asp-action="Index">
-                    <i class="fa fa-list"></i>
-                    Issue List
-                </a>
-            </div>
-            <div class="card-header"><div class="card-title">Issue Information</div></div>
-            <!--end::Header-->
-            <!--begin::Form-->
-            <form asp-action="Save" id="myForm" method="post">
-                <!--begin::Body-->
+<div class="container mt-4">
+    <div class="row">
+        <!-- Left Side: Project + Input -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header fw-bold">Add Issue</div>
                 <div class="card-body">
-
-                    <div class="row mb-3">
-                        <label asp-for="Issue.Title" class="col-sm-3 col-form-label">Title</label>
-                        <div class="col-sm-9">
-                            <input asp-for="Issue.Title" class="form-control" id="title">
-                            <span asp-validation-for="Issue.Title" class="text-danger"></span>
-                        </div>
+                    <div class="mb-3">
+                        <label for="ProjectId" class="form-label">Select Project</label>
+                        <select id="ProjectId" class="form-control">
+                            <option value="">-- Select Project --</option>
+                            @foreach (var p in Model.Projects)
+                            {
+                                <option value="@p.Id">@p.ProjectName</option>
+                            }
+                        </select>
                     </div>
-
-                    <div class="row mb-3">
-                        <label asp-for="Issue.ProjectId" class="col-sm-3 col-form-label">Project</label>
-                        <div class="col-sm-9">
-                            <select asp-for="Issue.ProjectId" id="type" class="form-control project-dropdown" asp-items="@(new SelectList(Model.Projects, "Id", "ProjectName"))"></select>
-                            <span asp-validation-for="Issue.Title" class="text-danger"></span>
-                        </div>
+                    <div class="mb-3">
+                        <input type="text" id="titleInput" class="form-control" placeholder="Enter Title">
                     </div>
-
+                   <div class="d-flex">
+                        <button type="button" id="addTitleBtn" class="btn btn-primary  mt-3 me-3">Add Title</button>
+                        <form asp-action="Save" method="post" id="issueForm">
+                            <input type="hidden" name="ProjectId" id="formProjectId">
+                            <div id="formTitlesContainer"></div>
+                            <button type="submit" class="btn btn-success mt-3">Save All</button>
+                        </form>
+                   </div>
                 </div>
-                <!--end::Body-->
-                <!--begin::Footer-->
-                <div class="card-footer d-flex justify-content-center">
-                    <button type="submit" class="btn btn-warning me-2">Save</button>
-                    <button type="reset" class="btn btn-danger me-2">Reset</button>
-                </div>
-                <!--end::Footer-->
-            </form>
-            <!--end::Form-->
+            </div>
         </div>
-        <!--end::Horizontal Form-->
+
+        <!-- Right Side: List of Titles -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header fw-bold">Added Titles</div>
+                <div class="card-body">
+                    <ul id="titlesList" class="list-group"></ul> 
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Hidden form for submission -->
+    
 </div>
+
 
 <script>
     $(document).ready(function(){
@@ -79,4 +75,70 @@
              document.querySelector('.select2-search__field').focus();
          });
      });
+
+        $(document).ready(function() {
+        let index = 0;
+
+        function addTitle() {
+            let title = $("#titleInput").val().trim();
+            let projectId = $("#ProjectId").val();
+
+            if (!projectId) {
+                alert("Please select a project first!");
+                return;
+            }
+            if (!title) {
+                alert("Title cannot be empty!");
+                return;
+            }
+
+            // Add to right-side list with SL + delete icon
+            let sl = $("#titlesList li").length + 1;
+            $("#titlesList").append(
+                `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>${sl}. ${title}</span>
+                    <button type="button" class="btn btn-sm btn-danger removeTitleBtn">&times;</button>
+                </li>`
+            );
+
+            // Add hidden input for form submission
+            $("#formTitlesContainer").append(
+                `<input type="hidden" name="Issues[${index}].Title" value="${title}" />`
+            );
+
+            // Set projectId in hidden form
+            $("#formProjectId").val(projectId);
+
+            index++;
+            $("#titleInput").val(''); // clear input
+        }
+
+        // Click button
+        $("#addTitleBtn").click(function() {
+            addTitle();
+        });
+
+        // Press Enter key in input field
+        $("#titleInput").keypress(function(e) {
+            if (e.which == 13) {  // Enter key
+                e.preventDefault();
+                addTitle();
+            }
+        });
+
+        // Remove title from list
+        $(document).on('click', '.removeTitleBtn', function() {
+            let li = $(this).closest('li');
+            let removeIndex = li.index();
+            li.remove();
+
+            // Remove corresponding hidden input
+            $("#formTitlesContainer input").eq(removeIndex).remove();
+
+            // Re-number the remaining list items
+            $("#titlesList li").each(function(i) {
+                $(this).find('span').text((i+1) + ". " + $(this).find('span').text().split('. ')[1]);
+            });
+        });
+    });
 </script>

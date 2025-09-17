@@ -43,39 +43,70 @@ namespace RTWEB.Controllers
         {
             var vm = new IssueSaveVm
             {
-                Issue = new Models.Issue(),
-                Projects=_unitofWork.ProjectRepository.GetProjects()
+                Projects = _unitofWork.ProjectRepository.GetProjects(),
+                Issues = new List<Issue> { new Issue() } 
             };
 
             return View(vm);
         }
 
+        #region Old Issue Save Verison
+        //[HttpPost]
+        //public IActionResult Save(IssueSaveVm vm)
+        //{
+        //    if (vm.Issue.Title == null)
+        //    {
+        //        TempData["Message"] = "✅ Data Invalid";
+        //        TempData["MessageType"] = "danger";
+        //        return RedirectToAction("Save");
+        //    }
+
+        //    var data = new Issue
+        //    {
+        //        Title = vm.Issue.Title,
+        //        ProjectId = vm.Issue.ProjectId,
+        //        Status = vm.Issue.Status = Enum.IssueStatus.pending
+
+        //    };
+
+        //        _unitofWork.IssueRepository.Save(data);
+
+        //        TempData["Message"] = "✅ Save Successful";
+        //        TempData["MessageType"] = "success";
+
+        //    return RedirectToAction("Save");
+
+        //}
+        #endregion
+
 
         [HttpPost]
         public IActionResult Save(IssueSaveVm vm)
         {
-            if (vm.Issue.Title == null)
+            if (vm.ProjectId == 0 || vm.Issues == null || !vm.Issues.Any())
             {
-                TempData["Message"] = "✅ Data Invalid";
+                TempData["Message"] = "❌ Please select Project and add at least one Title";
                 TempData["MessageType"] = "danger";
                 return RedirectToAction("Save");
             }
 
-            var data = new Issue
+            foreach (var issue in vm.Issues)
             {
-                Title = vm.Issue.Title,
-                ProjectId = vm.Issue.ProjectId,
-                Status = vm.Issue.Status = Enum.IssueStatus.pending
+                if (!string.IsNullOrWhiteSpace(issue.Title))
+                {
+                    var data = new Issue
+                    {
+                        ProjectId = vm.ProjectId,
+                        Title = issue.Title,
+                        Status = Enum.IssueStatus.pending
+                    };
+                    _unitofWork.IssueRepository.Save(data);
+                }
+            }
 
-            };
-
-                _unitofWork.IssueRepository.Save(data);
-
-                TempData["Message"] = "✅ Save Successful";
-                TempData["MessageType"] = "success";
-
+            TempData["Message"] = "✅ Issues Saved Successfully";
+            TempData["MessageType"] = "success";
             return RedirectToAction("Save");
-         
         }
 
         public async Task<IActionResult> Delete(int id)
