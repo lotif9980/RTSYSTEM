@@ -2,6 +2,7 @@
 {
     public class DomainReportVM
     {
+        public int Id { get; set; }
         public string? DomainName { get; set; }
         public DateTime? DateTime { get; set; }
         public string DeveloperName {  get; set; }

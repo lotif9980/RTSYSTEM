@@ -22,14 +22,12 @@ namespace RTWEB.Repository
         public void Save(Team team)
         {
             _db.Teams.Add(team);
-            _db.SaveChanges();
         }
 
         public void Delete(int id)
         {
             var data = _db.Teams.Find(id);
             _db.Teams.Remove(data);
-            _db.SaveChanges();
         }
 
         public IEnumerable<Team> GetDeveleper()

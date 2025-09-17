@@ -21,14 +21,12 @@ namespace RTWEB.Repository
         public void Save(Project project)
         {
            _db.Projects.Add(project);
-            _db.SaveChanges();
         }
 
         public void Delete(int id)
         {
             var data = _db.Projects.Find(id);
             _db.Projects.Remove(data);
-            _db.SaveChanges();
         }
 
         public Task<bool> IsIssueUsedAsync(int id)
@@ -49,7 +47,6 @@ namespace RTWEB.Repository
             {
                 data.UpdateBranch = project.UpdateBranch;
                 data.LastUpdateDate= project.LastUpdateDate;
-                _db.SaveChanges();
             }
         }
     }

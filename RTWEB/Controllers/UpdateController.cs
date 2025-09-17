@@ -113,13 +113,23 @@ namespace RTWEB.Controllers
 
                 _unitofwork.DomainRepository.Update(domain);
             }
-             
 
-            TempData["Message"] = "✅ Save Successful";
-            TempData["MessageType"] = "success";
+            var result = _unitofwork.Complete();
+            if (result > 0)
+            {
+                TempData["Message"] = "✅ Save Successful";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Save Failed";
+                TempData["MessageType"] = "danger";
+            }
 
             return RedirectToAction("Save");
         }
+
+
 
         public IActionResult Delete(int id)
         {
@@ -136,9 +146,18 @@ namespace RTWEB.Controllers
 
             _unitofwork.UpdateRepository.Delete(id);
 
-            TempData["Message"] = "✅ Delete Successful";
-            TempData["MessageType"] = "danger";
+            var result = _unitofwork.Complete();
+            if (result > 0)
+            {
+                TempData["Message"] = "✅ Delete Successful";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
 
+                TempData["Message"] = "❌ Save Failed";
+                TempData["MessageType"] = "danger";
+            }
 
             return RedirectToAction("Index");
         }

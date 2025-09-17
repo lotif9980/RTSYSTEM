@@ -43,6 +43,7 @@ namespace RTWEB.Controllers
             if (ModelState.IsValid)
             {
                 _unitofWork.DomainRepository.Save(domain);
+                _unitofWork.Complete();
 
                 TempData["Message"] = "✅ Save Successful";
                 TempData["MessageType"] = "success";
@@ -62,6 +63,7 @@ namespace RTWEB.Controllers
                 return RedirectToAction("Index");
             }
             _unitofWork.DomainRepository.Delete(id);
+            _unitofWork.Complete();
 
             TempData["Message"] = "✅ Successfully Delete!";
             TempData["MessageType"] = "danger";

@@ -20,14 +20,13 @@ namespace RTWEB.Repository
         public void Save(Domain domain)
         {
            _db.Add(domain);
-           _db.SaveChanges();
         }
 
         public void Delete(int id)
         {
             var data =_db.Domains.Find(id);
             _db.Domains.Remove(data);
-            _db.SaveChanges();
+           
         }
 
         public Task<bool> IsDomainUseAsync(int id)
@@ -43,8 +42,6 @@ namespace RTWEB.Repository
             {
                 data.UpdateBranch = domain.UpdateBranch;
                 data.LastUpdateDate= domain.LastUpdateDate;
-
-                _db.SaveChanges();
             }
         }
 

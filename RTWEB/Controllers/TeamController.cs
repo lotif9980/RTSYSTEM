@@ -38,9 +38,18 @@ namespace RTWEB.Controllers
             if (ModelState.IsValid)
             {
                 _unitofWork.TeamRepository.Save(team);
+                var result = _unitofWork.Complete();
 
-                TempData["Message"] = "✅ Save Successful";
-                TempData["MessageType"] = "success";
+                if (result > 0)
+                {
+                    TempData["Message"] = "✅ Save Successful";
+                    TempData["MessageType"] = "success";
+                }
+                else
+                {
+                    TempData["Message"] = "❌ Save Failed";
+                    TempData["MessageType"] = "danger";
+                }
 
                 return RedirectToAction("Save");
             }
@@ -53,13 +62,22 @@ namespace RTWEB.Controllers
             if (IsUsed)
             {
                 TempData["Message"] = "✅ Team Used in Updates!";
-                TempData["MessageType"] = "danger";
+                TempData["MessageType"] = "success";
                 return RedirectToAction("Index");
             }
             _unitofWork.TeamRepository.Delete(id);
+            var result=_unitofWork.Complete();
 
-            TempData["Message"] = "✅ Successfully Delete!";
-            TempData["MessageType"] = "danger";
+            if(result > 0)
+            {
+                TempData["Message"] = "✅ Successfully Delete!";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Delete Failed";
+                TempData["MessageType"] = "danger";
+            }
 
             return RedirectToAction("Index");
         }

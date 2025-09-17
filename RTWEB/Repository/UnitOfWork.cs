@@ -15,6 +15,15 @@ namespace RTWEB.Repository
         public IUpdateRepository UpdateRepository { get; set; }
         public IReportRepository ReportRepository { get; set; }
 
+        public int Complete()
+        {
+            return db.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            db.Dispose();
+        }
 
         public UnitOfWork(Db db)
         {

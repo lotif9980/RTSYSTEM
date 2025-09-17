@@ -1,6 +1,6 @@
 ﻿namespace RTWEB.Repository
 {
-    public interface IUnitofWork
+    public interface IUnitofWork : IDisposable
     {
         IDomainRepository DomainRepository { get; }
         IIssueRepository IssueRepository { get; }
@@ -8,5 +8,7 @@
         IProjectRepository ProjectRepository { get; }
         IUpdateRepository UpdateRepository { get; }
         IReportRepository ReportRepository { get; }
+
+        int Complete();
     }
 }

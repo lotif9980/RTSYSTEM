@@ -52,14 +52,12 @@ namespace RTWEB.Repository
         public void Save(Issue issue)
         {
             _db.Issues.Add(issue);
-            _db.SaveChanges();
         }
 
         public void Delete(int id)
         {
             var data =_db.Issues.Find(id);
             _db.Issues.Remove(data);
-            _db.SaveChanges();
         }
 
         public IEnumerable<Issue> GetAll()
@@ -78,7 +76,6 @@ namespace RTWEB.Repository
             if(data  != null)
             {
                 data.Status = status;
-                _db.SaveChanges();
             }
         }
     }

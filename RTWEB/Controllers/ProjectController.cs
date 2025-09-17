@@ -38,9 +38,19 @@ namespace RTWEB.Controllers
             if (ModelState.IsValid)
             {
                 _unitofWork.ProjectRepository.Save(project);
+                
+                var result = _unitofWork.Complete();
 
-                TempData["Message"] = "✅ Save Successful";
-                TempData["MessageType"] = "success";
+                if (result > 0)
+                {
+                    TempData["Message"] = "✅ Save Successful";
+                    TempData["MessageType"] = "success";
+                }
+                else
+                {
+                    TempData["Message"] = "❌ Save Failed";
+                    TempData["MessageType"] = "danger";
+                }
 
                 return RedirectToAction("Save");
             }
@@ -60,9 +70,19 @@ namespace RTWEB.Controllers
                 return RedirectToAction("Index");
             }
             _unitofWork.ProjectRepository.Delete(id);
+            var result=_unitofWork.Complete();
 
-            TempData["Message"] = "✅ Successfully Delete!";
-            TempData["MessageType"] = "danger";
+            if(result > 0)
+            {
+                TempData["Message"] = "✅ Successfully Delete!";
+                TempData["MessageType"] = "danger";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Delete Failed";
+                TempData["MessageType"] = "danger";
+            }
+            
 
             return RedirectToAction("Index");
         }

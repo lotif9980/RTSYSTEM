@@ -36,7 +36,6 @@ namespace RTWEB.Repository
         public void Save(Update update)
         {
             _db.Updates.Add(update);
-            _db.SaveChanges();
         }
 
         public void Delete(int id)
@@ -45,7 +44,6 @@ namespace RTWEB.Repository
 
             _db.UpdateDetails.RemoveRange(data.UpdateDetails);
             _db.Updates.Remove(data);
-            _db.SaveChanges();
         }
 
         public UpdateVM GetDetails(int id)

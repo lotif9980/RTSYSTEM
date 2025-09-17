@@ -41,12 +41,13 @@ namespace RTWEB.Repository
                         join tes in _db.Teams on up.TesterId equals tes.Id
                         select new DomainReportVM
                         {
+                         Id=up.Id,
                          BranchName=up.BranchName,
                          TesterName=tes.Name,
                          DeveloperName=dev.Name,
                          DomainName=d.DomainName,
                          DateTime=up.UpdateDate
-                        }).ToList();
+                        }).OrderByDescending(x=>x.Id).ToList();
 
             return data;
         }

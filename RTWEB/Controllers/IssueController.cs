@@ -103,7 +103,7 @@ namespace RTWEB.Controllers
                     _unitofWork.IssueRepository.Save(data);
                 }
             }
-
+            _unitofWork.Complete();
             TempData["Message"] = "✅ Issues Saved Successfully";
             TempData["MessageType"] = "success";
             return RedirectToAction("Save");
@@ -121,6 +121,7 @@ namespace RTWEB.Controllers
                 return RedirectToAction("Index");
             }
             _unitofWork.IssueRepository.Delete(id);
+            _unitofWork.Complete();
 
             TempData["Message"] = "✅ Successfully Delete!";
             TempData["MessageType"] = "danger";
