@@ -12,6 +12,7 @@ namespace RTWEB.ViewModel
         public string ProjectName { get; set; }
         public IssueStatus Status { get; set; }
 
+
     }
 
     public class IssueSaveVm
