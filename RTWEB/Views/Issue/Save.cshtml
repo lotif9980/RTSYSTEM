@@ -9,7 +9,7 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="ProjectId" class="form-label">Select Project</label>
-                        <select id="ProjectId" class="form-control">
+                        <select id="ProjectId" class="form-control project-dropdown">
                             <option value="">-- Select Project --</option>
                             @foreach (var p in Model.Projects)
                             {
@@ -76,7 +76,7 @@
          });
      });
 
-        $(document).ready(function() {
+    $(document).ready(function() {
         let index = 0;
 
         function addTitle() {
