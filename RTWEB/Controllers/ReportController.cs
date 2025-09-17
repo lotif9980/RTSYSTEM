@@ -19,6 +19,7 @@ namespace RTWEB.Controllers
         }
 
 
+        #region issue Pending Report
         [HttpGet]
         public IActionResult IssuePendingReport()
         {
@@ -49,5 +50,10 @@ namespace RTWEB.Controllers
             var data = _unitofWork.ReportRepository.PendingIssueReport(projectId);
             return View("IssuePendingReport", data);
         }
+        #endregion
+    
+    
+
+    
     }
 }
