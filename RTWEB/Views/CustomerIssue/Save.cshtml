@@ -1,0 +1,156 @@
+﻿@using RTWEB.ViewModel
+@model CustomerIssueSaveVM
+
+@{
+    var project = ViewBag.Project;
+}
+
+<div class="container-fluid mt-3">
+    <form asp-action="Save" id="myForm" method="post">
+        <div class="row gx-2">
+            <!-- compact row spacing -->
+            <!-- Left Column -->
+            <div class="col-md-5">
+                <!-- smaller width -->
+                <div class="card mb-3">
+                    <div class="card-header d-flex justify-content-between">
+                        <div><strong>Customer Issue Information</strong></div>
+                        <div><a class="btn btn-primary btn-sm" asp-action="Index">Issue List</a></div>
+                    </div>
+                    <div class="card-body p-2">
+                        <!-- less padding -->
+                        <div class="mb-2">
+                            <label asp-for="Input.DomainId">Domain</label>
+                            <select id="domainId" asp-for="Input.DomainId" class="form-control domain-dropdown"
+                                    asp-items="@(new SelectList(Model.Domain, "Id", "DomainName"))">
+                                <option value="">---Select Domain---</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label asp-for="Input.CustomerId">Customer</label>
+                            <select id="customerId" asp-for="Input.CustomerId" class="form-control developer-dropdown">
+                                <option value="">---Select Customer---</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label asp-for="Input.Problem">Problem</label>
+                            <textarea id="problemText" type="text" asp-for="Input.Problem" rows="4" class="form-control" placeholder="Write problem here">
+                            </textarea>
+                        </div>
+                        <button type="button" class="btn btn-success" id="addProblemBtn">Add Problem</button>
+                        <button type="submit" class="btn btn-warning ">Save</button>
+                        <button type="reset" class="btn btn-danger ">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-7">
+                <!-- bigger width -->
+                <div class="card mb-3">
+                    <div class="card-header bg-light"><strong>Added Problems</strong></div>
+                    <div class="card-body p-2" style="max-height:500px; overflow-y:auto;">
+                        <!-- scrollable -->
+                        <table class="table table-bordered table-sm mb-0" id="issueTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:85%">Problem</th>
+                                    <th style="width:15%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".domain-dropdown").select2({ placeholder: "--Select Domain--", allowClear: true, width: '100%' });
+        $(".developer-dropdown").select2({ placeholder: "--Select Customer--", allowClear: true, width: '100%' });
+
+        // Load customers by domain
+        $('#domainId').on('change', function () {
+            var domainId = $(this).val();
+            if (domainId) {
+                $.ajax({
+                    url: '/CustomerIssue/GetDomainByCustomer',
+                    type: 'GET',
+                    data: { domainId: domainId },
+                    dataType: 'json',
+                    success: function (data) {
+                        var $customerDropdown = $('#customerId');
+                        $customerDropdown.empty();
+                        $customerDropdown.append('<option value="">-- Select Customer --</option>');
+                        $.each(data, function (i, customer) {
+                            $customerDropdown.append($('<option>', { value: customer.id, text: customer.customerName }));
+                        });
+                    }
+                });
+            }
+        });
+
+        // Add problem
+        $('#addProblemBtn').click(function () {
+            var domainId = $('#domainId').val();
+            var customerId = $('#customerId').val();
+            var problemText = $('#problemText').val().trim();
+
+            if (!domainId) { alert("Please select Domain"); return; }
+            if (!customerId) { alert("Please select Customer"); return; }
+            if (problemText === "") { alert("Please write problem"); return; }
+
+            if ($('#issueTable tbody tr td input[value="' + problemText + '"]').length > 0) {
+                alert("This problem already added!");
+                return;
+            }
+
+            var index = $('#issueTable tbody tr').length;
+            $('#issueTable tbody').append(
+                '<tr>' +
+                '<td>' + problemText +
+                '<input type="hidden" name="CustomerIssue[' + index + '].DomainId" value="' + domainId + '" />' +
+                '<input type="hidden" name="CustomerIssue[' + index + '].CustomerId" value="' + customerId + '" />' +
+                '<input type="hidden" name="CustomerIssue[' + index + '].Problem" value="' + problemText + '" />' +
+                '</td>' +
+                '<td class="text-center"><button type="button" class="btn btn-danger btn-sm removeIssue">X</button></td>' +
+                '</tr>'
+            );
+
+            // lock dropdowns after first add
+            $('#domainId').prop('disabled', true);
+            $('#customerId').prop('disabled', true);
+
+            $('#problemText').val('');
+        });
+
+        // Remove problem
+        $(document).on('click', '.removeIssue', function () {
+            $(this).closest('tr').remove();
+            if ($('#issueTable tbody tr').length === 0) {
+                $('#domainId').prop('disabled', false);
+                $('#customerId').prop('disabled', false);
+            }
+        });
+
+         $('#problemText').on('keydown', function (e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    var domainId = $('#domainId').val();
+                    var customerId = $('#customerId').val();
+                    var problemText = $('#problemText').val().trim();
+                    if (!domainId || !customerId || problemText === "") {
+                        
+                        return;
+                    }
+                    $('#addProblemBtn').click();
+                }
+         });
+
+
+    });
+</script>

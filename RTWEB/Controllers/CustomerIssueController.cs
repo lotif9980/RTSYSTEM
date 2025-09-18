@@ -1,6 +1,8 @@
 ﻿using HMSYSTEM.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using RTWEB.Models;
 using RTWEB.Repository;
+using RTWEB.ViewModel;
 
 namespace RTWEB.Controllers
 {
@@ -21,6 +23,73 @@ namespace RTWEB.Controllers
                     .ToPagedList(page, pageSize);
 
             return View(data);
+        }
+
+        [HttpGet]
+        public IActionResult Save()
+        {
+            var data = new CustomerIssueSaveVM
+            {
+
+                CustomerIssue = new List<CustomerIssue> { new CustomerIssue() },
+                Domain=_unitofWork.DomainRepository.GetAll(),
+                OurCustomer=_unitofWork.OurCustomerRepository.GetAll(),
+            };
+            return View(data);
+        }
+
+        [HttpGet]
+        public IActionResult GetDomainByCustomer(int domainId)
+        {
+            var customer = _unitofWork.OurCustomerRepository.CustomerList()
+                          .Where(d => d.DomainId == domainId)
+                          .Select(p => new
+                          {
+                              p.Id,
+                              p.CustomerName
+
+                          });
+            return Json(customer);
+        }
+
+
+        [HttpPost]
+        public IActionResult Save(CustomerIssueSaveVM vmodel)
+        {
+            if (vmodel.CustomerIssue==null || !vmodel.CustomerIssue.Any())
+            {
+                TempData["Message"] = "❌ Please select Domain and add at least one Problem";
+                TempData["MessageType"] = "danger";
+
+                var data = new CustomerIssueSaveVM
+                {
+
+                    CustomerIssue = new List<CustomerIssue> { new CustomerIssue() },
+                    Domain = _unitofWork.DomainRepository.GetAll(),
+                    OurCustomer = _unitofWork.OurCustomerRepository.GetAll(),
+                };
+                return View(data);
+            }
+
+            foreach(var item in vmodel.CustomerIssue)
+            {
+                if (!string.IsNullOrWhiteSpace(item.Problem))
+                {
+                    var data = new CustomerIssue
+                    {
+                        DomainId=item.DomainId,
+                        CustomerId=item.CustomerId,
+                        Problem=item.Problem,
+                        Status=Enum.CustomerIssueStatus.pending
+                    };
+                    _unitofWork.CustomerIssueRepository.Save(data);
+                }
+            }
+            _unitofWork.Complete();
+            TempData["Message"] = "✅ Issues Saved Successfully";
+            TempData["MessageType"] = "success";
+            return RedirectToAction("Save");
+
         }
     }
 }

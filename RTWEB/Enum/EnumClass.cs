@@ -24,4 +24,10 @@ namespace RTWEB.Enum
         pending=1,
         solved=2
     }
+
+    public enum CustomerIssueStatus
+    {
+        pending=1,
+        solved=2
+    }
 }

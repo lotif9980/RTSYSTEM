@@ -1,4 +1,5 @@
 ﻿using RTWEB.Data;
+using RTWEB.Models;
 using RTWEB.ViewModel;
 
 namespace RTWEB.Repository
@@ -21,12 +22,17 @@ namespace RTWEB.Repository
                             Id= cIssue.Id,
                             Domainname=dom.DomainName,
                             CustomerName=ourCos.CustomerName,
-                            Status=cIssue.Status,
+                            //Status=cIssue.Status,
                             CreateDate=cIssue.CreateDate,
                             Problem=cIssue.Problem
                        }).ToList();
 
             return data;
+        }
+
+        public void Save(CustomerIssue vm)
+        {
+            _db.Add(vm);
         }
     }
 }

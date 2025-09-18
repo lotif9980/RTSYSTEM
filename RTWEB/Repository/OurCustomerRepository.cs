@@ -12,6 +12,7 @@ namespace RTWEB.Repository
             _db = db;
         }
 
+        
         public IEnumerable<OurCustomerVM> GetAll()
         {
             var data =(from cus in _db.OurCustomers
@@ -30,6 +31,14 @@ namespace RTWEB.Repository
             return data;
         }
 
+        public IEnumerable<OurCustomer> CustomerList()
+        {
+            return _db.OurCustomers;
+        }
 
+        public void Save(OurCustomerVM customer)
+        {
+            _db.Add(customer);
+        }
     }
 }
