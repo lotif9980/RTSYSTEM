@@ -1,0 +1,143 @@
+﻿@* @model IEnumerable<Domain> *@
+
+@using RTWEB.Enum
+@using RTWEB.ViewModel
+@model HMSYSTEM.ViewModels.PagedResult<CustomerIssueVM>
+
+
+<style>
+    .col-sl {
+        width: 5% !important;
+    }
+
+    .col-customer {
+        width: 25% !important; /* বড় */
+    }
+
+    .col-domain {
+        width: 15% !important; /* একই থাকবে */
+    }
+
+    .col-problem {
+        width: 35% !important; /* বেশি জায়গা */
+    }
+
+    .col-status {
+        width: 10% !important; /* ছোট */
+    }
+
+    .col-action {
+        width: 10% !important;
+        text-align: center;
+    }
+</style>
+
+<div class="container-fluid mt-3">
+    <div class="d-flex justify-content-sm-between mb-2">
+        <div>
+            <input type="text" id="searchBox" class="form-control" placeholder="Search Customer Name" />
+        </div>
+
+        <div class="">
+            <a asp-controller="CustomerIssue" asp-action="Save" class="btn btn-primary">Add Issue</a>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="col-sl">Sl</th>
+                                <th class="col-customer">Customer</th>
+                                <th class="col-domain">Domain</th>
+                                <th class="col-problem">Problem</th>
+                                <th class="col-status">Status</th>
+                                <th class="col-action">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="domainBoady">
+                            @{
+                                int count = ((Model.CurrentPage - 1) * Model.PageSize) + 1;
+                            }
+                            @foreach (CustomerIssueVM item in Model.Items)
+                            {
+                                <tr>
+                                    <td>@count</td>
+                                    <td>@item.CustomerName</td>
+                                    <td>@item.Domainname</td>
+                                    <td>@item.Problem</td>
+                                    <td>@item.Status</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center btn-group-sm">
+                                            <a class="btn btn-primary ms-2" asp-route-id="@item.Id" asp-controller="Appointment" asp-action="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a class="btn btn-danger ms-2" asp-route-id="@item.Id" asp-controller="Domain" asp-action="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                count++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    @await Html.PartialAsync("_Pagination", Model)
+                </div>
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#searchBox').on('keyup', function () {
+            var name = $(this).val();
+
+            $.ajax({
+                url: '/Domain/Search',
+                data: {
+                    name: name,
+                },
+
+                success: function (data) {
+                    let rows = '';
+
+                    data.forEach((item,index) => {
+                        rows += `<tr>
+                            <td>${index + 1}</td>
+                            <td>${item.domainName}</td>
+                            <td>${item.updateBranch}</td>
+                            <td>${item.updateDate}</td>
+                            <td>${item.domainType}</td>
+                            <td>${item.status}</td>
+                             <td>
+                                        <div class="d-flex justify-content-center btn-group-sm ">
+
+                                            <a class="btn btn-primary ms-2" asp-route-id="item.Id" asp- controller="Medicine" asp-action="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                            <a class="btn btn-danger ms-2" asp-route-id="item.Id" asp-controller="Medicine" asp-action="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                        </tr>`;
+                    });
+
+                    $('#domainBoady').html(rows);
+                }
+            });
+        });
+    });
+</script>
