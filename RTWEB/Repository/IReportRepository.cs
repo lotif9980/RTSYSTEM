@@ -7,5 +7,6 @@ namespace RTWEB.Repository
     {
         public IEnumerable<IssueVM> PendingIssueReport(int? projectId=null);
         public IEnumerable<DomainReportVM> DomainWiseUpdate(int? domainId=null);
+        public IEnumerable<DomainReportVM> DomainUpdateList(int? domainId=null);
     }
 }

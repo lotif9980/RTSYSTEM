@@ -83,6 +83,40 @@ namespace RTWEB.Controllers
             var data=_unitofWork.ReportRepository.DomainWiseUpdate(domainId);
             return View("DominWiseUpdate", data);
         }
-    
+
+        [HttpGet]
+        public IActionResult DomainUpdateList()
+        {
+            var domain = _unitofWork.DomainRepository.GetAll()
+                   .Select(w => new SelectListItem
+                   {
+                       Value = w.Id.ToString(),
+                       Text = w.DomainName
+                   }).ToList();
+
+            ViewBag.Domain = domain;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult DomainUpdateList(int? domainId = null)
+        {
+            var domain = _unitofWork.DomainRepository.GetAll()
+                .Select(w => new SelectListItem
+                {
+                    Value = w.Id.ToString(),
+                    Text = w.DomainName
+                }).ToList();
+
+            ViewBag.Domain = domain;
+
+            var data =_unitofWork.ReportRepository.DomainUpdateList(domainId);
+            return View("DomainUpdateList", data);
+        }
+
+
+
+
     }
 }

@@ -51,5 +51,18 @@ namespace RTWEB.Repository
 
             return data;
         }
+
+        public IEnumerable<DomainReportVM> DomainUpdateList(int? domainId = null)
+        {
+            var data = (from dom in _db.Domains
+                        where !domainId.HasValue || dom.Id == domainId.Value
+                        select new DomainReportVM
+                        {
+                            DomainName=dom.DomainName,
+                            BranchName=dom.UpdateBranch,
+                            DateTime=dom.LastUpdateDate
+                        }).ToList();
+            return data;
+        }
     }
 }
