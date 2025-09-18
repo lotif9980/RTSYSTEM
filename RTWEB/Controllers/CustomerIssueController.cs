@@ -25,6 +25,16 @@ namespace RTWEB.Controllers
             return View(data);
         }
 
+        public IActionResult SolvedIssue(int page = 1, int pageSize = 10)
+        {
+            var data = _unitofWork.CustomerIssueRepository.GetSolved()
+                    .OrderByDescending(d => d.Id)
+                    .AsQueryable()
+                    .ToPagedList(page, pageSize);
+
+            return View(data);
+        }
+
         [HttpGet]
         public IActionResult Save()
         {

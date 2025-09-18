@@ -15,6 +15,7 @@ namespace RTWEB.Repository
         public IEnumerable<CustomerIssueVM> GetAll()
         {
             var data =(from cIssue in _db.CustomerIssues
+                       where cIssue.Status==Enum.CustomerIssueStatus.pending
                        join ourCos in _db.OurCustomers on cIssue.CustomerId equals ourCos.Id
                        join dom in _db.Domains on cIssue.DomainId equals dom.Id
                        select new CustomerIssueVM
@@ -26,6 +27,25 @@ namespace RTWEB.Repository
                            CreateDate =cIssue.CreateDate,
                             Problem=cIssue.Problem
                        }).ToList();
+
+            return data;
+        }
+
+        public IEnumerable<CustomerIssueVM> GetSolved()
+        {
+            var data = (from cIssue in _db.CustomerIssues
+                        where cIssue.Status == Enum.CustomerIssueStatus.solved
+                        join ourCos in _db.OurCustomers on cIssue.CustomerId equals ourCos.Id
+                        join dom in _db.Domains on cIssue.DomainId equals dom.Id
+                        select new CustomerIssueVM
+                        {
+                            Id = cIssue.Id,
+                            Domainname = dom.DomainName,
+                            CustomerName = ourCos.CustomerName,
+                            Status = Enum.CustomerIssueStatus.solved,
+                            CreateDate = cIssue.CreateDate,
+                            Problem = cIssue.Problem
+                        }).ToList();
 
             return data;
         }

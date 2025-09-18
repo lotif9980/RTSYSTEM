@@ -11,19 +11,19 @@
     }
 
     .col-customer {
-        width: 25% !important; /* বড় */
+        width: 25% !important; 
     }
 
     .col-domain {
-        width: 15% !important; /* একই থাকবে */
+        width: 15% !important;
     }
 
     .col-problem {
-        width: 35% !important; /* বেশি জায়গা */
+        width: 35% !important;
     }
 
     .col-status {
-        width: 10% !important; /* ছোট */
+        width: 10% !important; 
     }
 
     .col-action {
@@ -33,16 +33,17 @@
 </style>
 
 <div class="container-fluid mt-3">
-    <div class="d-flex mb-2">
+    <div class="d-flex  mb-2">
         <div class="me-2">
             <input type="text" id="searchBox" class="form-control" placeholder="Search Customer Name" />
         </div>
         <div class="me-2">
-            <a asp-controller="CustomerIssue" asp-action="SolvedIssue" class="btn btn-primary">Solved Issue</a>
+            <a asp-controller="CustomerIssue" asp-action="Index" class="btn btn-primary">Pending Issue</a>
         </div>
         <div class="me-2">
             <a asp-controller="CustomerIssue" asp-action="Save" class="btn btn-primary">Add Issue</a>
         </div>
+
 
     </div>
     <div class="row">
