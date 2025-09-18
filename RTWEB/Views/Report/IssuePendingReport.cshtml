@@ -6,6 +6,13 @@
         display: none !important;
     }
 
+    table th, table td {
+        background: none !important;
+        color: #000 !important;
+        font-size: 15pt !important;
+        padding: 4pt !important;
+    }
+  
     @@media print {
         body *
 
@@ -54,6 +61,7 @@
     /* Custom table styling */
     .custom-table th, .custom-table td {
         border: 1px solid #000 !important;
+      
     }
 
     /* Column width control */
@@ -112,8 +120,8 @@
 
         @if (Model != null && Model.Any())
         {
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover mt-3 custom-table">
+            <div class="table-responsive ">
+                <table class="table table-bordered table-hover mt-3 custom-table ">
                     <thead class="table-light">
                         <tr>
                             <th class="col-project">Project Name</th>

@@ -1,3 +1,118 @@
+
+----------------------------
+USE [RTSYSTEM]
+GO
+
+/****** Object:  Table [dbo].[SolvedIssues]    Script Date: 18-Sep-25 3:19:45 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[SolvedIssues](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CustomerId] [int] NULL,
+	[SolvedBy] [int] NULL,
+	[SolvedDate] [datetime] NULL,
+	[Status] [int] NULL,
+ CONSTRAINT [PK_SolvedIssues] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+----------------------------------------------
+USE [RTSYSTEM]
+GO
+
+/****** Object:  Table [dbo].[SolvedDetails]    Script Date: 18-Sep-25 3:19:22 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[SolvedDetails](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[SolvedId] [int] NULL,
+	[IssueId] [int] NULL,
+	[SolutionDetails] [nvarchar](max) NULL,
+ CONSTRAINT [PK_SolvedDetails] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+
+-----------------------
+USE [RTSYSTEM]
+GO
+
+/****** Object:  Table [dbo].[OurCustomers]    Script Date: 18-Sep-25 3:18:02 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[OurCustomers](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Code] [nvarchar](100) NULL,
+	[CustomerName] [nvarchar](max) NULL,
+	[Address] [nvarchar](max) NULL,
+	[ContactNo] [nvarchar](50) NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[DomainId] [int] NULL,
+	[Status] [int] NULL,
+ CONSTRAINT [PK_OurCustomers] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[OurCustomers] ADD  CONSTRAINT [DF_OurCustomers_CreateDate]  DEFAULT (getdate()) FOR [CreateDate]
+GO
+
+
+
+--------------------------------------------
+
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[CustomerIssues](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[DomainId] [int] NULL,
+	[CustomerId] [int] NULL,
+	[Problem] [nvarchar](max) NULL,
+	[Status] [int] NULL,
+	[CreateDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_CustomerIssues] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[CustomerIssues] ADD  CONSTRAINT [DF_CustomerIssues_CreateDate]  DEFAULT (getdate()) FOR [CreateDate]
+GO
+
+ALTER TABLE [dbo].[CustomerIssues]  WITH CHECK ADD  CONSTRAINT [FK_Domain_CustomerIssue] FOREIGN KEY([Id])
+REFERENCES [dbo].[CustomerIssues] ([Id])
+GO
+
+ALTER TABLE [dbo].[CustomerIssues] CHECK CONSTRAINT [FK_Domain_CustomerIssue]
+GO
+
+
 -------------------------16.09.2025--------------
 
 /* To prevent any potential data loss issues, you should review this script in detail before running it outside the context of the database designer.*/

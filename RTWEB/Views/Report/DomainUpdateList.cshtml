@@ -122,8 +122,8 @@
                             <tr>
                                 <td class="col-sl">@sl</td>
                                 <td class="col-project">@item.DomainName</td>
-                                <td class="col-title">@item.DateTime?.ToString("dd-MM-yyyy")</td>
-                                <td class="col-status">@item.BranchName</td>
+                                <td class="col-title">@(item.DateTime?.ToString("dd-MM-yyyy") ?? "N/A")</td>
+                                <td class="col-status">@(item.BranchName ?? "N/A")</td>
                             </tr>
                             sl++;
                         }
