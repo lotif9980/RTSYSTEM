@@ -22,8 +22,8 @@ namespace RTWEB.Repository
                             Id= cIssue.Id,
                             Domainname=dom.DomainName,
                             CustomerName=ourCos.CustomerName,
-                            //Status=cIssue.Status,
-                            CreateDate=cIssue.CreateDate,
+                           Status =Enum.CustomerIssueStatus.pending,
+                           CreateDate =cIssue.CreateDate,
                             Problem=cIssue.Problem
                        }).ToList();
 
