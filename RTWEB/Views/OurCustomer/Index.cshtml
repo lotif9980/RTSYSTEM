@@ -1,0 +1,122 @@
+﻿@* @model IEnumerable<Domain> *@
+
+@using RTWEB.Enum
+@using RTWEB.ViewModel
+@model HMSYSTEM.ViewModels.PagedResult<OurCustomerVM>
+
+<div class="container-fluid mt-3">
+    <div class="d-flex justify-content-sm-between mb-2">
+        <div>
+            <input type="text" id="searchBox" class="form-control" placeholder="Search Customer Name" />
+        </div>
+
+        <div class="">
+            <a asp-controller="OurCustomer" asp-action="Save" class="btn btn-primary">Add Customer</a>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">Sl</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Contact No</th>
+                                <th>Address</th>
+                                <th>Domain</th>
+                                <th style="width:20px;text-align:center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="domainBoady">
+                            @{
+                                int count = ((Model.CurrentPage - 1) * Model.PageSize) + 1;
+                            }
+                            @foreach (OurCustomerVM item in Model.Items)
+                            {
+                                <tr>
+                                    <td>@count</td>
+                                    <td>@item.Code</td>
+                                    <td>@(item.CustomerName)</td>
+                                    <td>@(item.ContactNo)</td>
+                                    <td>@(item.Address)</td>
+                                    <td>@(item.DomainName)</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center btn-group-sm ">
+
+                                            <a class="btn btn-primary ms-2" asp-route-id="@item.Id" asp- controller="Appointment" asp-action="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                            <a class="btn btn-danger ms-2"
+                                               asp-route-id="@item.Id"
+                                               asp-controller="Domain" asp-action="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                count++;
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    @await Html.PartialAsync("_Pagination", Model)
+                </div>
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#searchBox').on('keyup', function () {
+            var name = $(this).val();
+
+            $.ajax({
+                url: '/Domain/Search',
+                data: {
+                    name: name,
+                },
+
+                success: function (data) {
+                    let rows = '';
+
+                    data.forEach((item,index) => {
+                        rows += `<tr>
+                            <td>${index + 1}</td>
+                            <td>${item.domainName}</td>
+                            <td>${item.updateBranch}</td>
+                            <td>${item.updateDate}</td>
+                            <td>${item.domainType}</td>
+                            <td>${item.status}</td>
+                             <td>
+                                        <div class="d-flex justify-content-center btn-group-sm ">
+
+                                            <a class="btn btn-primary ms-2" asp-route-id="item.Id" asp- controller="Medicine" asp-action="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                            <a class="btn btn-danger ms-2" asp-route-id="item.Id" asp-controller="Medicine" asp-action="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                        </tr>`;
+                    });
+
+                    $('#domainBoady').html(rows);
+                }
+            });
+        });
+    });
+</script>

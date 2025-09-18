@@ -1,4 +1,5 @@
 ﻿using RTWEB.Data;
+using System.Diagnostics;
 
 namespace RTWEB.Repository
 {
@@ -14,6 +15,10 @@ namespace RTWEB.Repository
         public IProjectRepository ProjectRepository {  get; set; }
         public IUpdateRepository UpdateRepository { get; set; }
         public IReportRepository ReportRepository { get; set; }
+        public IOurCustomerRepository OurCustomerRepository { get; set; }
+        public ICustomerIssueRepository CustomerIssueRepository {  get; set; }
+        public ISolvedIssueRepository SolvedIssueRepository {  get; set; }
+        public ISolvedDetailRepository SolvedDetailRepository {  get; set; }
 
         public int Complete()
         {
@@ -34,6 +39,11 @@ namespace RTWEB.Repository
             ProjectRepository = new ProjectRepository(db);
             UpdateRepository = new UpdateRepository(db);
             ReportRepository = new ReportRepository(db);
+            OurCustomerRepository = new OurCustomerRepository(db);
+            CustomerIssueRepository = new CustomerIssueRepository(db);
+            SolvedIssueRepository = new SolvedIssueRepository(db);
+            SolvedDetailRepository = new SolvedDetailRepository(db);
+
         }
       
     }
