@@ -1,0 +1,214 @@
+﻿@using RTWEB.ViewModel
+@model CSPViewModel
+
+<div class="container-fluid mt-3">
+    <form asp-action="Save" id="myForm" method="post">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header d-flex justify-content-between">
+                        <div><strong>Update Information</strong></div>
+                        <div><a class="btn btn-primary" asp-action="Index">Update List</a></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <label asp-for="SolvedIssue.SolvedDate" class="col-sm-4 col-form-label">Date</label>
+                            <div class="col-sm-8">
+                                <input type="text" asp-for="SolvedIssue.SolvedDate" class="form-control" id="updateDate"
+                                       value="@DateTime.Now.ToString("dd-MM-yyyy")">
+                                <span asp-validation-for="SolvedIssue.SolvedDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label asp-for="SolvedIssue.SolvedBy" class="col-sm-4 col-form-label">Employee</label>
+                            <div class="col-sm-8">
+                                <select asp-for="SolvedIssue.SolvedBy" class="form-control tester-dropdown"
+                                        asp-items="@(new SelectList(Model.Teams, "Id", "Name"))">
+                                    <option value="">---Select Employee---</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label asp-for="SolvedIssue.DomainId" class="col-sm-4 col-form-label">Domain</label>
+                            <div class="col-sm-8">
+                                <select id="domainId" asp-for="SolvedIssue.DomainId" class="form-control domain-dropdown"
+                                        asp-items="@(new SelectList(Model.Domains, "Id", "DomainName"))">
+                                    <option value="">---Select Domain Name---</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <input type="hidden" name="SolvedIssue.DomainId" id="hiddenDomainId" value="@Model.SolvedIssue.DomainId" />
+                        <input type="hidden" name="SolvedIssue.CustomerId" id="hiddenCustomerId" value="@Model.SolvedIssue.CustomerId" />
+
+
+                        <div class="row mb-3">
+                            <label asp-for="SolvedIssue.CustomerId" class="col-sm-4 col-form-label">Customer</label>
+                            <div class="col-sm-8">
+                                <select id="customerId" asp-for="SolvedIssue.CustomerId" class="form-control developer-dropdown"
+                                        asp-items="@(new SelectList(Model.OurCustomers, "Id", "CustomerName"))">
+                                    <option value="">---Select Customer---</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-end mt-3">
+                            <button type="submit" class="btn btn-warning me-2">Save</button>
+                            <button type="reset" class="btn btn-danger me-2">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header bg-light"><strong>Selected Issues</strong></div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Select Issue</label>
+                            <div class="col-sm-8">
+                                <select id="issueId" class="form-select issue-dropdown">
+                                    <option value="">--Select Problem--</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered mt-3" id="issueTable">
+                            <thead>
+                                <tr>
+                                    <th>Issue</th>
+                                    <th style="width:10%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+            $('#domainId').on('change', function() {
+                $('#hiddenDomainId').val($(this).val());
+            });
+        $('#customerId').on('change', function() {
+            $('#hiddenCustomerId').val($(this).val());
+        });
+
+        // Select2 init
+        $(".domain-dropdown,.developer-dropdown,.tester-dropdown,.issue-dropdown").select2({ width: '100%', allowClear: true });
+        $(document).on('select2:open', () => { document.querySelector('.select2-search__field').focus(); });
+
+        // Datepicker
+        $("#updateDate").datepicker({ dateFormat: "dd-mm-yy", changeMonth: true, changeYear: true });
+
+        // disable initially
+        $('#customerId').prop('disabled', true);
+        $('#issueId').prop('disabled', true);
+
+        // Reset button unlock everything
+        $('button[type="reset"]').on('click', function () {
+            $('#domainId,#customerId,#issueId').prop('disabled', false);
+            $('#customerId').empty().append('<option value="">-- Select Customer --</option>');
+            $('#issueId').empty().append('<option value="">--Select Problem--</option>');
+            $('#issueTable tbody').empty();
+        });
+
+        // Domain change -> load customer
+        $('#domainId').on('change', function () {
+            var domainId = $(this).val();
+            $('#customerId').empty().append('<option value="">-- Select Customer --</option>').prop('disabled', true);
+            $('#issueId').empty().append('<option value="">--Select Problem--</option>').prop('disabled', true);
+
+            if (domainId) {
+                // domain dropdown lock
+                $('#domainId').prop('disabled', true);
+
+                $.ajax({
+                    url: '/SolvedIssue/DomainWiseCustomer',
+                    type: 'GET',
+                    data: { domainId: domainId },
+                    dataType: 'json',
+                    success: function (data) {
+                        var $customerDropdown = $('#customerId');
+                        $customerDropdown.empty().append('<option value="">-- Select Customer --</option>');
+                        $.each(data, function (i, customer) {
+                            $customerDropdown.append($('<option>', { value: customer.id, text: customer.customerName }));
+                        });
+                        $customerDropdown.prop('disabled', false);
+                    }
+                });
+            }
+        });
+
+        // Customer change -> load problems
+        $('#customerId').on('change', function () {
+            var customerId = $(this).val();
+            $('#issueId').empty().append('<option value="">--Select Problem--</option>').prop('disabled', true);
+
+            if (customerId) {
+                // customer dropdown lock
+                $('#customerId').prop('disabled', true);
+
+                $.ajax({
+                    url: '/SolvedIssue/CustomerWiseProlem',
+                    type: 'GET',
+                    data: { customerId: customerId },
+                    dataType: 'json',
+                    success: function (data) {
+                        var $issueDropdown = $('#issueId');
+                        $issueDropdown.empty().append('<option value="">--Select Problem--</option>');
+                        $.each(data, function (i, issue) {
+                            $issueDropdown.append($('<option>', { value: issue.id, text: issue.problem }));
+                        });
+                        $issueDropdown.prop('disabled', false);
+                    }
+                });
+            }
+        });
+
+        // Issue select -> add row
+        $('#issueId').on('change', function () {
+            var issueName = $('#issueId option:selected').text();
+            var issueId = $('#issueId').val();
+
+            if (issueId) {
+                if ($('#issueTable tbody tr td input[value="' + issueId + '"]').length > 0) {
+                    alert("This issue is already added!");
+                    $(this).val('');
+                    return;
+                }
+                var index = $('#issueTable tbody tr').length;
+                $('#issueTable tbody').append(
+                    '<tr>' +
+                        '<td>' + issueName +
+                            '<input type="hidden" name="SolveDetails[' + index + '].IssueId" value="' + issueId + '" />' +
+                        '</td>' +
+                        '<td><button type="button" class="btn btn-danger btn-sm removeIssue">Remove</button></td>' +
+                    '</tr>'
+                );
+
+                // issue সিলেক্ট করলে customer dropdown লক হবে
+                $('#customerId').prop('disabled', true);
+
+                $(this).val('');
+            }
+        });
+
+        // Remove issue row
+        $(document).on('click', '.removeIssue', function () {
+            $(this).closest('tr').remove();
+        });
+    });
+</script>

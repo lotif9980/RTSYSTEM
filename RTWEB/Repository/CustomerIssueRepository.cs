@@ -20,6 +20,7 @@ namespace RTWEB.Repository
                        join dom in _db.Domains on cIssue.DomainId equals dom.Id
                        select new CustomerIssueVM
                        {
+                           CustomerId=cIssue.CustomerId,
                             Id= cIssue.Id,
                             Domainname=dom.DomainName,
                             CustomerName=ourCos.CustomerName,

@@ -30,4 +30,10 @@ namespace RTWEB.Enum
         pending=1,
         solved=2
     }
+
+    public enum CustomerSolvedIssueStatus
+    {
+        Solved = 1,
+        Delete =2
+    }
 }

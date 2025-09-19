@@ -74,8 +74,7 @@ namespace RTWEB.Controllers
             if(model.UpdateDetails !=null && model.UpdateDetails.Count > 0)
             {
                 update.UpdateDetails = model.UpdateDetails
-                   
-                   .Select(d=> new UpdateDetail
+                    .Select(d=> new UpdateDetail
                    {
                        IssueId=d.IssueId,
 

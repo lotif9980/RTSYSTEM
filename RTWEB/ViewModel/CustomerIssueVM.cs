@@ -7,6 +7,7 @@ namespace RTWEB.ViewModel
         public int Id { get; set; }
         public string? Domainname { get; set; }
         public string? CustomerName { get; set; }
+        public int ? CustomerId { get; set; }
         public string? Problem { get; set; }
         //public int? Status { get; set; }
         public CustomerIssueStatus Status { get; set; }
