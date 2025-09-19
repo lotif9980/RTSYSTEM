@@ -133,5 +133,11 @@ namespace RTWEB.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult Details(int id)
+        {
+            var data =_unitofWork.SolvedIssueRepository.Details(id);
+            return View(data);
+        }
     }
 }

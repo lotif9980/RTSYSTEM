@@ -12,6 +12,8 @@ namespace RTWEB.ViewModel
         public DateTime? SolvedDate { get; set; }
         //public int? Status { get; set; }
         public CustomerSolvedIssueStatus Status { get; set; }
+        public string? DomainName { get;set; }
+        public List<SolveDetails> SolveDetails { get; set; } = new List<SolveDetails>();
     }
 
 
@@ -30,6 +32,7 @@ namespace RTWEB.ViewModel
     {
         public int Id { get; set; }
         public int? SolvedIssueId { get; set; }
+        public string? IssueName { get; set; }
         public int? IssueId { get; set; }
         public string? SolutionDetails {  get; set; }
     }

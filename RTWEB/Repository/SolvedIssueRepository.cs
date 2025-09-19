@@ -51,5 +51,33 @@ namespace RTWEB.Repository
             _db.SolvedDetails.RemoveRange(data.SolvedDetails);
             _db.SolvedIssues.Remove(data);
         }
+
+        public CustomerSolvedIssueVM Details(int id)
+        {
+            var data = (from cIssue in _db.SolvedIssues
+                        join oc in _db.OurCustomers on cIssue.CustomerId equals oc.Id
+                        join dom in _db.Domains on cIssue.DomainId equals dom.Id
+                        join team in _db.Teams on cIssue.SolvedBy equals team.Id
+                        select new CustomerSolvedIssueVM
+                        {
+                            CustomerName=oc.CustomerName,
+                            SolvedBy=team.Name,
+                            SolvedDate=cIssue.SolvedDate,
+                            DomainName=dom.DomainName
+
+                        }).FirstOrDefault();
+
+            data.SolveDetails= (from SD in _db.SolvedDetails
+                                join ci in _db.CustomerIssues on SD.IssueId equals ci.Id
+                                where SD.SolvedIssueId == id
+                                select new SolveDetails
+                                {
+                                    IssueName=ci.Problem,
+                                    SolvedIssueId = SD.SolvedIssueId,
+                                }).ToList();
+
+            return data;
+
+        }
     }
 }

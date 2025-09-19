@@ -10,5 +10,6 @@ namespace RTWEB.Repository
         public void Save(SolvedIssue vm);
         public IEnumerable<SolvedDetail> GetById(int id); 
         public void Delete(int id); 
+        public CustomerSolvedIssueVM Details(int id);
     }
 }
