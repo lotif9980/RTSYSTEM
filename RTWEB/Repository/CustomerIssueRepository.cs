@@ -1,4 +1,5 @@
 ﻿using RTWEB.Data;
+using RTWEB.Enum;
 using RTWEB.Models;
 using RTWEB.ViewModel;
 
@@ -60,6 +61,17 @@ namespace RTWEB.Repository
         {
            var data=_db.CustomerIssues.Find(id);
             _db.Remove(data);
+        }
+
+        public void UpdateStatus(int id, CustomerIssueStatus status)
+        {
+            var data = _db.CustomerIssues.Find(id);
+
+            if (data != null)
+            {
+                data.Status = status;
+                _db.CustomerIssues.Update(data);
+            }
         }
     }
 }

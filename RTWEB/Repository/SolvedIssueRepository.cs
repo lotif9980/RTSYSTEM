@@ -1,4 +1,6 @@
-﻿using RTWEB.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RTWEB.Data;
+using RTWEB.Enum;
 using RTWEB.Models;
 using RTWEB.ViewModel;
 
@@ -12,6 +14,8 @@ namespace RTWEB.Repository
         { 
             _db = db; 
         }
+
+      
 
         public IEnumerable<CustomerSolvedIssueVM> GetSolvedIssue()
         {
@@ -33,6 +37,19 @@ namespace RTWEB.Repository
         public void Save(SolvedIssue vm)
         {
            _db.Add(vm);
+        }
+
+        public IEnumerable<SolvedDetail> GetById(int id)
+        {
+            return _db.SolvedDetails.Where(p => p.SolvedIssueId == id).ToList();
+        }
+
+        public void Delete(int id)
+        {
+            var data =_db.SolvedIssues.Include(p=>p.SolvedDetails).FirstOrDefault(p=>p.Id==id);
+
+            _db.SolvedDetails.RemoveRange(data.SolvedDetails);
+            _db.SolvedIssues.Remove(data);
         }
     }
 }

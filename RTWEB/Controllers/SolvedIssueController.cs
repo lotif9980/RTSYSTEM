@@ -62,10 +62,33 @@ namespace RTWEB.Controllers
             }
 
             _unitofWork.SolvedIssueRepository.Save(solvedIssue);
-            _unitofWork.Complete();
+
+
+            if (model.SolveDetails!=null && model.SolveDetails.Count > 0)
+            {
+                foreach(var item in model.SolveDetails)
+                {
+                    _unitofWork.CustomerIssueRepository.UpdateStatus((int)item.IssueId, Enum.CustomerIssueStatus.solved);
+                }
+            }
+
+            var result = _unitofWork.Complete();
+
+            if (result > 0)
+            {
+                TempData["Message"] = "✅ Save Successful";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Save Failed";
+                TempData["MessageType"] = "danger";
+            }
 
             return RedirectToAction("Index");
         }
+
+
 
         public IActionResult DomainWiseCustomer(int domainId)
         {
@@ -91,6 +114,24 @@ namespace RTWEB.Controllers
                 });
 
             return Json(data);
+        }
+
+
+        public IActionResult Delete(int id)
+        {
+            var solvedDetails=_unitofWork.SolvedIssueRepository.GetById(id);
+            if(solvedDetails != null && solvedDetails.Any())
+            {
+                foreach(var item in solvedDetails)
+                {
+                    _unitofWork.CustomerIssueRepository.UpdateStatus((int)item.IssueId,Enum.CustomerIssueStatus.pending);
+                }
+            }
+
+            _unitofWork.SolvedIssueRepository.Delete(id);
+            _unitofWork.Complete();
+
+            return RedirectToAction("Index");
         }
     }
 }

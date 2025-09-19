@@ -1,4 +1,5 @@
-﻿using RTWEB.Models;
+﻿using RTWEB.Enum;
+using RTWEB.Models;
 using RTWEB.ViewModel;
 
 namespace RTWEB.Repository
@@ -9,5 +10,6 @@ namespace RTWEB.Repository
         public IEnumerable<CustomerIssueVM> GetSolved();
         public void Save(CustomerIssue vm);
         public void Delete(int id);
+        public void UpdateStatus(int id, CustomerIssueStatus status);
     }
 }
