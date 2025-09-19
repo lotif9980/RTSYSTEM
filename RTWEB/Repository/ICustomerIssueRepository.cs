@@ -8,5 +8,6 @@ namespace RTWEB.Repository
         public IEnumerable<CustomerIssueVM> GetAll();
         public IEnumerable<CustomerIssueVM> GetSolved();
         public void Save(CustomerIssue vm);
+        public void Delete(int id);
     }
 }

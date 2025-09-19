@@ -101,5 +101,64 @@ namespace RTWEB.Controllers
             return RedirectToAction("Save");
 
         }
+        [HttpGet]
+        public IActionResult SearchCustomerName(string name)
+        {
+            name = name?.Trim().ToLower() ?? "";
+
+            var data=_unitofWork.CustomerIssueRepository.GetAll()
+                     .OrderByDescending(p=>p.Id)
+                     .Where(m=> !string.IsNullOrEmpty(m.CustomerName) && m.CustomerName.ToLower().Contains(name))
+                     .Select(m=> new
+                     {
+                         id = m.Id,
+                         customer =m.CustomerName,
+                         domain=m.Domainname,
+                         problem=m.Problem,
+                         status=Enum.CustomerIssueStatus.pending.ToString()
+                     });
+
+            return Json(data);
+        }
+
+        [HttpGet]
+        public IActionResult SearchCustomerNameSolvedList(string name)
+        {
+            name = name?.Trim().ToLower() ?? "";
+
+            var data = _unitofWork.CustomerIssueRepository.GetSolved()
+                     .OrderByDescending(p => p.Id)
+                     .Where(m => !string.IsNullOrEmpty(m.CustomerName) && m.CustomerName.ToLower().Contains(name))
+                     .Select(m => new
+                     {
+                         id=m.Id,
+                         customer = m.CustomerName,
+                         domain = m.Domainname,
+                         problem = m.Problem,
+                         status = Enum.CustomerIssueStatus.solved.ToString()
+                     });
+
+            return Json(data);
+        }
+
+        public IActionResult Delete(int id)
+        {
+
+           _unitofWork.CustomerIssueRepository.Delete(id);
+           var result=_unitofWork.Complete();
+
+            if(result > 0)
+            {
+                TempData["Message"] = "✅ Delete Successfully";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Delete Unsuccessful";
+                TempData["MessageType"] = "danger";
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -54,5 +54,11 @@ namespace RTWEB.Repository
         {
             _db.Add(vm);
         }
+
+        public void Delete(int id)
+        {
+           var data=_db.CustomerIssues.Find(id);
+            _db.Remove(data);
+        }
     }
 }

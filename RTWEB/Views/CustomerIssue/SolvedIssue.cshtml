@@ -107,7 +107,7 @@
             var name = $(this).val();
 
             $.ajax({
-                url: '/Domain/Search',
+                url: '/CustomerIssue/SearchCustomerNameSolvedList',
                 data: {
                     name: name,
                 },
@@ -118,10 +118,9 @@
                     data.forEach((item,index) => {
                         rows += `<tr>
                             <td>${index + 1}</td>
-                            <td>${item.domainName}</td>
-                            <td>${item.updateBranch}</td>
-                            <td>${item.updateDate}</td>
-                            <td>${item.domainType}</td>
+                            <td>${item.customer}</td>
+                            <td>${item.domain}</td>
+                            <td>${item.problem}</td>
                             <td>${item.status}</td>
                              <td>
                                         <div class="d-flex justify-content-center btn-group-sm ">
