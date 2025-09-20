@@ -35,6 +35,13 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(Project project)
         {
+            if (_unitofWork.ProjectRepository.ExestingProject(project.ProjectName))
+            {
+                TempData["Message"] = "❌ Already Added";
+                TempData["MessageType"] = "danger";
+                return View(project);
+            }
+
             if (ModelState.IsValid)
             {
                 _unitofWork.ProjectRepository.Save(project);

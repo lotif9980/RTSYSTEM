@@ -12,5 +12,6 @@ namespace RTWEB.ViewModel
         //public int? Status { get; set; }
         public CustomerIssueStatus Status { get; set; }
         public DateTime CreateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
     }
 }

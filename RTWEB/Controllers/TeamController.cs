@@ -35,6 +35,20 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(Team team)
         {
+            //if (_unitofWork.TeamRepository.ExestingTeam(team.Name))
+            //{
+            //    TempData["Message"] = "❌ Already Added";
+            //    TempData["MessageType"] = "danger";
+            //}
+
+            var exesting=_unitofWork.TeamRepository.ExestingTeam(team.Name);
+            if (exesting)
+            {
+                TempData["Message"] = "❌ Already Added";
+                TempData["MessageType"] = "danger";
+                return View(team);
+            }
+
             if (ModelState.IsValid)
             {
                 _unitofWork.TeamRepository.Save(team);

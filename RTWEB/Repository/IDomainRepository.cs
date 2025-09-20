@@ -10,6 +10,7 @@ namespace RTWEB.Repository
         public Task<bool> IsDomainUseAsync(int id);
         public void Update(Domain domain);
         public Domain Find(int id);
+        public bool ExestingName(string name);
 
     }
 }

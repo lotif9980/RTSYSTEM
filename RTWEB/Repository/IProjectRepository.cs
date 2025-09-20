@@ -11,6 +11,7 @@ namespace RTWEB.Repository
         public Task<bool> IsIssueUsedAsync(int id);
         public Project Find(int id);
         public void Update(Project project);
+        public bool ExestingProject(string name);
 
     }
 }

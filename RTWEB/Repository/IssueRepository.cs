@@ -78,5 +78,10 @@ namespace RTWEB.Repository
                 data.Status = status;
             }
         }
+
+        public bool ExestingIssue(int projectId, string problem)
+        {
+            return _db.Issues.Any(x => x.ProjectId == projectId && x.Title == problem);
+        }
     }
 }

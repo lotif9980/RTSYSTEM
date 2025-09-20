@@ -52,5 +52,10 @@ namespace RTWEB.Repository
         {
             return _db.Updates.AnyAsync(p=>p.TesterId == id || p.DeveloperId==id);
         }
+
+        public bool ExestingTeam(string name)
+        {
+            return _db.Teams.Any(x=>x.Name == name);
+        }
     }
 }

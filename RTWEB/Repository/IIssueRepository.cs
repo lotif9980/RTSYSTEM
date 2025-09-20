@@ -13,6 +13,7 @@ namespace RTWEB.Repository
         public IEnumerable<Issue> GetAll();
         public Task<bool> IsUsedAsync(int id);
         public void UpdateStatus(int id, IssueStatus status);
+        public bool ExestingIssue(int projectId, string problem);
 
     }
 }

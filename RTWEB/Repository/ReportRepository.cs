@@ -149,6 +149,12 @@ namespace RTWEB.Repository
                         where ci.CustomerId == customerId
                         join c in _db.OurCustomers on ci.CustomerId equals c.Id
                         join d in _db.Domains on ci.DomainId equals d.Id
+
+                        join sd in _db.SolvedDetails on ci.Id equals sd.IssueId into sdGroup
+                        from sd in sdGroup.DefaultIfEmpty()
+
+                        join si in _db.SolvedIssues on sd.SolvedIssueId equals si.Id into siGroup
+                        from si in siGroup.DefaultIfEmpty()
                         select new CustomerIssueVM
                         {
                             Id = ci.Id,
@@ -156,6 +162,7 @@ namespace RTWEB.Repository
                             Domainname = d.DomainName,
                             CustomerName = c.CustomerName,
                             CreateDate = ci.CreateDate,
+                            UpdateDate=si.SolvedDate,
                             Status = ci.Status
                         }).ToList();
 

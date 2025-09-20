@@ -49,5 +49,10 @@ namespace RTWEB.Repository
                 data.LastUpdateDate= project.LastUpdateDate;
             }
         }
+
+        public bool ExestingProject(string name)
+        {
+           return _db.Projects.Any(x=>x.ProjectName==name);
+        }
     }
 }

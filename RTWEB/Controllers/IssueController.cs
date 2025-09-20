@@ -83,17 +83,34 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(IssueSaveVm vm)
         {
+            //var exestingIssue=_unitofWork.IssueRepository.ExestingIssue(vm.ProjectId,vm.I)
+
             if (vm.ProjectId == 0 || vm.Issues == null || !vm.Issues.Any())
             {
                 TempData["Message"] = "❌ Please select Project and add at least one Title";
                 TempData["MessageType"] = "danger";
-                return RedirectToAction("Save");
+                vm.Projects = _unitofWork.ProjectRepository.GetProjects();
+                return View(vm);
             }
+
+
 
             foreach (var issue in vm.Issues)
             {
                 if (!string.IsNullOrWhiteSpace(issue.Title))
                 {
+                    var exestingIssue=_unitofWork.IssueRepository.ExestingIssue(vm.ProjectId, issue.Title);
+                    if (exestingIssue)
+                    {
+                        TempData["Message"] = "❌ Already Added";
+                        TempData["MessageType"] = "danger";
+
+                        vm.Projects = _unitofWork.ProjectRepository.GetProjects();
+
+                        return View(vm);
+                    }
+
+
                     var data = new Issue
                     {
                         ProjectId = vm.ProjectId,

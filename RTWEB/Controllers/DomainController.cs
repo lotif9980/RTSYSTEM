@@ -40,6 +40,15 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(Domain domain)
         {
+            if (_unitofWork.DomainRepository.ExestingName(domain.DomainName))
+            {
+                TempData["Message"] = "✅ Already Added";
+                TempData["MessageType"] = "danger";
+                return View(domain);
+            }
+           
+
+
             if (ModelState.IsValid)
             {
                 _unitofWork.DomainRepository.Save(domain);

@@ -129,6 +129,7 @@
                 <tr>
                     <th>Sl</th>
                     <th>Date</th>
+                    <th>Solved Date</th>
                     <th>Customer</th>
                     <th>Domain</th>
                     <th>Problem</th>
@@ -144,6 +145,7 @@
                         <tr>
                             <td>@sl</td>
                             <td>@item.CreateDate.ToString("dd-MM-yyyy")</td>
+                            <td>@item.UpdateDate?.ToString("dd-MM-yyyy")</td>
                             <td>@item.CustomerName</td>
                             <td>@item.Domainname</td>
                             <td>@item.Problem</td>

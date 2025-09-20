@@ -49,5 +49,10 @@ namespace RTWEB.Repository
         {
             return _db.Domains.FirstOrDefault(p=>p.Id==id);
         }
+
+        public bool ExestingName(string name)
+        {
+            return _db.Domains.Any(x=>x.DomainName== name);
+        }
     }
 }
