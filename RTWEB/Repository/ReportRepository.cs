@@ -142,5 +142,26 @@ namespace RTWEB.Repository
                 .OrderBy(x => x.SolvedDate)
                 .ToList();
         }
+
+        public List<CustomerIssueVM> CustomerLedger(int customerId)
+        {
+            var data = (from ci in _db.CustomerIssues
+                        where ci.CustomerId == customerId
+                        join c in _db.OurCustomers on ci.CustomerId equals c.Id
+                        join d in _db.Domains on ci.DomainId equals d.Id
+                        select new CustomerIssueVM
+                        {
+                            Id = ci.Id,
+                            Problem = ci.Problem,
+                            Domainname = d.DomainName,
+                            CustomerName = c.CustomerName,
+                            CreateDate = ci.CreateDate,
+                            Status = ci.Status
+                        }).ToList();
+
+            return data;
+        }
+
+
     }
 }

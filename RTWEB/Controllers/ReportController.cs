@@ -181,6 +181,35 @@ namespace RTWEB.Controllers
             return View("DailySupportReport", data);
         }
 
+        [HttpGet]
+        public IActionResult CustomerLedger()
+        {
+            var ourCustomer = _unitofWork.OurCustomerRepository.GetAll()
+                       .Select(w => new SelectListItem
+                       {
+                           Value = w.Id.ToString(),
+                           Text = w.CustomerName
+                       }).ToList();
+            ViewBag.OurCustomer = ourCustomer;
+         
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CustomerLedger(int customerId)
+        {
+            var ourCustomer = _unitofWork.OurCustomerRepository.GetAll()
+                      .Select(w => new SelectListItem
+                      {
+                          Value = w.Id.ToString(),
+                          Text = w.CustomerName
+                      }).ToList();
+            ViewBag.OurCustomer = ourCustomer;
+
+
+            var data =_unitofWork.ReportRepository.CustomerLedger(customerId);
+            return View("CustomerLedger", data);
+        }
 
     }
 }

@@ -1,0 +1,244 @@
+﻿@using RTWEB.ViewModel;
+@model List<CustomerIssueVM>
+
+<style>
+    .print-hide {
+        display: none !important;
+    }
+
+    @@media print {
+        body * {
+            visibility: hidden !important;
+        }
+
+        .domain-dropdown,
+        .domain-dropdown + .select2-container {
+            display: none !important;
+        }
+
+        .page-container, .page-container * {
+            visibility: visible !important;
+        }
+
+        button, .btn, a.btn {
+            display: none !important;
+        }
+
+        table, th, td {
+            border: 1px solid #000 !important;
+            border-collapse: collapse !important;
+        }
+
+            table th, table td {
+                background: none !important;
+                color: #000 !important;
+                font-size: 15pt !important;
+                padding: 4pt !important;
+            }
+
+        body {
+            background: white !important;
+            font-size: 17pt !important;
+            line-height: 1.2 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .print-hide {
+            display: block !important;
+        }
+    }
+
+    /* Custom table styling */
+    .custom-table th, .custom-table td {
+        border: 1px solid #000 !important;
+    }
+
+    .col-project {
+        width: 20% !important;
+        word-wrap: break-word;
+    }
+
+    .card.custom-card {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    }
+</style>
+
+<div class="container mt-4 page-container">
+    <div class="card custom-card print-hide p-3">
+        <h1>Domain Update List</h1>
+        <p>All Domain Update List</p>
+    </div>
+
+    <!-- Filter Form -->
+    <form asp-action="CustomerLedger" method="post" class="mb-3">
+        <!-- First Row: From / To Date -->
+        <div class="row g-3 mb-2">
+            <div class="col-md-6">
+                <label class="form-label">From</label>
+                <div class="input-group">
+                    <input type="text" id="fromDate" name="fromDate" class="form-control" />
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">To</label>
+                <div class="input-group">
+                    <input type="text" id="toDate" name="toDate" class="form-control" />
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Row: Domain / Customer / Buttons -->
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Customer</label>
+                <select id="customerId" name="customerId" class="form-control domain-dropdown">
+                    <option value="">-- Select Customer --</option>
+                    @foreach (var p in ViewBag.OurCustomer as List<SelectListItem>)
+                    {
+                        <option value="@p.Value">@p.Text</option>
+                    }
+                </select>
+            </div>
+
+           @*  <div class="col-md-4">
+                <label class="form-label">Customer</label>
+                <select id="customerId" name="customerId" class="form-control developer-dropdown" disabled>
+                    <option value="">-- Select Customer --</option>
+                </select>
+            </div> *@
+
+            <div class="col-md-4 d-flex flex-wrap align-items-end">
+                <button type="submit" class="btn btn-primary me-2 mb-2">View</button>
+                <a class="btn btn-danger me-2 mb-2" asp-action="DomainUpdateList">Reset</a>
+                <button type="button" class="btn btn-info me-2 mb-2" onclick="window.print()">
+                    <i class="fa fa-print"></i>
+                </button>
+                <a class="btn btn-primary mb-2" asp-controller="Domain" asp-action="Index">Domain List</a>
+            </div>
+        </div>
+    </form>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered custom-table">
+            <thead>
+                <tr>
+                    <th>Sl</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Domain</th>
+                    <th>Problem</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var sl = 1;
+                }
+                @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>@sl</td>
+                            <td>@item.CreateDate.ToString("dd-MM-yyyy")</td>
+                            <td>@item.CustomerName</td>
+                            <td>@item.Domainname</td>
+                            <td>@item.Problem</td>
+                            <td>@item.Status</td>
+                            
+                        </tr>
+                        sl++;
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No data available for the selected criteria.</p>
+    }
+</div>
+
+
+<script>
+
+    $(function () {
+        var today = new Date();
+
+        // আজকের তারিখ
+        var todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+        $("#fromDate").datepicker({
+            dateFormat: "dd-mm-yy",
+            changeMonth: true,
+            changeYear: true
+        }).datepicker("setDate", todayDate);
+
+        $("#toDate").datepicker({
+            dateFormat: "dd-mm-yy",
+            changeMonth: true,
+            changeYear: true
+        }).datepicker("setDate", todayDate);
+
+        $(".input-group-text").click(function () {
+            $(this).prev("input").focus();
+        });
+    });
+
+
+    $(document).ready(function () {
+        // select2 init
+        $(".domain-dropdown").select2({
+            placeholder: "--Select Customer--",
+            allowClear: true,
+            width: '100%'
+        });
+
+        $(document).on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        });
+
+        $(".developer-dropdown").select2({
+            placeholder: "--Select Customer--",
+            allowClear: true,
+            width: '100%'
+        });
+
+        $(document).on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        });
+
+
+
+
+        // domain change -> load customers
+        $('#domainId').on('change', function () {
+            var domainId = $(this).val();
+            var $customerDropdown = $('#customerId');
+
+            $customerDropdown.empty()
+                .append('<option value="">-- Select Customer --</option>')
+                .prop('disabled', true);
+
+            if (domainId) {
+                $.ajax({
+                    url: '/SolvedIssue/DomainWiseCustomer', 
+                    type: 'GET',
+                    data: { domainId: domainId },
+                    dataType: 'json',
+                    success: function (data) {
+                        $.each(data, function (i, customer) {
+                            $customerDropdown.append($('<option>', {
+                                value: customer.id,
+                                text: customer.customerName
+                            }));
+                        });
+                        $customerDropdown.prop('disabled', false);
+                    }
+                });
+            }
+        });
+    });
+</script>

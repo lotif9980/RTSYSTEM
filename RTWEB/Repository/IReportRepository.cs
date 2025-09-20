@@ -10,5 +10,8 @@ namespace RTWEB.Repository
         public IEnumerable<DomainReportVM> DomainUpdateList(int? domainId=null);
         public List<CustomerSolvedIssueVM> CustomerSolvedIssue(int? domainId = null, int?customerId=null);
         public List<CustomerSolvedIssueVM> CustomerDailySupport(DateTime? fromDate, DateTime? toDate, int? domainId = null, int?customerId=null);
+
+        public List<CustomerIssueVM> CustomerLedger(int customerId);
+    
     }
 }
