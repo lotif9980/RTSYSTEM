@@ -41,6 +41,14 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(CSPViewModel model)
         {
+            if (model.SolvedIssue == null || model.SolvedIssue.SolvedBy == null || model.SolvedIssue.DomainId==null
+                || model.SolvedIssue.CustomerId==null)
+            {
+                TempData["Message"] = "❌ Please select Employe and add at least one Problem";
+                TempData["MessageType"] = "danger";
+                return RedirectToAction("Save");
+            }
+
             var solvedIssue = new SolvedIssue
             {
                 CustomerId=model.SolvedIssue.CustomerId,

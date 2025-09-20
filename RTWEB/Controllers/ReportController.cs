@@ -115,7 +115,71 @@ namespace RTWEB.Controllers
             return View("DomainUpdateList", data);
         }
 
+        [HttpGet]
+        public IActionResult SolvedIssueReport()
+        {
+            var domain = _unitofWork.DomainRepository.GetAll()
+                        .Select(w => new SelectListItem
+                        {
+                            Value = w.Id.ToString(),
+                            Text = w.DomainName
+                        }).ToList();
+            ViewBag.Domain = domain;
+            return View();
+        }
 
+
+        [HttpPost]
+        public IActionResult SolvedIssueReport(int? domainId = null, int? customerId = null)
+        {
+            var domain = _unitofWork.DomainRepository.GetAll()
+                .Select(w => new SelectListItem
+                {
+                    Value = w.Id.ToString(),
+                    Text = w.DomainName
+                }).ToList();
+            ViewBag.Domain = domain;
+
+            var data = _unitofWork.ReportRepository.CustomerSolvedIssue(domainId, customerId);
+            return View("SolvedIssueReport", data); 
+        }
+
+
+
+
+        [HttpGet]
+        public IActionResult DailySupportReport()
+        {
+            var domain = _unitofWork.DomainRepository.GetAll()
+                        .Select(w => new SelectListItem
+                        {
+                            Value = w.Id.ToString(),
+                            Text = w.DomainName
+                        }).ToList();
+            ViewBag.Domain = domain;
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult DailySupportReport(DateTime? fromDate, DateTime? toDate, int? domainId = null, int? customerId = null )
+        {
+            if (!fromDate.HasValue || !toDate.HasValue)
+            {
+                return View(new List<CustomerSolvedIssueVM>());
+            }
+
+            var domain = _unitofWork.DomainRepository.GetAll()
+                .Select(w => new SelectListItem
+                {
+                    Value = w.Id.ToString(),
+                    Text = w.DomainName
+                }).ToList();
+            ViewBag.Domain = domain;
+
+            var data = _unitofWork.ReportRepository.CustomerDailySupport(fromDate.Value, toDate.Value, domainId, customerId);
+            return View("DailySupportReport", data);
+        }
 
 
     }

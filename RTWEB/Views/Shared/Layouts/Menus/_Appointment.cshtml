@@ -127,7 +127,7 @@
         </ul>
 
     </li>
-
+    @* SolvedIssueReport *@
     <li class="nav-item">
         <a href="#" class="nav-link">
             <i class="bi bi-telephone"></i>
@@ -168,6 +168,41 @@
             </li>
 
         </ul>
+
+    </li>
+
+    <li class="nav-item">
+        <a href="#" class="nav-link">
+            <i class="bi bi-file-earmark-text"></i>
+
+            <p>
+              Support Reports
+                <i class="nav-arrow bi bi-chevron-right"></i>
+            </p>
+        </a>
+
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a asp-controller="Report" asp-action="DailySupportReport" class="nav-link">
+                    <i class="ms-4 bi bi-hourglass-split"></i>
+                    <p>Daily Support </p>
+                </a>
+            </li>
+
+        </ul>
+
+
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a asp-controller="Report" asp-action="SolvedIssueReport" class="nav-link">
+                    <i class="ms-4 bi bi-hourglass-split"></i>
+                    <p>Support Ledger </p>
+                </a>
+            </li>
+
+        </ul>
+
+        
 
     </li>
 

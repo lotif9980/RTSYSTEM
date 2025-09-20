@@ -64,5 +64,83 @@ namespace RTWEB.Repository
                         }).ToList();
             return data;
         }
+
+        public List<CustomerSolvedIssueVM> CustomerSolvedIssue(int? domainId = null, int? customerId = null)
+        {
+            var query = from ci in _db.SolvedIssues
+                        where (!customerId.HasValue || ci.CustomerId == customerId.Value)
+                               && (!domainId.HasValue || ci.DomainId == domainId.Value)
+                              && ci.Status == Enum.CustomerSolvedIssueStatus.Solved
+                        join c in _db.OurCustomers on ci.CustomerId equals c.Id
+                        join d in _db.Domains on ci.DomainId equals d.Id
+                        join t in _db.Teams on ci.SolvedBy equals t.Id
+                        select new CustomerSolvedIssueVM
+                        {
+                            Id = ci.Id,
+                            CustomerName = c.CustomerName,
+                            DomainName = d.DomainName,
+                            SolvedBy = t.Name,
+                            SolvedDate = ci.SolvedDate
+                        };
+
+            var dataList = query.ToList();
+
+            // solve details attach
+            foreach (var item in dataList)
+            {
+                item.SolveDetails = (from sd in _db.SolvedDetails
+                                     join cissu in _db.CustomerIssues on sd.IssueId equals cissu.Id
+                                     where sd.SolvedIssueId == item.Id
+                                     select new SolveDetails
+                                     {
+                                         IssueName = cissu.Problem
+                                     }).ToList();
+            }
+
+            return dataList
+                .OrderBy(x => x.SolvedDate)
+                .ToList();
+        }
+
+        
+
+        public List<CustomerSolvedIssueVM> CustomerDailySupport(DateTime? fromDate, DateTime? toDate, int? domainId = null, int? customerId = null)
+        {
+            var query = from ci in _db.SolvedIssues
+                        where (!customerId.HasValue || ci.CustomerId == customerId.Value)
+                               && (!domainId.HasValue || ci.DomainId == domainId.Value)
+                               && ci.SolvedDate >= fromDate && ci.SolvedDate <= toDate
+                              && ci.Status == Enum.CustomerSolvedIssueStatus.Solved 
+                              
+                        join c in _db.OurCustomers on ci.CustomerId equals c.Id
+                        join d in _db.Domains on ci.DomainId equals d.Id
+                        join t in _db.Teams on ci.SolvedBy equals t.Id
+                        select new CustomerSolvedIssueVM
+                        {
+                            Id = ci.Id,
+                            CustomerName = c.CustomerName,
+                            DomainName = d.DomainName,
+                            SolvedBy = t.Name,
+                            SolvedDate = ci.SolvedDate
+                        };
+
+            var dataList = query.ToList();
+
+            // solve details attach
+            foreach (var item in dataList)
+            {
+                item.SolveDetails = (from sd in _db.SolvedDetails
+                                     join cissu in _db.CustomerIssues on sd.IssueId equals cissu.Id
+                                     where sd.SolvedIssueId == item.Id
+                                     select new SolveDetails
+                                     {
+                                         IssueName = cissu.Problem
+                                     }).ToList();
+            }
+
+            return dataList
+                .OrderBy(x => x.SolvedDate)
+                .ToList();
+        }
     }
 }
