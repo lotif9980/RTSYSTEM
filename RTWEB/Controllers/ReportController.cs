@@ -196,8 +196,13 @@ namespace RTWEB.Controllers
         }
 
         [HttpPost]
-        public IActionResult CustomerLedger(int customerId)
+        public IActionResult CustomerLedger(DateTime? fromDate, DateTime? toDate,int customerId )
         {
+            if (!fromDate.HasValue || !toDate.HasValue)
+            {
+                return View(new List<CustomerIssueVM>());
+            }
+
             var ourCustomer = _unitofWork.OurCustomerRepository.GetAll()
                       .Select(w => new SelectListItem
                       {
@@ -207,9 +212,40 @@ namespace RTWEB.Controllers
             ViewBag.OurCustomer = ourCustomer;
 
 
-            var data =_unitofWork.ReportRepository.CustomerLedger(customerId);
+            var data =_unitofWork.ReportRepository.CustomerLedger(fromDate.Value, toDate.Value,customerId);
             return View("CustomerLedger", data);
         }
+
+
+        [HttpGet]
+        public IActionResult PendingIssueReport()
+        {
+            var domain = _unitofWork.DomainRepository.GetAll()
+                        .Select(w => new SelectListItem
+                        {
+                            Value = w.Id.ToString(),
+                            Text = w.DomainName
+                        }).ToList();
+            ViewBag.Domain = domain;
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult PendingIssueReport(int? domainId = null, int? customerId = null)
+        {
+            var domain = _unitofWork.DomainRepository.GetAll()
+                .Select(w => new SelectListItem
+                {
+                    Value = w.Id.ToString(),
+                    Text = w.DomainName
+                }).ToList();
+            ViewBag.Domain = domain;
+
+            var data = _unitofWork.ReportRepository.PendingSupport( domainId , customerId );
+            return View("PendingIssueReport", data);
+        }
+
 
     }
 }

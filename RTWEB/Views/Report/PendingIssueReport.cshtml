@@ -16,6 +16,14 @@
             display: none !important;
         }
 
+        .developer-dropdown,
+        .developer-dropdown + .select2-container,
+        .hidePrint,
+        .hidePrint + .select2-container {
+            display: none !important;
+        }
+
+
         .page-container, .page-container * {
             visibility: visible !important;
         }
@@ -24,9 +32,6 @@
             display: none !important;
         }
 
-        .dateHide{
-            display: none !important;
-        }
 
         table, th, td {
             border: 1px solid #000 !important;
@@ -51,11 +56,7 @@
         .print-hide {
             display: block !important;
         }
-
-
     }
-
-
 
     /* Custom table styling */
     .custom-table th, .custom-table td {
@@ -74,94 +75,89 @@
 
 <div class="container mt-4 page-container">
     <div class="card custom-card print-hide text-center p-3">
-        <h1>Customer Ledger Report</h1>
-        <p>Customer: @(Model?.FirstOrDefault()?.CustomerName ?? "All")</p>
-        <p>Domain: @(Model?.FirstOrDefault()?.Domainname ?? "All")</p>
+        <h1>Pending Issue</h1>
+        <p>All Pending Issue</p>
+        <p>Date: @DateTime.Now.ToString("dd-MM-yyyy : hh:mm tt")</p>
     </div>
 
     <!-- Filter Form -->
-    <form asp-action="CustomerLedger" method="post" class="mb-3">
-        <!-- First Row: From / To Date -->
-        <div class="row g-3 mb-2">
-            <div class="col-md-6 dateHide">
-                <label class="form-label">From</label>
-                <div class="input-group">
-                    <input type="text" id="fromDate" name="fromDate" class="form-control" />
-                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                </div>
-            </div>
-
-            <div class="col-md-6 dateHide">
-                <label class="form-label">To</label>
-                <div class="input-group">
-                    <input type="text" id="toDate" name="toDate" class="form-control" />
-                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                </div>
-            </div>
+    <form asp-action="PendingIssueReport" method="post" class="mb-3 row g-2 align-items-end">
+        <div class="col-md-4">
+            <select id="domainId" name="domainId" class="form-control domain-dropdown">
+                <option value="">-- Select Domain --</option>
+                @foreach (var p in ViewBag.Domain as List<SelectListItem>)
+                {
+                    <option value="@p.Value">@p.Text</option>
+                }
+            </select>
         </div>
 
-        <!-- Second Row: Domain / Customer / Buttons -->
-        <div class="row g-3 align-items-end">
-            <div class="col-md-4">
-                <label class="form-label dateHide">Customer</label>
-                <select id="customerId" name="customerId" class="form-control  domain-dropdown ">
-                    <option value="">-- Select Customer --</option>
-                    @foreach (var p in ViewBag.OurCustomer as List<SelectListItem>)
-                    {
-                        <option value="@p.Value">@p.Text</option>
-                    }
-                </select>
-            </div>
+        <div class="col-md-4">
+            <select id="customerId" name="customerId" class="form-control developer-dropdown hidePrint" disabled>
+                <option value="">-- Select Customer --</option>
+            </select>
+        </div>
 
-           @*  <div class="col-md-4">
-                <label class="form-label">Customer</label>
-                <select id="customerId" name="customerId" class="form-control developer-dropdown" disabled>
-                    <option value="">-- Select Customer --</option>
-                </select>
-            </div> *@
-
-            <div class="col-md-4 d-flex flex-wrap align-items-end">
-                <button type="submit" class="btn btn-primary me-2 mb-2">View</button>
-                <a class="btn btn-danger me-2 mb-2" asp-action="DomainUpdateList">Reset</a>
-                <button type="button" class="btn btn-info me-2 mb-2" onclick="window.print()">
-                    <i class="fa fa-print"></i>
-                </button>
-                <a class="btn btn-primary mb-2" asp-controller="Domain" asp-action="Index">Domain List</a>
-            </div>
+        <div class="col-md-4 d-flex">
+            <button type="submit" class="btn btn-primary m-2">View</button>
+            <a class="btn btn-danger m-2" asp-action="DomainUpdateList">Reset</a>
+            <button type="button" class="btn btn-info m-2" onclick="window.print()">
+                <i class="fa fa-print"></i>
+            </button>
+            <a class="btn btn-primary m-2" asp-controller="Domain" asp-action="Index">Domain List</a>
         </div>
     </form>
 
+
     @if (Model != null && Model.Any())
     {
+        var groupedData = Model
+        .GroupBy(x => x.CustomerName)
+        .ToList();
+
         <table class="table table-bordered custom-table">
             <thead>
                 <tr>
+                    <th>Customer</th>
                     <th>Sl</th>
                     <th>Date</th>
-                    <th>Solved Date</th>
+                    <th>Domain</th>
                     <th>Problem</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-                @{
-                    var sl = 1;
-                }
-                @foreach (var item in Model)
+                @foreach (var group in groupedData)
                 {
+                    var rowCount = group.Count();
+                    var isFirstRow = true;
+                    var customerSl = 1; // প্রতিটি customer এর জন্য আলাদা স্ল কাউন্ট
+
+                    @foreach (var item in group)
+                    {
                         <tr>
-                            <td>@sl</td>
+                            @if (isFirstRow)
+                            {
+                                <td rowspan="@rowCount" style="vertical-align:middle; font-weight:bold;">
+                                    @group.Key
+                                </td>
+                            }
+
+                            <td>@customerSl</td>
                             <td>@item.CreateDate.ToString("dd-MM-yyyy")</td>
-                            <td>@item.UpdateDate?.ToString("dd-MM-yyyy")</td>
+                            <td>@item.Domainname</td>
                             <td>@item.Problem</td>
                             <td>@item.Status</td>
-                            
                         </tr>
-                        sl++;
+
+                        isFirstRow = false;
+                        customerSl++;
+                    }
                 }
             </tbody>
         </table>
     }
+
     else
     {
         <p>No data available for the selected criteria.</p>
@@ -170,35 +166,10 @@
 
 
 <script>
-
-    $(function () {
-        var today = new Date();
-
-        // আজকের তারিখ
-        var todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-        $("#fromDate").datepicker({
-            dateFormat: "dd-mm-yy",
-            changeMonth: true,
-            changeYear: true
-        }).datepicker("setDate", todayDate);
-
-        $("#toDate").datepicker({
-            dateFormat: "dd-mm-yy",
-            changeMonth: true,
-            changeYear: true
-        }).datepicker("setDate", todayDate);
-
-        $(".input-group-text").click(function () {
-            $(this).prev("input").focus();
-        });
-    });
-
-
     $(document).ready(function () {
         // select2 init
         $(".domain-dropdown").select2({
-            placeholder: "--Select Customer--",
+            placeholder: "--Select Domain--",
             allowClear: true,
             width: '100%'
         });
@@ -231,7 +202,7 @@
 
             if (domainId) {
                 $.ajax({
-                    url: '/SolvedIssue/DomainWiseCustomer', 
+                    url: '/SolvedIssue/DomainWiseCustomer', // controller action যা JSON রিটার্ন করবে
                     type: 'GET',
                     data: { domainId: domainId },
                     dataType: 'json',

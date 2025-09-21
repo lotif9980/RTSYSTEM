@@ -143,10 +143,12 @@ namespace RTWEB.Repository
                 .ToList();
         }
 
-        public List<CustomerIssueVM> CustomerLedger(int customerId)
+        public List<CustomerIssueVM> CustomerLedger(DateTime? fromDate, DateTime? toDate, int customerId)
         {
             var data = (from ci in _db.CustomerIssues
                         where ci.CustomerId == customerId
+                         && ci.CreateDate >= fromDate && ci.CreateDate <= toDate
+
                         join c in _db.OurCustomers on ci.CustomerId equals c.Id
                         join d in _db.Domains on ci.DomainId equals d.Id
 
@@ -169,6 +171,26 @@ namespace RTWEB.Repository
             return data;
         }
 
+        public List<CustomerIssueVM> PendingSupport(int? domainId = null, int? customerId = null)
+        {
+            var data = (from ci in _db.CustomerIssues
+                        where (!customerId.HasValue || ci.CustomerId == customerId.Value)
+                               && (!domainId.HasValue || ci.DomainId == domainId.Value)
+                               && ci.Status==Enum.CustomerIssueStatus.pending
+                        join c in _db.OurCustomers on ci.CustomerId equals c.Id
+                        join d in _db.Domains on ci.DomainId equals d.Id
 
+                        select new CustomerIssueVM
+                        {
+                            Id = ci.Id,
+                            Problem = ci.Problem,
+                            Domainname = d.DomainName,
+                            CustomerName = c.CustomerName,
+                            CreateDate = ci.CreateDate,
+                            Status = ci.Status
+                        }).ToList();
+
+            return data;
+        }
     }
 }

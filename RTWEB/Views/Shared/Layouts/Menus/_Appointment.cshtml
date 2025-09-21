@@ -192,7 +192,7 @@
         </ul>
 
 
-        <ul class="nav nav-treeview">
+        @* <ul class="nav nav-treeview">
             <li class="nav-item">
                 <a asp-controller="Report" asp-action="SolvedIssueReport" class="nav-link">
                     <i class="ms-4 bi bi-hourglass-split"></i>
@@ -200,7 +200,7 @@
                 </a>
             </li>
 
-        </ul>
+        </ul> *@
         <ul class="nav nav-treeview">
             <li class="nav-item">
                 <a asp-controller="Report" asp-action="CustomerLedger" class="nav-link">
@@ -211,7 +211,15 @@
 
         </ul>
 
-        
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a asp-controller="Report" asp-action="PendingIssueReport" class="nav-link">
+                    <i class="ms-4 bi bi-hourglass-split"></i>
+                    <p>Pending Support </p>
+                </a>
+            </li>
+
+        </ul>
 
     </li>
 
