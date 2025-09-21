@@ -9,6 +9,9 @@ namespace RTWEB.Controllers
     {
         private const string DefaultUsername = "admin";
         private const string DefaultPassword = "1234";
+        private const string UName = "support";
+        private const string UPassword = "Test_123";
+
 
         public IActionResult Index()
         {
@@ -43,12 +46,12 @@ namespace RTWEB.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string username, string password)
         {
-            if (username == DefaultUsername && password == DefaultPassword)
+          if((username == DefaultUsername && password == DefaultPassword)|| (username == UName && password == UPassword))
             {
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, username)
-        };
+                {
+                    new Claim(ClaimTypes.Name, username)
+                };
 
                 var claimsIdentity = new ClaimsIdentity(claims, "MyCookieAuth");
 
@@ -64,7 +67,7 @@ namespace RTWEB.Controllers
                     authProperties);
 
                 return RedirectToAction("Index", "Home");
-            }
+          }
 
             ModelState.AddModelError("", "Invalid username or password");
             return View();
