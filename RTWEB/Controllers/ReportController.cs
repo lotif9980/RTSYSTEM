@@ -196,12 +196,12 @@ namespace RTWEB.Controllers
         }
 
         [HttpPost]
-        public IActionResult CustomerLedger(DateTime? fromDate, DateTime? toDate,int customerId )
+        public IActionResult CustomerLedger(int customerId )
         {
-            if (!fromDate.HasValue || !toDate.HasValue)
-            {
-                return View(new List<CustomerIssueVM>());
-            }
+            //if (!fromDate.HasValue || !toDate.HasValue)
+            //{
+            //    return View(new List<CustomerIssueVM>());
+            //}
 
             var ourCustomer = _unitofWork.OurCustomerRepository.GetAll()
                       .Select(w => new SelectListItem
@@ -212,7 +212,7 @@ namespace RTWEB.Controllers
             ViewBag.OurCustomer = ourCustomer;
 
 
-            var data =_unitofWork.ReportRepository.CustomerLedger(fromDate.Value, toDate.Value,customerId);
+            var data =_unitofWork.ReportRepository.CustomerLedger(customerId);
             return View("CustomerLedger", data);
         }
 

@@ -6,6 +6,43 @@
         display: none !important;
     }
 
+    /* Sl column (serial) */
+    .custom-table th:nth-child(1),
+    .custom-table td:nth-child(1) {
+        width: 5% !important;
+        text-align: center;
+    }
+
+    /* Date column */
+    .custom-table th:nth-child(2),
+    .custom-table td:nth-child(2) {
+        width: 12% !important;
+        white-space: nowrap; /* sudhu ek line e date show hobe */
+        text-align: center;
+    }
+
+    /* Solved Date column */
+    .custom-table th:nth-child(3),
+    .custom-table td:nth-child(3) {
+        width: 12% !important;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    /* Problem column (boro hobe) */
+    .custom-table th:nth-child(4),
+    .custom-table td:nth-child(4) {
+        width: 50% !important;
+        word-wrap: break-word;
+    }
+
+    /* Status column (chhoto hobe) */
+    .custom-table th:nth-child(5),
+    .custom-table td:nth-child(5) {
+        width: 10% !important;
+        text-align: center;
+    }
+
     @@media print {
         body * {
             visibility: hidden !important;
@@ -77,6 +114,7 @@
         <h1>Customer Ledger Report</h1>
         <p>Customer: @(Model?.FirstOrDefault()?.CustomerName ?? "All")</p>
         <p>Domain: @(Model?.FirstOrDefault()?.Domainname ?? "All")</p>
+        <p>Date: @DateTime.Now.ToString("dd-MM-yyyy : hh:mm tt")</p>
     </div>
 
     <!-- Filter Form -->

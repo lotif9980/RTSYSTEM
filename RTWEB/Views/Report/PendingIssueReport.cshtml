@@ -6,6 +6,56 @@
         display: none !important;
     }
 
+    .custom-table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+        /* Customer column */
+        .custom-table th:nth-child(1),
+        .custom-table td:nth-child(1) {
+            width: 15% !important;
+            word-wrap: break-word;
+        }
+
+        /* Sl column */
+        .custom-table th:nth-child(2),
+        .custom-table td:nth-child(2) {
+            width: 5% !important;
+            text-align: center;
+        }
+
+        /* Date column */
+        .custom-table th:nth-child(3),
+        .custom-table td:nth-child(3) {
+            width: 12% !important;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* Domain column (ছোট করা হলো) */
+        .custom-table th:nth-child(4),
+        .custom-table td:nth-child(4) {
+            width: 18% !important;
+            word-wrap: break-word;
+        }
+
+        /* Problem column (সবচেয়ে বড়) */
+        .custom-table th:nth-child(5),
+        .custom-table td:nth-child(5) {
+            width: 40% !important;
+            word-wrap: break-word;
+        }
+
+        /* Status column */
+        .custom-table th:nth-child(6),
+        .custom-table td:nth-child(6) {
+            width: 10% !important;
+            text-align: center;
+        }
+
+    
+
     @@media print {
         body * {
             visibility: hidden !important;
@@ -41,7 +91,7 @@
             table th, table td {
                 background: none !important;
                 color: #000 !important;
-                font-size: 15pt !important;
+                font-size: 12pt !important;
                 padding: 4pt !important;
             }
 
@@ -131,7 +181,7 @@
                 {
                     var rowCount = group.Count();
                     var isFirstRow = true;
-                    var customerSl = 1; // প্রতিটি customer এর জন্য আলাদা স্ল কাউন্ট
+                    var customerSl = 1; 
 
                     @foreach (var item in group)
                     {

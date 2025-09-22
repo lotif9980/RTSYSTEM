@@ -143,11 +143,11 @@ namespace RTWEB.Repository
                 .ToList();
         }
 
-        public List<CustomerIssueVM> CustomerLedger(DateTime? fromDate, DateTime? toDate, int customerId)
+        public List<CustomerIssueVM> CustomerLedger( int customerId)
         {
             var data = (from ci in _db.CustomerIssues
                         where ci.CustomerId == customerId
-                         && ci.CreateDate >= fromDate && ci.CreateDate <= toDate
+                        
 
                         join c in _db.OurCustomers on ci.CustomerId equals c.Id
                         join d in _db.Domains on ci.DomainId equals d.Id

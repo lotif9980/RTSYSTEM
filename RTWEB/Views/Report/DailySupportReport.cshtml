@@ -6,6 +6,44 @@
         display: none !important;
     }
 
+    /* Sl column (খুব ছোট) */
+    .custom-table th:nth-child(1),
+    .custom-table td:nth-child(1) {
+        width: 5% !important;
+        text-align: center;
+    }
+
+    /* Date column (ছোট) */
+    .custom-table th:nth-child(2),
+    .custom-table td:nth-child(2) {
+        width: 10% !important;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    /* Customer column (ছোট) */
+    .custom-table th:nth-child(3),
+    .custom-table td:nth-child(3) {
+        width: 15% !important;
+        word-wrap: break-word;
+        text-align: center;
+    }
+
+    /* Solved By column (ছোট) */
+    .custom-table th:nth-child(4),
+    .custom-table td:nth-child(4) {
+        width: 10% !important;
+        text-align: center;
+        word-wrap: break-word;
+    }
+
+    /* Issues column (সবচেয়ে বড়) */
+    .custom-table th:nth-child(5),
+    .custom-table td:nth-child(5) {
+        width: 60% !important;
+        word-wrap: break-word;
+    }
+
     @@media print {
         body * {
             visibility: hidden !important;
@@ -21,6 +59,10 @@
         }
 
         button, .btn, a.btn {
+            display: none !important;
+        }
+
+        .hidePrint{
             display: none !important;
         }
 
@@ -65,15 +107,15 @@
 </style>
 
 <div class="container mt-4 page-container">
-    <div class="card custom-card print-hide p-3">
-        <h1>Domain Update List</h1>
-        <p>All Domain Update List</p>
+    <div class="card custom-card print-hide p-3 text-center">
+        <h1>Daily Support</h1>
+        <p>Date: @DateTime.Now.ToString("dd-MM-yyyy : hh:mm tt")</p>
     </div>
 
     <!-- Filter Form -->
     <form asp-action="DailySupportReport" method="post" class="mb-3">
         <!-- First Row: From / To Date -->
-        <div class="row g-3 mb-2">
+        <div class="row g-3 mb-2 hidePrint">
             <div class="col-md-6">
                 <label class="form-label">From</label>
                 <div class="input-group">
@@ -92,7 +134,7 @@
         </div>
 
         <!-- Second Row: Domain / Customer / Buttons -->
-        <div class="row g-3 align-items-end">
+        <div class="row g-3 align-items-end hidePrint">
             <div class="col-md-4">
                 <label class="form-label">Domain</label>
                 <select id="domainId" name="domainId" class="form-control domain-dropdown">
@@ -133,7 +175,7 @@
                     <th>Sl</th>
                     <th>Date</th>
                     <th>Customer</th>
-                    <th>Domain</th>
+                    @* <th>Domain</th> *@
                     <th>Solved By</th>
                     <th>Issues</th>
                 </tr>
@@ -151,8 +193,8 @@
                         <tr>
                             <td>@sl</td>
                             <td>@item.SolvedDate?.ToString("dd-MM-yyyy")</td>
-                            <td>@item.CustomerName</td>
-                            <td>@item.DomainName</td>
+                            <td>@item.CustomerName ||<br /> @item.DomainName</td>
+                            @* <td>@item.DomainName</td> *@
                             <td>@item.SolvedBy</td>
                             <td>
                                 @if (item.SolveDetails != null && item.SolveDetails.Any())
