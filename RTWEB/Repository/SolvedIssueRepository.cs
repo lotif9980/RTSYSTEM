@@ -55,6 +55,7 @@ namespace RTWEB.Repository
         public CustomerSolvedIssueVM Details(int id)
         {
             var data = (from cIssue in _db.SolvedIssues
+                        where cIssue.Id==id
                         join oc in _db.OurCustomers on cIssue.CustomerId equals oc.Id
                         join dom in _db.Domains on cIssue.DomainId equals dom.Id
                         join team in _db.Teams on cIssue.SolvedBy equals team.Id
