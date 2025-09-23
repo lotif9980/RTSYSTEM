@@ -36,9 +36,29 @@ namespace RTWEB.Repository
             return _db.OurCustomers;
         }
 
-        public void Save(OurCustomerVM customer)
+        public void Save(OurCustomer customer)
         {
             _db.Add(customer);
         }
+
+        public OurCustomer? GetLastCustomer()
+        {
+           return _db.OurCustomers.OrderByDescending(d=>d.Id).FirstOrDefault();
+        }
+
+        public string GenerateNewCode()
+        {
+            var lastcustomer=GetLastCustomer();
+            string newCode = "1";
+
+            if(lastcustomer !=null && int.TryParse(lastcustomer.Code,out int lastCode))
+            {
+                newCode=(lastCode +1 ).ToString("D5");
+            }
+
+            return newCode;
+        }
+
+
     }
 }

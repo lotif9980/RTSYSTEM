@@ -1,0 +1,107 @@
+﻿@using RTWEB.ViewModel
+@model OurCustomerVM
+
+@{
+    var domains = ViewBag.Domains;
+}
+<div class="container-fluid mt-3">
+    <form asp-action="Save" id="myForm" method="post">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6">
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <strong>Our Customer</strong>
+                        <a class="btn btn-primary btn-sm" asp-action="Index">Exesting Customer</a>
+                    </div>
+                    <div class="card-body">
+
+                        <!-- Code -->
+                        <div class="mb-3 row">
+                            <label asp-for="Code" class="col-sm-3 col-form-label">Code</label>
+                            <div class="col-sm-9">
+                                <input asp-for="Code" class="form-control" id="Code">
+                                <span asp-validation-for="Code" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Customer Name -->
+                        <div class="mb-3 row">
+                            <label asp-for="CustomerName" class="col-sm-3 col-form-label">Customer Name</label>
+                            <div class="col-sm-9">
+                                <input asp-for="CustomerName" class="form-control" id="cName">
+                                <span asp-validation-for="CustomerName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-3 row">
+                            <label asp-for="Address" class="col-sm-3 col-form-label">Address</label>
+                            <div class="col-sm-9">
+                                <input asp-for="Address" class="form-control" id="address">
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Contact No -->
+                        <div class="mb-3 row">
+                            <label asp-for="ContactNo" class="col-sm-3 col-form-label">Contact No</label>
+                            <div class="col-sm-9">
+                                <input asp-for="ContactNo" class="form-control" id="contactno">
+                                <span asp-validation-for="ContactNo" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Domain -->
+                        <div class="mb-3 row">
+                            <label asp-for="DoaminId" class="col-sm-3 col-form-label">Domain</label>
+                            <div class="col-sm-9">
+                                <select id="domainId" asp-for="DoaminId" class="form-select"
+                                        asp-items="@(new SelectList(domains, "Id", "DomainName"))">
+                                    <option value="">---Select Domain---</option>
+                                </select>
+                                <span asp-validation-for="DomainName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                            <button type="submit" class="btn btn-warning">Save</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".domain-dropdown").select2({ placeholder: "--Select Domain--", allowClear: true, width: '100%' });
+        $(".developer-dropdown").select2({ placeholder: "--Select Customer--", allowClear: true, width: '100%' });
+
+        $(document).ready(function(){
+        $("#myForm").on('submit',function(){
+            var Code=$("#Code").val().trim();
+            var cName=$("#cName").val().trim();
+            var address=$("#address").val().trim();
+            var contactno=$("#contactno").val().trim();
+            var domainId=$("#domainId").val().trim();
+
+              var offset=20;
+              var container=$("body");
+
+              if(Code==="")offset=createAlert("❌ Code is Required",container,offset);
+              if(cName==="")offset=createAlert("❌ Customer Name is Required",container,offset);
+              if(address==="")offset=createAlert("❌ Address is Required",container,offset);
+              if(contactno==="")offset=createAlert("❌ Contact No is Required",container,offset);
+              if(domainId==="")offset=createAlert("❌ Domain is Required",container,offset);
+
+                if($(".field-alert").length >0) return false;
+
+                this.submit();
+        })
+    })
+    });
+</script>

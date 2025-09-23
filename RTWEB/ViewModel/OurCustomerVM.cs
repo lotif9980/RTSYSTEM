@@ -12,7 +12,6 @@ namespace RTWEB.ViewModel
         public DateTime CreateDate { get; set; }
         public string? DomainName { get; set; }
         public int? Status { get; set; }
-
-
+        public int? DoaminId { get; set; }
     }
 }

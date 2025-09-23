@@ -36,4 +36,10 @@ namespace RTWEB.Enum
         Solved = 1,
         Delete =2
     }
+
+    public enum OurCustomerStatus
+    {
+        Active=1,
+        InActive=2
+    }
 }

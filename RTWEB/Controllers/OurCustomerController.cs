@@ -1,7 +1,9 @@
 ﻿using HMSYSTEM.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RTWEB.Models;
 using RTWEB.Repository;
+using RTWEB.ViewModel;
 
 namespace RTWEB.Controllers
 {
@@ -23,5 +25,61 @@ namespace RTWEB.Controllers
                     .ToPagedList(page, pageSize); ;
             return View(data);
         }
+
+        [HttpGet]
+        public IActionResult Save()
+        {
+
+            var data = _unitofWork.DomainRepository.GetAll();
+            ViewBag.Domains= data;
+
+            var model = new OurCustomerVM
+            {
+                Code=_unitofWork.OurCustomerRepository.GenerateNewCode(),
+            };
+
+            return View(model);
+
+        }
+
+        [HttpPost]
+        public IActionResult Save(OurCustomerVM model)
+        {
+            if(model.DoaminId==null || model.CustomerName==null || model.ContactNo==null)
+            {
+                TempData["Message"] = "❌ Please Input Valid data";
+                TempData["MessageType"] = "danger";
+
+
+                var vm = _unitofWork.DomainRepository.GetAll();
+                ViewBag.Domains = vm;
+
+                var modelRe = new OurCustomerVM
+                {
+                    Code = _unitofWork.OurCustomerRepository.GenerateNewCode(),
+                };
+
+                return View(modelRe);
+            }
+
+            var data = new OurCustomer
+            {
+                Code=model.Code,
+                CustomerName=model.CustomerName,
+                Address=model.Address,
+                ContactNo=model.ContactNo,
+                DomainId=model.DoaminId
+            };
+
+            _unitofWork.OurCustomerRepository.Save(data);
+            _unitofWork.Complete();
+
+            TempData["Message"] = "✅ Saved Successfully";
+            TempData["MessageType"] = "success";
+
+            return RedirectToAction("Save");
+        }
+
+
     }
 }

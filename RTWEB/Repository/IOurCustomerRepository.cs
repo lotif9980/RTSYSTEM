@@ -7,6 +7,9 @@ namespace RTWEB.Repository
     {
         public IEnumerable<OurCustomerVM> GetAll();
         public IEnumerable<OurCustomer> CustomerList();
-        public void Save(OurCustomerVM customer);
+        public void Save(OurCustomer customer);
+
+        public OurCustomer? GetLastCustomer();
+        public string GenerateNewCode();
     }
 }
