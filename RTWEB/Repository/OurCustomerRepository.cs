@@ -1,4 +1,5 @@
-﻿using RTWEB.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RTWEB.Data;
 using RTWEB.Models;
 using RTWEB.ViewModel;
 
@@ -59,6 +60,16 @@ namespace RTWEB.Repository
             return newCode;
         }
 
+        public void Delete(int id)
+        {
+           var data =_db.OurCustomers.Find(id);
+           _db.Remove(data);
 
+        }
+
+        public Task<bool> IsUsedCustomer(int id)
+        {
+            return _db.CustomerIssues.AnyAsync(d => d.CustomerId == id);
+        }
     }
 }

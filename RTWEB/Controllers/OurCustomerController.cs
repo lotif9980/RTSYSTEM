@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RTWEB.Models;
 using RTWEB.Repository;
 using RTWEB.ViewModel;
+using System.Threading.Tasks;
 
 namespace RTWEB.Controllers
 {
@@ -80,6 +81,23 @@ namespace RTWEB.Controllers
             return RedirectToAction("Save");
         }
 
+        public async Task<IActionResult> Delete(int id)
+        {
+            var isUsed=await _unitofWork.OurCustomerRepository.IsUsedCustomer(id);
+            if (isUsed)
+            {
+                TempData["Message"] = "✅The customer has a transaction.";
+                TempData["MessageType"] = "danger";
+                return RedirectToAction("Index");
+            }
+
+            _unitofWork.OurCustomerRepository.Delete(id);
+            _unitofWork.Complete();
+
+            TempData["Message"] = "✅ Delete Successfully";
+            TempData["MessageType"] = "success";
+            return RedirectToAction("Index");
+        }
 
     }
 }

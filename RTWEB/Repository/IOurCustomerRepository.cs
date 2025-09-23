@@ -11,5 +11,7 @@ namespace RTWEB.Repository
 
         public OurCustomer? GetLastCustomer();
         public string GenerateNewCode();
+        public void Delete(int id);
+        public Task<bool>IsUsedCustomer(int id);
     }
 }
