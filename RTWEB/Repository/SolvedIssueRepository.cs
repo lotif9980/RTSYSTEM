@@ -17,9 +17,13 @@ namespace RTWEB.Repository
 
       
 
-        public IEnumerable<CustomerSolvedIssueVM> GetSolvedIssue()
+        public IEnumerable<CustomerSolvedIssueVM> GetSolvedIssue(DateTime? date = null)
         {
+            var filterDate = date?.Date ?? DateTime.Today;
+
+
             var data=(from s in _db.SolvedIssues
+                      where s.SolvedDate == filterDate
                       join t in _db.Teams on s.SolvedBy equals t.Id
                       join oc in _db.OurCustomers on s.CustomerId equals oc.Id
                       select new CustomerSolvedIssueVM

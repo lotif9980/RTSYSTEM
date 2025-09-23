@@ -59,7 +59,7 @@
                                 <th class="col-domain">Domain</th>
                                 <th class="col-problem">Problem</th>
                                 <th class="col-status">Status</th>
-                                <th class="col-action">Action</th>
+                               
                             </tr>
                         </thead>
                         <tbody id="domainBoady">
@@ -74,16 +74,6 @@
                                     <td>@item.Domainname</td>
                                     <td>@item.Problem</td>
                                     <td>@item.Status</td>
-                                    <td>
-                                        <div class="d-flex justify-content-center btn-group-sm">
-                                            <a class="btn btn-primary ms-2" asp-route-id="@item.Id" asp-controller="Appointment" asp-action="Edit">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <a class="btn btn-danger ms-2" asp-route-id="@item.Id" asp-controller="Domain" asp-action="Delete">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
                                 </tr>
                                 count++;
                             }

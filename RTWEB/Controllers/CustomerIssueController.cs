@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RTWEB.Models;
 using RTWEB.Repository;
 using RTWEB.ViewModel;
+using System.Threading.Tasks;
 
 namespace RTWEB.Controllers
 {
@@ -141,10 +142,21 @@ namespace RTWEB.Controllers
             return Json(data);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
 
+            var isUsed=await _unitofWork.CustomerIssueRepository.IsUsedIssue(id);
+
+            if (isUsed)
+            {
+                TempData["Message"] = "❌ Issue Already Solved";
+                TempData["MessageType"] = "danger";
+
+                return RedirectToAction("Index");
+            }
+
            _unitofWork.CustomerIssueRepository.Delete(id);
+
            var result=_unitofWork.Complete();
 
             if(result > 0)

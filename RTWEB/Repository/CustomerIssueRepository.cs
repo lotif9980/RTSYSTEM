@@ -1,4 +1,5 @@
-﻿using RTWEB.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RTWEB.Data;
 using RTWEB.Enum;
 using RTWEB.Models;
 using RTWEB.ViewModel;
@@ -72,6 +73,11 @@ namespace RTWEB.Repository
                 data.Status = status;
                 _db.CustomerIssues.Update(data);
             }
+        }
+
+        public Task<bool> IsUsedIssue(int id)
+        {
+           return _db.SolvedDetails.AnyAsync(x=>x.IssueId == id);
         }
     }
 }
