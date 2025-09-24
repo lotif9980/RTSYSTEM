@@ -52,6 +52,21 @@ namespace RTWEB.Repository
             return data;
         }
 
+        public IEnumerable<DomainReportVM> ProjectWiseDomain(int? projectId = null)
+        {
+           var data=(from d in _db.Domains
+                     select new DomainReportVM 
+                     {
+                      Id=d.Id,
+                      DomainName =d.DomainName,
+                      DateTime=d.LastUpdateDate,
+                      BranchName=d.UpdateBranch
+                     }).OrderByDescending(x=>x.ProjectId).ToList();
+
+            return data;
+        }
+
+
         public IEnumerable<DomainReportVM> DomainUpdateList(int? domainId = null)
         {
             var data = (from dom in _db.Domains
@@ -64,6 +79,8 @@ namespace RTWEB.Repository
                         }).ToList();
             return data;
         }
+
+
 
         public List<CustomerSolvedIssueVM> CustomerSolvedIssue(int? domainId = null, int? customerId = null)
         {
@@ -193,5 +210,7 @@ namespace RTWEB.Repository
 
             return data;
         }
+
+       
     }
 }

@@ -8,6 +8,8 @@
         public string DeveloperName {  get; set; }
         public string TesterName { get; set; }
         public string BranchName {  get; set; }
+        public string ? ProjectName {  get; set; }
+        public int? ProjectId {  get; set; }
 
     }
 }

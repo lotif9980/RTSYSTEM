@@ -1,0 +1,156 @@
+﻿@using RTWEB.ViewModel;
+@model List<DomainReportVM>
+
+<style>
+    .print-hide {
+        display: none !important;
+    }
+
+    
+
+    @@media print {
+        body * {
+            visibility: hidden !important;
+        }
+
+        .domain-dropdown,
+        .domain-dropdown + .select2-container {
+            display: none !important;
+        }
+
+        .page-container, .page-container * {
+            visibility: visible !important;
+        }
+
+        button, .btn, a.btn {
+            display: none !important;
+        }
+
+        table, th, td {
+            border: 1px solid #000 !important;
+            border-collapse: collapse !important;
+        }
+
+            table th, table td {
+                background: none !important;
+                color: #000 !important;
+                font-size: 15pt !important;
+                padding: 4pt !important;
+            }
+
+        body {
+            background: white !important;
+            font-size: 17pt !important;
+            line-height: 1.2 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .print-hide {
+            display: block !important;
+        }
+    }
+
+    /* Custom table styling */
+    .custom-table th, .custom-table td {
+        border: 1px solid #000 !important;
+    }
+
+    /* Column width control */
+    .col-project {
+        width: 20% !important;
+        word-wrap: break-word;
+    }
+
+
+    /* Single shadow */
+    .card.custom-card {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    }
+
+</style>
+
+<div class="container mt-4 page-container">
+    <div class="d-flex justify-content-end mb-2">
+    </div>
+
+    <div class="card custom-card print-hide p-3">
+            <h1>Domain Update List</h1>
+            <p>All Domain Update List</p>
+        </div>
+
+        <!-- Optional Filter Form -->
+        <form asp-action="DomainUpdateList" method="post" class="mb-3 row g-2 align-items-end">
+            <div class="col-md-4">
+                <select name="projectId" class="form-control project-dropdown">
+                    <option value="">-- Select Project --</option>
+                    @foreach (var p in ViewBag.Project as List<SelectListItem>)
+                    {
+                        <option value="@p.Value">@p.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-8 d-flex">
+                <button type="submit" class="btn btn-primary m-2">View</button>
+            <a class="btn btn-danger m-2" asp-action="DomainUpdateList">Reset</a>
+                <button type="button" class="btn btn-info m-2" onclick="window.print()">
+                    <i class="fa fa-print"></i>
+                </button>
+                <a class="btn btn-primary m-2" asp-controller="Domain" asp-action="Index">Domain List</a>
+            </div>
+        </form>
+
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover mt-3 custom-table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Project Name</th>
+                            <th class="col-sl">Sl</th>
+                            <th class="col-project">Domain Name</th>
+                            <th class="col-title">Update Date</th>
+                            <th class="col-status">Branch Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var sl = 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ProjectName</td>
+                                <td class="col-sl">@sl</td>
+                                <td class="col-project">@item.DomainName</td>
+                                <td class="col-title">@(item.DateTime?.ToString("dd-MM-yyyy") ?? "N/A")</td>
+                                <td class="col-status">@(item.BranchName ?? "N/A")</td>
+                            </tr>
+                            sl++;
+                        }
+                   
+
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p>No data available for the selected criteria.</p>
+        }
+    </div>
+</div>
+<script>
+     $(document).ready(function () {
+         $(".project-dropdown").select2({
+             placeholder: "--Select Project--",
+             allowClear: true,
+             width: '100%'
+         });
+
+         $(document).on('select2:open', () => {
+             document.querySelector('.select2-search__field').focus();
+         });
+    });
+</script>

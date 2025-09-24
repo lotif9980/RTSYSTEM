@@ -12,5 +12,6 @@ namespace RTWEB.Models
         public DomainEnum DomainType { get; set; }
         public string? UpdateBranch {  get; set; }
         public DateTime? LastUpdateDate { get; set; }
+        public int? ProjectId {  get; set; }
     }
 }

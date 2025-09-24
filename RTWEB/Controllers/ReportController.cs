@@ -116,6 +116,38 @@ namespace RTWEB.Controllers
         }
 
         [HttpGet]
+        public IActionResult ProjectWiseDomain()
+        {
+            var project = _unitofWork.ProjectRepository.GetProjects()
+                   .Select(w => new SelectListItem
+                   {
+                       Value = w.Id.ToString(),
+                       Text = w.ProjectName
+                   }).ToList();
+
+            ViewBag.Project = project;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ProjectWiseDomain(int? projectId = null)
+        {
+            var domain = _unitofWork.ProjectRepository.GetProjects()
+                .Select(w => new SelectListItem
+                {
+                    Value = w.Id.ToString(),
+                    Text = w.ProjectName
+                }).ToList();
+
+            ViewBag.Domain = domain;
+
+            var data = _unitofWork.ReportRepository.ProjectWiseDomain(projectId);
+            return View("ProjectWiseDomain", data);
+        }
+
+
+        [HttpGet]
         public IActionResult SolvedIssueReport()
         {
             var domain = _unitofWork.DomainRepository.GetAll()
