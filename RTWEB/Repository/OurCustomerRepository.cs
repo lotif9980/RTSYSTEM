@@ -71,5 +71,10 @@ namespace RTWEB.Repository
         {
             return _db.CustomerIssues.AnyAsync(d => d.CustomerId == id);
         }
+
+        public bool ExestingName(string name,int domainId)
+        {
+            return _db.OurCustomers.Any(x=>x.CustomerName==name && x.DomainId==domainId);
+        }
     }
 }

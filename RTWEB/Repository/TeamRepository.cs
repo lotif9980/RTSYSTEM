@@ -14,9 +14,9 @@ namespace RTWEB.Repository
         }
 
        
-        public IEnumerable<Team> GetTeams()
+        public List<Team> GetTeams()
         {
-            return _db.Teams;
+            return _db.Teams.ToList();
         }
 
         public void Save(Team team)

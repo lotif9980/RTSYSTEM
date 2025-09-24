@@ -104,11 +104,12 @@ namespace RTWEB.Repository
 
         
 
-        public List<CustomerSolvedIssueVM> CustomerDailySupport(DateTime? fromDate, DateTime? toDate, int? domainId = null, int? customerId = null)
+        public List<CustomerSolvedIssueVM> CustomerDailySupport(DateTime? fromDate, DateTime? toDate, int? domainId = null, int? customerId = null , int? solvedBy=null)
         {
             var query = from ci in _db.SolvedIssues
                         where (!customerId.HasValue || ci.CustomerId == customerId.Value)
                                && (!domainId.HasValue || ci.DomainId == domainId.Value)
+                               && (!solvedBy.HasValue || ci.SolvedBy == solvedBy.Value)
                                && ci.SolvedDate >= fromDate && ci.SolvedDate <= toDate
                               && ci.Status == Enum.CustomerSolvedIssueStatus.Solved 
                               

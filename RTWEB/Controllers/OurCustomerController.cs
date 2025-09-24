@@ -63,6 +63,19 @@ namespace RTWEB.Controllers
                 return View(modelRe);
             }
 
+           
+            bool exestingName= _unitofWork.OurCustomerRepository.ExestingName(model.CustomerName, model.DoaminId);
+            if (exestingName)
+            {
+                TempData["Message"] = "❌ Already Customer Added";
+                TempData["MessageType"] = "danger";
+
+                var vm = _unitofWork.DomainRepository.GetAll();
+                ViewBag.Domains = vm;
+
+                return View(model);
+            }
+
             var data = new OurCustomer
             {
                 Code=model.Code,

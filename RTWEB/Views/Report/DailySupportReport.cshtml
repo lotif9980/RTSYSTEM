@@ -6,43 +6,40 @@
         display: none !important;
     }
 
-    /* Sl column (খুব ছোট) */
-    .custom-table th:nth-child(1),
-    .custom-table td:nth-child(1) {
-        width: 5% !important;
-        text-align: center;
+    /* Table column widths */
+    .custom-table th, .custom-table td {
+        border: 1px solid #000 !important;
     }
 
-    /* Date column (ছোট) */
-    .custom-table th:nth-child(2),
-    .custom-table td:nth-child(2) {
-        width: 10% !important;
-        text-align: center;
-        white-space: nowrap;
-    }
+        .custom-table th:nth-child(1),
+        .custom-table td:nth-child(1) {
+            width: 3% !important;
+            text-align: center;
+        }
 
-    /* Customer column (ছোট) */
-    .custom-table th:nth-child(3),
-    .custom-table td:nth-child(3) {
-        width: 15% !important;
-        word-wrap: break-word;
-        text-align: center;
-    }
+        .custom-table th:nth-child(2),
+        .custom-table td:nth-child(2) {
+            width: 5% !important;
+            text-align: center;
+        }
 
-    /* Solved By column (ছোট) */
-    .custom-table th:nth-child(4),
-    .custom-table td:nth-child(4) {
-        width: 10% !important;
-        text-align: center;
-        word-wrap: break-word;
-    }
+        .custom-table th:nth-child(3),
+        .custom-table td:nth-child(3) {
+            width: 6% !important;
+            text-align: center;
+        }
 
-    /* Issues column (সবচেয়ে বড়) */
-    .custom-table th:nth-child(5),
-    .custom-table td:nth-child(5) {
-        width: 60% !important;
-        word-wrap: break-word;
-    }
+        .custom-table th:nth-child(4),
+        .custom-table td:nth-child(4) {
+            width: 15% !important;
+           
+        }
+
+        .custom-table th:nth-child(5),
+        .custom-table td:nth-child(5) {
+            width: 55% !important;
+            word-wrap: break-word;
+        }
 
     @@media print {
         body * {
@@ -62,7 +59,7 @@
             display: none !important;
         }
 
-        .hidePrint{
+        .hidePrint {
             display: none !important;
         }
 
@@ -90,20 +87,6 @@
             display: block !important;
         }
     }
-
-    /* Custom table styling */
-    .custom-table th, .custom-table td {
-        border: 1px solid #000 !important;
-    }
-
-    .col-project {
-        width: 20% !important;
-        word-wrap: break-word;
-    }
-
-    .card.custom-card {
-        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-    }
 </style>
 
 <div class="container mt-4 page-container">
@@ -114,9 +97,9 @@
 
     <!-- Filter Form -->
     <form asp-action="DailySupportReport" method="post" class="mb-3">
-        <!-- First Row: From / To Date -->
+        <!-- First Row -->
         <div class="row g-3 mb-2 hidePrint">
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <label class="form-label">From</label>
                 <div class="input-group">
                     <input type="text" id="fromDate" name="fromDate" class="form-control" />
@@ -124,17 +107,14 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <label class="form-label">To</label>
                 <div class="input-group">
                     <input type="text" id="toDate" name="toDate" class="form-control" />
                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                 </div>
             </div>
-        </div>
 
-        <!-- Second Row: Domain / Customer / Buttons -->
-        <div class="row g-3 align-items-end hidePrint">
             <div class="col-md-3">
                 <label class="form-label">Domain</label>
                 <select id="domainId" name="domainId" class="form-control domain-dropdown">
@@ -146,40 +126,43 @@
                 </select>
             </div>
 
-
             <div class="col-md-3">
                 <label class="form-label">Solved By</label>
-                <select id="" name="teamId" class="form-control domain-dropdown">
+                <select id="" name="solvedBy" class="form-control team-dropdown">
                     <option value="">-- Select Solved By --</option>
-                    @foreach (var p in ViewBag.Domain as List<SelectListItem>)
+                    @foreach (var p in ViewBag.Team as List<SelectListItem>)
                     {
                         <option value="@p.Value">@p.Text</option>
                     }
                 </select>
             </div>
+        </div>
 
-            <div class="col-md-3">
+        <!-- Second Row -->
+        <div class="row g-3 align-items-end hidePrint">
+            <div class="col-md-4">
                 <label class="form-label">Customer</label>
                 <select id="customerId" name="customerId" class="form-control developer-dropdown" disabled>
                     <option value="">-- Select Customer --</option>
                 </select>
             </div>
 
-            <div class="col-md-3 d-flex flex-wrap align-items-end">
+            <div class="col-md-8 d-flex flex-wrap align-items-end">
                 <button type="submit" class="btn btn-primary me-2 mb-2">View</button>
-                <a class="btn btn-danger me-2 mb-2" asp-action="DomainUpdateList">Reset</a>
+                <a class="btn btn-danger me-2 mb-2" asp-action="DailySupportReport">Reset</a>
                 <button type="button" class="btn btn-info me-2 mb-2" onclick="window.print()">
                     <i class="fa fa-print"></i>
                 </button>
-                <a class="btn btn-primary mb-2" asp-controller="Domain" asp-action="Index">Domain List</a>
+                <a class="btn btn-primary mb-2" asp-controller="SolvedIssue" asp-action="Index">Solved List</a>
             </div>
         </div>
     </form>
 
     @if (Model != null && Model.Any())
     {
-        var grouped = Model.GroupBy(x => x.SolvedDate?.Date)
-        .OrderBy(g => g.Key);
+        // group by SolvedBy
+        var grouped = Model.GroupBy(x => x.SolvedBy).OrderBy(g => g.Key);
+        var sl = 1;
 
         <table class="table table-bordered custom-table">
             <thead>
@@ -187,27 +170,21 @@
                     <th>Sl</th>
                     <th>Date</th>
                     <th>Customer</th>
-                    @* <th>Domain</th> *@
-                    <th>Solved By</th>
                     <th>Issues</th>
                 </tr>
             </thead>
             <tbody>
-                @{
-                    var sl = 1;
-                }
                 @foreach (var group in grouped)
                 {
-
-
+                    <tr class="table">
+                        <td colspan="5"><strong>Solved By: @group.Key</strong></td>
+                    </tr>
                     @foreach (var item in group)
                     {
                         <tr>
                             <td>@sl</td>
                             <td>@item.SolvedDate?.ToString("dd-MM-yyyy")</td>
-                            <td>@item.CustomerName ||<br /> @item.DomainName</td>
-                            @* <td>@item.DomainName</td> *@
-                            <td>@item.SolvedBy</td>
+                            <td>@item.CustomerName <br /> ||<br />@item.DomainName</td>
                             <td>
                                 @if (item.SolveDetails != null && item.SolveDetails.Any())
                                 {
@@ -232,13 +209,9 @@
     }
 </div>
 
-
 <script>
-
     $(function () {
         var today = new Date();
-
-        // আজকের তারিখ
         var todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
         $("#fromDate").datepicker({
@@ -258,19 +231,17 @@
         });
     });
 
-
     $(document).ready(function () {
-        // select2 init
         $(".domain-dropdown").select2({
             placeholder: "--Select Domain--",
             allowClear: true,
             width: '100%'
         });
-
-        $(document).on('select2:open', () => {
-            document.querySelector('.select2-search__field').focus();
+        $(".team-dropdown").select2({
+            placeholder: "--Select Solved By--",
+            allowClear: true,
+            width: '100%'
         });
-
         $(".developer-dropdown").select2({
             placeholder: "--Select Customer--",
             allowClear: true,
@@ -280,9 +251,6 @@
         $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').focus();
         });
-
-
-
 
         // domain change -> load customers
         $('#domainId').on('change', function () {
@@ -295,7 +263,7 @@
 
             if (domainId) {
                 $.ajax({
-                    url: '/SolvedIssue/DomainWiseCustomer', // controller action যা JSON রিটার্ন করবে
+                    url: '/SolvedIssue/DomainWiseCustomer',
                     type: 'GET',
                     data: { domainId: domainId },
                     dataType: 'json',

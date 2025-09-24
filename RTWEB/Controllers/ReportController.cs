@@ -157,12 +157,21 @@ namespace RTWEB.Controllers
                             Text = w.DomainName
                         }).ToList();
             ViewBag.Domain = domain;
+
+            var team=_unitofWork.TeamRepository.GetTeams()
+                        .Select(w=>new SelectListItem
+                        {
+                            Value= w.Id.ToString(),
+                            Text=w.Name
+                        }).ToList();
+            ViewBag.Team = team;
+
             return View();
         }
 
 
         [HttpPost]
-        public IActionResult DailySupportReport(DateTime? fromDate, DateTime? toDate, int? domainId = null, int? customerId = null )
+        public IActionResult DailySupportReport(DateTime? fromDate, DateTime? toDate, int? domainId = null, int? customerId = null,int? solvedBy=null )
         {
             if (!fromDate.HasValue || !toDate.HasValue)
             {
@@ -177,7 +186,15 @@ namespace RTWEB.Controllers
                 }).ToList();
             ViewBag.Domain = domain;
 
-            var data = _unitofWork.ReportRepository.CustomerDailySupport(fromDate.Value, toDate.Value, domainId, customerId);
+            var team = _unitofWork.TeamRepository.GetTeams()
+                        .Select(w => new SelectListItem
+                        {
+                            Value = w.Id.ToString(),
+                            Text = w.Name
+                        }).ToList();
+            ViewBag.Team = team;
+
+            var data = _unitofWork.ReportRepository.CustomerDailySupport(fromDate.Value, toDate.Value, domainId, customerId,solvedBy);
             return View("DailySupportReport", data);
         }
 
