@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using RTWEB.Models;
 using RTWEB.Repository;
 using RTWEB.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RTWEB.Controllers
 {
+    [Authorize]
     public class SolvedIssueController : Controller
     {
         protected readonly IUnitofWork _unitofWork;

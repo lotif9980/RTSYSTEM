@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RTWEB.Repository;
 
 namespace RTWEB.Controllers
 {
+    [Authorize]
     public class ParentProjectController : Controller
     {
         protected readonly IUnitofWork _unitofWork;

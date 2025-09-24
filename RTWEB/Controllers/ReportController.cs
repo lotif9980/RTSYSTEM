@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RTWEB.Repository;
 using RTWEB.ViewModel;
 
 namespace RTWEB.Controllers
 {
+    [Authorize]
     public class ReportController : Controller
     {
         protected readonly IUnitofWork _unitofWork;
