@@ -55,13 +55,17 @@ namespace RTWEB.Repository
         public IEnumerable<DomainReportVM> ProjectWiseDomain(int? projectId = null)
         {
            var data=(from d in _db.Domains
+                     where !projectId.HasValue || d.ProjectId==projectId.Value
+                     join pp in _db.ParentProjects on d.ProjectId equals pp.Id
                      select new DomainReportVM 
                      {
                       Id=d.Id,
                       DomainName =d.DomainName,
                       DateTime=d.LastUpdateDate,
-                      BranchName=d.UpdateBranch
-                     }).OrderByDescending(x=>x.ProjectId).ToList();
+                      BranchName=d.UpdateBranch,
+                      ParentProjectName=pp.Name
+                      
+                     }).ToList();
 
             return data;
         }

@@ -12,6 +12,7 @@
         ICustomerIssueRepository CustomerIssueRepository { get; }
         ISolvedIssueRepository SolvedIssueRepository { get; }
         ISolvedDetailRepository SolvedDetailRepository { get; }
+        IParentProjectsRepository ParentProjectsRepository { get; }
 
         int Complete();
     }

@@ -3,6 +3,7 @@
 
 @{
     var domainType = Enum.GetValues(typeof(DomainEnum)).Cast<DomainEnum>();
+    var pproject = ViewBag.PProject;
 }
 
 <div class="d-flex justify-content-center mt-3">
@@ -29,6 +30,18 @@
                         <div class="col-sm-9">
                             <input asp-for="DomainName" class="form-control" id="domainName">
                             <span asp-validation-for="DomainName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <label asp-for="ProjectId" class="col-sm-3 col-form-label">Praent Project</label>
+                        <div class="col-sm-9">
+                            <select id="projectId" asp-for="ProjectId" class="form-select project-dropdown"
+                                    asp-items="@(new SelectList(pproject, "Id", "Name"))">
+                                <option value="">---Select Domain---</option>
+                            </select>
+                            <span asp-validation-for="ProjectId" class="text-danger"></span>
                         </div>
                     </div>
 
@@ -76,6 +89,9 @@
 
                   this.submit();
            })
+
+
+            $(".project-dropdown").select2({ placeholder: "--Select Parent Project--", allowClear: true, width: '100%' });
     })
 
 </script>

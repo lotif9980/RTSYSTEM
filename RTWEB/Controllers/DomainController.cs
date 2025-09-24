@@ -34,6 +34,8 @@ namespace RTWEB.Controllers
         [HttpGet]
         public IActionResult Save()
         {
+            var data = _unitofWork.ParentProjectsRepository.GetAll();
+            ViewBag.PProject=data;
             return View();
         }
 
@@ -44,6 +46,9 @@ namespace RTWEB.Controllers
             {
                 TempData["Message"] = "✅ Already Added";
                 TempData["MessageType"] = "danger";
+                var data = _unitofWork.ParentProjectsRepository.GetAll();
+                ViewBag.PProject = data;
+
                 return View(domain);
             }
            

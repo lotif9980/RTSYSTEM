@@ -56,7 +56,7 @@
                         <div class="mb-3 row">
                             <label asp-for="DoaminId" class="col-sm-3 col-form-label">Domain</label>
                             <div class="col-sm-9">
-                                <select id="domainId" asp-for="DoaminId" class="form-select"
+                                <select id="domainId" asp-for="DoaminId" class="form-select domain-dropdown"
                                         asp-items="@(new SelectList(domains, "Id", "DomainName"))">
                                     <option value="">---Select Domain---</option>
                                 </select>

@@ -10,6 +10,8 @@
         public string BranchName {  get; set; }
         public string ? ProjectName {  get; set; }
         public int? ProjectId {  get; set; }
+        public int? ParentPrjectId { get; set; }
+        public string ? ParentProjectName { get; set; }
 
     }
 }

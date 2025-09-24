@@ -118,14 +118,14 @@ namespace RTWEB.Controllers
         [HttpGet]
         public IActionResult ProjectWiseDomain()
         {
-            var project = _unitofWork.ProjectRepository.GetProjects()
+            var Pproject = _unitofWork.ParentProjectsRepository.GetAll()
                    .Select(w => new SelectListItem
                    {
                        Value = w.Id.ToString(),
-                       Text = w.ProjectName
+                       Text = w.Name
                    }).ToList();
 
-            ViewBag.Project = project;
+            ViewBag.PProject = Pproject;
 
             return View();
         }
@@ -133,14 +133,14 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult ProjectWiseDomain(int? projectId = null)
         {
-            var domain = _unitofWork.ProjectRepository.GetProjects()
-                .Select(w => new SelectListItem
-                {
-                    Value = w.Id.ToString(),
-                    Text = w.ProjectName
-                }).ToList();
+            var Pproject = _unitofWork.ParentProjectsRepository.GetAll()
+                  .Select(w => new SelectListItem
+                  {
+                      Value = w.Id.ToString(),
+                      Text = w.Name
+                  }).ToList();
 
-            ViewBag.Domain = domain;
+            ViewBag.PProject = Pproject;
 
             var data = _unitofWork.ReportRepository.ProjectWiseDomain(projectId);
             return View("ProjectWiseDomain", data);

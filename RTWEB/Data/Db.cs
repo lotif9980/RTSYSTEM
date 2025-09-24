@@ -39,5 +39,6 @@ namespace RTWEB.Data
         public DbSet<OurCustomer> OurCustomers { get; set; }
         public DbSet<SolvedIssue> SolvedIssues { get; set; }
         public DbSet<SolvedDetail> SolvedDetails { get; set; }
+        public DbSet<ParentProject> ParentProjects {  get; set; }
     }
 }

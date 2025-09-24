@@ -19,6 +19,7 @@ namespace RTWEB.Repository
         public ICustomerIssueRepository CustomerIssueRepository {  get; set; }
         public ISolvedIssueRepository SolvedIssueRepository {  get; set; }
         public ISolvedDetailRepository SolvedDetailRepository {  get; set; }
+        public IParentProjectsRepository ParentProjectsRepository { get; set; }
 
         public int Complete()
         {
@@ -43,6 +44,7 @@ namespace RTWEB.Repository
             CustomerIssueRepository = new CustomerIssueRepository(db);
             SolvedIssueRepository = new SolvedIssueRepository(db);
             SolvedDetailRepository = new SolvedDetailRepository(db);
+            ParentProjectsRepository = new ParentProjectsRepository(db);
 
         }
       
