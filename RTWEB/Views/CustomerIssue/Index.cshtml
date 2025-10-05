@@ -81,6 +81,11 @@
                                             <a class="btn btn-danger ms-2" asp-route-id="@item.Id" asp-controller="CustomerIssue" asp-action="Delete">
                                                 <i class="fa fa-trash"></i>
                                             </a>
+                                            <a class="btn btn-danger ms-2"
+                                               asp-route-id="@item.Id"
+                                               asp-controller="SolvedIssue" asp-action="UpdateButton">
+                                                <i class="fa fa-save"></i>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>

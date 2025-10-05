@@ -79,5 +79,10 @@ namespace RTWEB.Repository
         {
            return _db.SolvedDetails.AnyAsync(x=>x.IssueId == id);
         }
+
+        public CustomerIssue GetByid(int id)
+        {
+            return _db.CustomerIssues.FirstOrDefault(x => x.Id == id);
+        }
     }
 }

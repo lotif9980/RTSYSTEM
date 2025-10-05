@@ -149,5 +149,23 @@ namespace RTWEB.Controllers
             var data =_unitofWork.SolvedIssueRepository.Details(id);
             return View(data);
         }
+
+     
+        public IActionResult UpdateButton(int id)
+        {
+            var issue =_unitofWork.CustomerIssueRepository.GetByid(id);
+
+            var solvedIssue = new SolvedIssue
+            {
+                CustomerId =issue.CustomerId,
+                SolvedBy = 2004,
+                SolvedDate = DateTime.Now,
+                DomainId = issue.DomainId,
+                //Status = model.SolvedIssue.Status
+
+            };
+
+            return RedirectToAction("Index", "CustomerIssue");
+        }
     }
 }
