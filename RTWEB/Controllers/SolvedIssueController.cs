@@ -161,10 +161,20 @@ namespace RTWEB.Controllers
                 SolvedBy = 2004,
                 SolvedDate = DateTime.Now,
                 DomainId = issue.DomainId,
-                //Status = model.SolvedIssue.Status
+                Status =Enum.CustomerSolvedIssueStatus.Solved
 
             };
 
+            solvedIssue.SolvedDetails = new List<SolvedDetail>
+            {
+                new SolvedDetail
+                {
+                    IssueId = id,
+                    SolutionDetails = "Automatically generated solution"
+                }
+            };
+            _unitofWork.SolvedIssueRepository.Save(solvedIssue);
+            _unitofWork.Complete();
             return RedirectToAction("Index", "CustomerIssue");
         }
     }
