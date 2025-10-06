@@ -59,7 +59,7 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(UpdateSaveVM model) 
         {
-            //var domainAId = model.Update.DomainId;
+        
             var projectId = model.ProjectId;
             var update = new Update
             {

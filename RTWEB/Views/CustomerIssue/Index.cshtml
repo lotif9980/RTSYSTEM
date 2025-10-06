@@ -3,15 +3,28 @@
 @using RTWEB.Enum
 @using RTWEB.ViewModel
 @model HMSYSTEM.ViewModels.PagedResult<CustomerIssueVM>
-
+@{
+    ViewData["Title"] = "Customer Issue";
+}
 
 <style>
+    table td {
+        vertical-align: middle !important; 
+    }
+
+    .table td.col-customer,
+    .table td.col-problem,
+    .table td.col-status,
+    .table td.col-action {
+        vertical-align: middle !important;
+    }
+
     .col-sl {
         width: 5% !important;
     }
 
     .col-customer {
-        width: 25% !important; 
+        width: 15% !important; 
     }
 
     .col-domain {
@@ -19,7 +32,7 @@
     }
 
     .col-problem {
-        width: 35% !important;
+        width: 50% !important;
     }
 
     .col-status {
@@ -55,10 +68,11 @@
                             <tr>
                                 <th class="col-sl">Sl</th>
                                 <th class="col-customer">Customer</th>
-                                <th class="col-domain">Domain</th>
                                 <th class="col-problem">Problem</th>
                                 <th class="col-status">Status</th>
+                                <th class="col-status">Update</th>
                                 <th class="col-action">Action</th>
+                                
                             </tr>
                         </thead>
                         <tbody id="domainBoady">
@@ -69,10 +83,22 @@
                             {
                                 <tr>
                                     <td>@count</td>
-                                    <td>@item.CustomerName</td>
-                                    <td>@item.Domainname</td>
+                                    <td class="text-center align-middle">
+                                        <div>
+                                            @item.CustomerName <br />
+                                            || <br />
+                                            @item.Domainname
+                                        </div>
+                                    </td>
                                     <td>@item.Problem</td>
                                     <td>@item.Status</td>
+                                    <td>
+                                        <a class="btn btn-primary ms-2"
+                                           asp-route-id="@item.Id"
+                                           asp-controller="SolvedIssue" asp-action="UpdateButton">
+                                            @* <i class="fa fa-save"></i> *@ Update
+                                        </a>
+                                    </td>
                                     <td>
                                         <div class="d-flex justify-content-center btn-group-sm">
                                             <a class="btn btn-primary ms-2" asp-route-id="@item.Id" asp-controller="CustomerIssue" asp-action="Edit">
@@ -81,11 +107,7 @@
                                             <a class="btn btn-danger ms-2" asp-route-id="@item.Id" asp-controller="CustomerIssue" asp-action="Delete">
                                                 <i class="fa fa-trash"></i>
                                             </a>
-                                            <a class="btn btn-danger ms-2"
-                                               asp-route-id="@item.Id"
-                                               asp-controller="SolvedIssue" asp-action="UpdateButton">
-                                                <i class="fa fa-save"></i>
-                                            </a>
+                                           
                                         </div>
                                     </td>
                                 </tr>

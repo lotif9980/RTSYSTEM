@@ -127,11 +127,14 @@ namespace RTWEB.Repository
 
         public List<CustomerSolvedIssueVM> CustomerDailySupport(DateTime? fromDate, DateTime? toDate, int? domainId = null, int? customerId = null , int? solvedBy=null)
         {
+            var startDate = fromDate?.Date ?? DateTime.Today;
+            var endDate = (toDate?.Date ?? DateTime.Today).AddDays(1);
+
             var query = from ci in _db.SolvedIssues
                         where (!customerId.HasValue || ci.CustomerId == customerId.Value)
                                && (!domainId.HasValue || ci.DomainId == domainId.Value)
                                && (!solvedBy.HasValue || ci.SolvedBy == solvedBy.Value)
-                               && ci.SolvedDate >= fromDate && ci.SolvedDate <= toDate
+                               && ci.SolvedDate >= startDate && ci.SolvedDate <= endDate
                               && ci.Status == Enum.CustomerSolvedIssueStatus.Solved 
                               
                         join c in _db.OurCustomers on ci.CustomerId equals c.Id

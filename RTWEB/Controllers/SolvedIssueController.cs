@@ -159,7 +159,7 @@ namespace RTWEB.Controllers
             {
                 CustomerId =issue.CustomerId,
                 SolvedBy = 2004,
-                SolvedDate = DateTime.Now,
+                SolvedDate = DateTime.Now.Date,
                 DomainId = issue.DomainId,
                 Status =Enum.CustomerSolvedIssueStatus.Solved
 
@@ -174,7 +174,18 @@ namespace RTWEB.Controllers
                 }
             };
             _unitofWork.SolvedIssueRepository.Save(solvedIssue);
-            _unitofWork.Complete();
+            _unitofWork.CustomerIssueRepository.UpdateStatus(id, Enum.CustomerIssueStatus.solved);
+            var result= _unitofWork.Complete();
+            if (result > 0)
+            {
+                TempData["Message"] = "✅ Update Successful";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Update Failed";
+                TempData["MessageType"] = "danger";
+            }
             return RedirectToAction("Index", "CustomerIssue");
         }
     }
