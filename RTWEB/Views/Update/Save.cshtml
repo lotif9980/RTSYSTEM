@@ -4,7 +4,35 @@
 @{
     var project = ViewBag.Project;
 }
+<style>
+    /* Domain badge styling */
+    .domain-item {
+        display: inline-flex;
+        align-items: center;
+        background-color: #e7f3ff;
+        color: #0a58ca;
+        border: 1px solid #b6d4fe;
+        border-radius: 20px;
+        padding: 5px 10px;
+        margin: 3px;
+        font-size: 14px;
+    }
 
+        .domain-item button {
+            background-color: transparent;
+            border: none;
+            color: #dc3545;
+            font-weight: bold;
+            margin-left: 8px;
+            font-size: 16px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+            .domain-item button:hover {
+                color: #a71d2a;
+            }
+</style>
 
 <div class="container-fluid mt-3">
 
@@ -35,12 +63,24 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
+                        @* <div class="row mb-3">
                             <label asp-for="Update.DomainId" class="col-sm-4 col-form-label">Domain</label>
                             <div class="col-sm-8">
                                 <select asp-for="Update.DomainId" class="form-control domain-dropdown" asp-items="@(new SelectList(Model.Domain, "Id", "DomainName"))">
                                     <option value="">---Select Developer---</option>
                                 </select>
+                            </div>
+                        </div> *@
+
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Domain</label>
+                            <div class="col-sm-8">
+                                <select asp-for="SelectedDomainIds"
+                                        class="form-control domain-dropdown"
+                                        asp-items="@(new SelectList(Model.Domain, "Id", "DomainName"))"
+                                        >
+                                </select>
+                                <span asp-validation-for="SelectedDomainIds" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -92,6 +132,11 @@
                         </div>
                         
 
+                        <div class="mt-2" id="selectedDomainsContainer">
+                            <strong>Selected Domains:</strong>
+                            <ul id="selectedDomainsList" class="list-unstyled mt-2"></ul>
+                        </div>
+
                     </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-end mt-3">
@@ -140,11 +185,46 @@
 <script>
 
      $(document).ready(function () {
-         $(".domain-dropdown").select2({
-             placeholder: "--Select Domain--",
-             allowClear: true,
-             width: '100%'
-         });
+
+        $(".domain-dropdown").select2({
+            placeholder: "--Select Domain(s)--",
+            allowClear: true,
+            width: '100%'
+        });
+
+      $('.domain-dropdown').on('change', function () {
+            var selectedOptions = $(this).find('option:selected');
+            var $list = $('#selectedDomainsList');
+
+            selectedOptions.each(function () {
+                var domainName = $(this).text();
+                var domainId = $(this).val();
+
+                // Duplicate check
+                if ($list.find('input[value="' + domainId + '"]').length === 0) {
+                    $list.append(
+                        '<li class="domain-item">' +
+                            domainName +
+                            '<input type="hidden" name="SelectedDomainIds" value="' + domainId + '"/>' +
+                            '<button type="button" class="remove-domain" data-id="' + domainId + '">×</button>' +
+                        '</li>'
+                    );
+                }
+            });
+
+            // Select box ফাঁকা করে দেবে যেন আবার নতুন select করা যায়
+            $(this).val(null).trigger('change');
+      });
+
+            // Remove button event
+            $(document).on('click', '.remove-domain', function () {
+                $(this).closest('li').remove();
+            });
+
+        
+
+         //
+        
 
          $(".developer-dropdown").select2({
              placeholder: "--Select Developer--",

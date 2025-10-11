@@ -56,8 +56,9 @@ namespace RTWEB.Controllers
             return Json(project);
         }
 
+        #region old save order
         [HttpPost]
-        public IActionResult Save(UpdateSaveVM model) 
+        public IActionResult Saves(UpdateSaveVM model) 
         {
         
             var projectId = model.ProjectId;
@@ -118,6 +119,89 @@ namespace RTWEB.Controllers
             if (result > 0)
             {
                 TempData["Message"] = "✅ Save Successful";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Save Failed";
+                TempData["MessageType"] = "danger";
+            }
+
+            return RedirectToAction("Save");
+        }
+
+        #endregion Old save order
+
+
+        [HttpPost]
+        public IActionResult Save(UpdateSaveVM model)
+        {
+            if (model.SelectedDomainIds == null || model.SelectedDomainIds.Count == 0)
+            {
+                TempData["Message"] = "❌ At least one Domain is required";
+                TempData["MessageType"] = "danger";
+                return RedirectToAction("Save");
+            }
+
+            if (model.UpdateDetails == null || model.UpdateDetails.Count == 0)
+            {
+                TempData["Message"] = "❌ At least one Issue is required";
+                TempData["MessageType"] = "danger";
+                return RedirectToAction("Save");
+            }
+
+            foreach (var domainId in model.SelectedDomainIds)
+            {
+                var update = new Update
+                {
+                    DomainId = domainId,  
+                    UpdateDate = model.Update.UpdateDate ?? DateTime.Now,
+                    BranchName = model.Update.BranchName,
+                    DeveloperId = model.Update.DeveloperId,
+                    TesterId = model.Update.TesterId,
+                    Status = model.Update.Status,
+                };
+
+               
+                update.UpdateDetails = model.UpdateDetails.Select(d => new UpdateDetail
+                {
+                    IssueId = d.IssueId
+                }).ToList();
+
+                _unitofwork.UpdateRepository.Save(update);
+
+               
+                var domain = _unitofwork.DomainRepository.Find(domainId);
+                if (domain != null)
+                {
+                    domain.UpdateBranch = model.Update.BranchName;
+                    domain.LastUpdateDate = model.Update.UpdateDate;
+                    _unitofwork.DomainRepository.Update(domain);
+                }
+            }
+
+       
+            var project = _unitofwork.ProjectRepository.Find(model.ProjectId);
+            if (project != null)
+            {
+                project.UpdateBranch = model.Update.BranchName;
+                project.LastUpdateDate = model.Update.UpdateDate;
+                _unitofwork.ProjectRepository.Update(project);
+            }
+
+       
+            if (model.IsSpecialAction)
+            {
+                foreach (var detail in model.UpdateDetails)
+                {
+                    _unitofwork.IssueRepository.UpdateStatus(detail.IssueId, Enum.IssueStatus.solved);
+                }
+            }
+
+            var result = _unitofwork.Complete();
+            if (result > 0)
+            {
+                TempData["Message"] = "✅ Save Successful (Multiple Domains)";
                 TempData["MessageType"] = "success";
             }
             else

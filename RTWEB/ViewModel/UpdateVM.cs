@@ -24,6 +24,7 @@ namespace RTWEB.ViewModel
         public List<UpdateDetailsVM> UpdateDetails { get; set; } = new List<UpdateDetailsVM>();
         public int ProjectId { get; set; }
         public bool IsSpecialAction { get; set; }
+        public List<int> SelectedDomainIds { get; set; }
     }
 
     public class UpdateDetailsVM
