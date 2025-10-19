@@ -2,6 +2,9 @@
 @using RTWEB.Enum
 
 @{
+    ViewData["Title"] = "Domain Create";
+}
+@{
     var domainType = Enum.GetValues(typeof(DomainEnum)).Cast<DomainEnum>();
     var pproject = ViewBag.PProject;
 }

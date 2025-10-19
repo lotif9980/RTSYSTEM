@@ -12,7 +12,7 @@ namespace RTWEB.Repository
         public List<CustomerSolvedIssueVM> CustomerSolvedIssue(int? domainId = null, int?customerId=null);
         public List<CustomerSolvedIssueVM> CustomerDailySupport(DateTime? fromDate, DateTime? toDate, int? domainId = null, int?customerId=null, int? solvedBy = null);
 
-        public List<CustomerIssueVM> CustomerLedger( int customerId);
+        public List<CustomerIssueVM> CustomerLedger(DateTime? fromDate, DateTime? toDate, int customerId);
         public List<CustomerIssueVM> PendingSupport(int? domainId = null, int? customerId = null);
     }
 }

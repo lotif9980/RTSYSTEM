@@ -1,9 +1,14 @@
 ﻿@using RTWEB.ViewModel
 @model CustomerIssueSaveVM
+@{
+    ViewData["Title"] = "Create";
+}
+
 
 @{
     var project = ViewBag.Project;
 }
+
 
 <div class="container-fluid mt-3">
     <form asp-action="Save" id="myForm" method="post">

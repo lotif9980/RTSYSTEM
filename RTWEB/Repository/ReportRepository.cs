@@ -168,11 +168,18 @@ namespace RTWEB.Repository
                 .ToList();
         }
 
-        public List<CustomerIssueVM> CustomerLedger( int customerId)
+        public List<CustomerIssueVM> CustomerLedger(DateTime? fromDate, DateTime? toDate, int customerId)
         {
+            if (toDate.HasValue)
+            {
+             
+                toDate = toDate.Value.Date.AddDays(1).AddTicks(-1);
+            }
+
             var data = (from ci in _db.CustomerIssues
                         where ci.CustomerId == customerId
-                        
+                              && (!fromDate.HasValue || ci.CreateDate >= fromDate)
+                              && (!toDate.HasValue || ci.CreateDate <= toDate)
 
                         join c in _db.OurCustomers on ci.CustomerId equals c.Id
                         join d in _db.Domains on ci.DomainId equals d.Id
@@ -182,6 +189,7 @@ namespace RTWEB.Repository
 
                         join si in _db.SolvedIssues on sd.SolvedIssueId equals si.Id into siGroup
                         from si in siGroup.DefaultIfEmpty()
+
                         select new CustomerIssueVM
                         {
                             Id = ci.Id,
@@ -189,7 +197,7 @@ namespace RTWEB.Repository
                             Domainname = d.DomainName,
                             CustomerName = c.CustomerName,
                             CreateDate = ci.CreateDate,
-                            UpdateDate=si.SolvedDate,
+                            UpdateDate = si.SolvedDate,
                             Status = ci.Status
                         }).ToList();
 
