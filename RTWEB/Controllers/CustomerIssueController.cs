@@ -18,23 +18,19 @@ namespace RTWEB.Controllers
         }
 
 
-        public IActionResult Index(int page=1, int pageSize=10)
+        public IActionResult Index()
         {
             var data = _unitofWork.CustomerIssueRepository.GetAll()
                     .OrderByDescending(d => d.Id)
-                    .AsQueryable()
-                    .ToPagedList(page, pageSize);
-
+                    .AsQueryable();
             return View(data);
         }
 
-        public IActionResult SolvedIssue(int page = 1, int pageSize = 10)
+        public IActionResult SolvedIssue()
         {
             var data = _unitofWork.CustomerIssueRepository.GetSolved()
                     .OrderByDescending(d => d.Id)
-                    .AsQueryable()
-                    .ToPagedList(page, pageSize);
-
+                    .AsQueryable();
             return View(data);
         }
 

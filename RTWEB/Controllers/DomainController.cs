@@ -20,12 +20,12 @@ namespace RTWEB.Controllers
         }
 
 
-        public IActionResult Index(int page = 1, int pageSize = 10)
+        public IActionResult Index()
         {
-            var data =_unitofWork.DomainRepository.GetAll()
-                .OrderByDescending(d=>d.Id)
-                .AsQueryable()
-                .ToPagedList(page,pageSize);
+            var data = _unitofWork.DomainRepository.GetAll()
+                .OrderByDescending(d => d.Id)
+                .AsQueryable();
+                
 
             return View(data);
         }

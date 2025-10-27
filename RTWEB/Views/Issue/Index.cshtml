@@ -1,6 +1,5 @@
 ﻿@using RTWEB.ViewModel
-@* @model IEnumerable<IssueVM> *@
-@model HMSYSTEM.ViewModels.PagedResult<IssueVM>
+
 @{
     ViewData["Title"] = "Issue"; 
 }
@@ -10,18 +9,19 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
-                <div>
-                    <a asp-controller="Issue" asp-action="Solved" class="btn btn-primary">Solved Issue</a>
-                </div>
-                <div class="card-footer">
-                    
-                    <div class="d-flex justify-content-end">
-                        <a asp-controller="Issue" asp-action="Save" class="btn btn-primary">Add Issue</a>
-                    </div>
-                </div>
-                <!-- /.card-header -->
+
                 <div class="card-body">
-                    <table class="table table-bordered table-hover">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+                        <!-- Search Box -->
+                        <div class="flex-grow-1 me-2" style="max-width: 250px;">
+                            <input type="text" id="customSearchBox" class="form-control " placeholder="Search">
+                        </div>
+
+                       
+                        <a asp-controller="Issue" asp-action="Save" class="btn btn-primary ">Add Issue</a>
+                    </div>
+
+                    <table id="issueTable" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th style="width: 10px">Sl</th>
@@ -33,9 +33,9 @@
                         </thead>
                         <tbody>
                             @{
-                                int count = ((Model.CurrentPage - 1) * Model.PageSize) + 1;
+                                int count =  1;
                             }
-                            @foreach (var  item in Model.Items)
+                            @foreach (var  item in Model)
                             {
                                 <tr>
                                     <td>@count</td>
@@ -65,10 +65,38 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    @await Html.PartialAsync("_Pagination", Model) 
+                    @* @await Html.PartialAsync("_Pagination", Model)  *@
                 </div>
             </div>
             <!-- /.card -->
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#issueTable').DataTable({
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 20, 50],
+            "ordering": true,
+            "paging": true,
+            "info": true,
+            "language": {
+                "search": "",
+                "searchPlaceholder": "Search",
+                "lengthMenu": "_MENU_ rows",
+                "info": "_TOTAL_ রেকর্ডের মধ্যে _START_ থেকে _END_ দেখানো হচ্ছে",
+                "paginate": {
+                    "previous": "⬅️ Previous",
+                    "next": "Next ➡️"
+                }
+            },
+            "dom": 'rt<"d-flex justify-content-between align-items-center p-2"<"p-0"l><"p-0"p>>'
+        });
+
+
+        $('#customSearchBox').on('keyup', function () {
+            table.search(this.value).draw();
+        });
+    });
+</script>

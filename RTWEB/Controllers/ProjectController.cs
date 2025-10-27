@@ -17,12 +17,12 @@ namespace RTWEB.Controllers
             _unitofWork = unitofwork;
         }
 
-        public IActionResult Index(int page=1 , int pageSize=10)
+        public IActionResult Index()
         {
             var data = _unitofWork.ProjectRepository.GetProjects()
-                .OrderByDescending(d=>d.Id)
-                .AsQueryable()
-                .ToPagedList(page,pageSize);
+                .OrderByDescending(d => d.Id)
+                .AsQueryable();
+                
             return View(data);
         }
 
