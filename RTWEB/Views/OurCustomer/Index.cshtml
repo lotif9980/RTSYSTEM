@@ -1,8 +1,8 @@
-﻿@* @model IEnumerable<Domain> *@
+﻿
 
 @using RTWEB.Enum
 @using RTWEB.ViewModel
-@model HMSYSTEM.ViewModels.PagedResult<OurCustomerVM>
+
 @{
     ViewData["Title"] = "Our Customer";
 }
@@ -22,7 +22,7 @@
             <div class="card mb-4">
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table class="table table-bordered table-hover">
+                    <table id="ourCustomerTable" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th style="width: 10px">Sl</th>
@@ -36,9 +36,9 @@
                         </thead>
                         <tbody id="domainBoady">
                             @{
-                                int count = ((Model.CurrentPage - 1) * Model.PageSize) + 1;
+                                int count = 1;
                             }
-                            @foreach (OurCustomerVM item in Model.Items)
+                            @foreach (OurCustomerVM item in Model)
                             {
                                 <tr>
                                     <td>@count</td>
@@ -70,7 +70,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    @await Html.PartialAsync("_Pagination", Model)
+                    @* @await Html.PartialAsync("_Pagination", Model) *@
                 </div>
             </div>
             <!-- /.card -->
@@ -81,44 +81,27 @@
 
 <script>
     $(document).ready(function () {
-        $('#searchBox').on('keyup', function () {
-            var name = $(this).val();
-
-            $.ajax({
-                url: '/Domain/Search',
-                data: {
-                    name: name,
-                },
-
-                success: function (data) {
-                    let rows = '';
-
-                    data.forEach((item,index) => {
-                        rows += `<tr>
-                            <td>${index + 1}</td>
-                            <td>${item.domainName}</td>
-                            <td>${item.updateBranch}</td>
-                            <td>${item.updateDate}</td>
-                            <td>${item.domainType}</td>
-                            <td>${item.status}</td>
-                             <td>
-                                        <div class="d-flex justify-content-center btn-group-sm ">
-
-                                            <a class="btn btn-primary ms-2" asp-route-id="item.Id" asp- controller="Medicine" asp-action="Edit">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-
-                                            <a class="btn btn-danger ms-2" asp-route-id="item.Id" asp-controller="Medicine" asp-action="Delete">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                        </tr>`;
-                    });
-
-                    $('#domainBoady').html(rows);
+        var table = $('#ourCustomerTable').DataTable({
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 20, 50],
+            "ordering": true,
+            "paging": true,
+            "info": true,
+            "language": {
+                "search": "",
+                "searchPlaceholder": "Search",
+                "lengthMenu": "_MENU_ rows",
+                "info": "_TOTAL_ রেকর্ডের মধ্যে _START_ থেকে _END_ দেখানো হচ্ছে",
+                "paginate": {
+                    "previous": "⬅️ Previous",
+                    "next": "Next ➡️"
                 }
-            });
+            },
+            "dom": 'rt<"d-flex justify-content-between align-items-center p-2"<"p-0"l><"p-0"p>>'
+        });
+
+        $('#searchBox').on('keyup', function () {
+            table.search(this.value).draw();
         });
     });
 </script>

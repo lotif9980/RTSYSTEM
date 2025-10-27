@@ -17,12 +17,12 @@ namespace RTWEB.Controllers
         }
 
 
-        public IActionResult Index(DateTime? date, int page=1,int pageSize=10)
+        public IActionResult Index(DateTime? date)
         {
-            var data =_unitofWork.SolvedIssueRepository.GetSolvedIssue(date)
+            var data = _unitofWork.SolvedIssueRepository.GetSolvedIssue(date)
                         .OrderByDescending(d => d.Id)
-                        .AsQueryable()
-                        .ToPagedList(page, pageSize);
+                        .AsQueryable();
+                        
             return View(data);
         }
 

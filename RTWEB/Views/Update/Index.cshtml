@@ -1,24 +1,53 @@
 ﻿@using RTWEB.ViewModel
 @* @model IEnumerable<UpdateVM> *@
-@model HMSYSTEM.ViewModels.PagedResult<UpdateVM>
+@* @model HMSYSTEM.ViewModels.PagedResult<UpdateVM> *@
 
 @{
     ViewData["Title"] = "Update";
 }
 
 <div class="container-fluid mt-3">
-   
+
+    <form method="get" asp-action="Index">
+        <div class="row mb-3">
+
+            <div class="col-md-3">
+                <label>From Date</label>
+                <input type="date" name="fromDate" class="form-control" value="@ViewBag.FromDate" />
+            </div>
+
+            <div class="col-md-3">
+                <label>To Date</label>
+                <input type="date" name="toDate" class="form-control" value="@ViewBag.ToDate" />
+            </div>
+
+         
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+                <a asp-controller="Update" asp-action="Index" class="btn btn-danger">Reset</a>
+            </div>
+
+        </div>
+    </form>
+
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
-                <div class="card-footer">
-                    <div class="d-flex justify-content-end">
-                        <a asp-controller="Update" asp-action="Save" class="btn btn-primary">New Item</a>
+                <div class="card-header">
+                    <div class="d-flex justify-content-between">
+                
+                            <div>
+                                <input type="text" id="searchBox" class="form-control" placeholder="Search Customer Name" />
+                            </div>
+                     
+                           <div>
+                            <a asp-controller="Update" asp-action="Save" class="btn btn-primary">New Item</a>
+                           </div>
                     </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table class="table table-bordered table-hover">
+                    <table id="updateTable" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th style="width: 10px">Sl</th>
@@ -32,9 +61,9 @@
                         </thead>
                         <tbody>
                             @{
-                                int count = ((Model.CurrentPage - 1) * Model.PageSize) + 1;
+                                int count = 1;
                             }
-                            @foreach (var item in Model.Items)
+                            @foreach (var item in Model)
                             {
                                 <tr>
                                     <td>@count</td>
@@ -70,10 +99,39 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    @await Html.PartialAsync("_Pagination", Model)
+                    @* @await Html.PartialAsync("_Pagination", Model) *@
                 </div>
             </div>
             <!-- /.card -->
         </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        var table = $('#updateTable').DataTable({
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 20, 50],
+            "ordering": true,
+            "paging": true,
+            "info": true,
+            "language": {
+                "search": "",
+                "searchPlaceholder": "Search",
+                "lengthMenu": "_MENU_ rows",
+                "info": "_TOTAL_ রেকর্ডের মধ্যে _START_ থেকে _END_ দেখানো হচ্ছে",
+                "paginate": {
+                    "previous": "⬅️ Previous",
+                    "next": "Next ➡️"
+                }
+            },
+            "dom": 'rt<"d-flex justify-content-between align-items-center p-2"<"p-0"l><"p-0"p>>'
+        });
+
+
+        $('#searchBox').on('keyup', function () {
+            table.search(this.value).draw();
+        });
+    });
+</script>

@@ -1,31 +1,35 @@
 ﻿@using RTWEB.ViewModel
 @* @model IEnumerable<UpdateVM> *@
-@model HMSYSTEM.ViewModels.PagedResult<CustomerSolvedIssueVM>
+@* @model HMSYSTEM.ViewModels.PagedResult<CustomerSolvedIssueVM> *@
 
 @{
     ViewData["Title"] = "Solved Issue";
 }
 
 <div class="container-fluid mt-3">
-    <form asp-action="Index" method="get" class="mb-3">
-        <div class="input-group">
-            <input type="date" name="date" class="form-control col-sm-3" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
-            <button type="submit" class="btn btn-primary">Filter</button>
-            <a asp-action="Index" class="btn btn-danger">Reset</a>
-        </div>
-    </form>
-
+   
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
                 <div class="card-footer">
-                    <div class="d-flex justify-content-end">
-                        <a asp-controller="SolvedIssue" asp-action="Save" class="btn btn-primary">New Item</a>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <form asp-action="Index" method="get" class="mb-3">
+                                <div class="input-group">
+                                    <input type="date" name="date" class="form-control " value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                    <a asp-action="Index" class="btn btn-danger">Reset</a>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <a asp-controller="SolvedIssue" asp-action="Save" class="btn btn-primary">New Item</a>
+                        </div>
                     </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table class="table table-bordered table-hover">
+                    <table id="solvedTable" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th style="width: 10px">Sl</th>
@@ -38,9 +42,9 @@
                         </thead>
                         <tbody>
                             @{
-                                int count = ((Model.CurrentPage - 1) * Model.PageSize) + 1;
+                                int count =  1;
                             }
-                            @foreach (var item in Model.Items)
+                            @foreach (var item in Model)
                             {
                                 <tr>
                                     <td>@count</td>
@@ -73,10 +77,39 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    @await Html.PartialAsync("_Pagination", Model)
+                    @* @await Html.PartialAsync("_Pagination", Model) *@
                 </div>
             </div>
             <!-- /.card -->
         </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        var table = $('#solvedTable').DataTable({
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 20, 50],
+            "ordering": true,
+            "paging": true,
+            "info": true,
+            "language": {
+                "search": "",
+                "searchPlaceholder": "Search",
+                "lengthMenu": "_MENU_ rows",
+                "info": "_TOTAL_ রেকর্ডের মধ্যে _START_ থেকে _END_ দেখানো হচ্ছে",
+                "paginate": {
+                    "previous": "⬅️ Previous",
+                    "next": "Next ➡️"
+                }
+            },
+            "dom": 'rt<"d-flex justify-content-between align-items-center p-2"<"p-0"l><"p-0"p>>'
+        });
+
+
+        $('#searchBox').on('keyup', function () {
+            table.search(this.value).draw();
+        });
+    });
+</script>

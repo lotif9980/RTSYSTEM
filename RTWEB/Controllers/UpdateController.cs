@@ -18,12 +18,28 @@ namespace RTWEB.Controllers
         }
 
 
-        public IActionResult Index(int page=1, int pageSize=10)
+        public IActionResult Index(DateTime? fromDate = null, DateTime? toDate = null)
         {
             var data = _unitofwork.UpdateRepository.GetUpdates()
-                .OrderByDescending(d=>d.Id)
-                .AsQueryable()
-                .ToPagedList(page, pageSize);
+                .OrderByDescending(d => d.Id)
+                .AsQueryable();
+
+            if (!fromDate.HasValue || !toDate.HasValue)
+            {
+                var firstDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var lastDay = firstDay.AddMonths(1).AddDays(-1);
+
+                fromDate = firstDay;
+                toDate = lastDay;
+            }
+
+            data = data.Where(x =>
+                x.UpdateDate >= fromDate.Value &&
+                x.UpdateDate <= toDate.Value);
+
+            ViewBag.FromDate = fromDate.Value.ToString("yyyy-MM-dd");
+            ViewBag.ToDate = toDate.Value.ToString("yyyy-MM-dd");
+
             return View(data);
         }
 

@@ -47,10 +47,10 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <!-- 🔸 Serial -->
+                              
                                 <td class="text-center align-middle">@count</td>
 
-                                <!-- 🔸 Customer Name + Domain -->
+                               
                                 <td class="align-middle">
                                     <div class="fw-semibold text-dark text-truncate" style="max-width:150px;">
                                         @item.CustomerName
@@ -58,17 +58,17 @@
                                     <small class="text-muted">@item.Domainname</small>
                                 </td>
 
-                                <!-- 🔸 Problem -->
+                             
                                 <td class="align-middle text-wrap" style="max-width:350px; white-space:normal;">
                                     @item.Problem
                                 </td>
 
-                                <!-- 🔸 Status -->
+                              
                                 <td class="text-center align-middle">
                                     <span class="badge bg-info text-dark">@item.Status</span>
                                 </td>
 
-                                <!-- 🔸 Update -->
+                               
                                 <td class="text-center align-middle">
                                     <a asp-route-id="@item.Id"
                                        asp-controller="SolvedIssue"
@@ -78,7 +78,7 @@
                                     </a>
                                 </td>
 
-                                <!-- 🔸 Action -->
+                               
                                 <td class="text-center align-middle">
                                     <div class="btn-group btn-group-sm">
                                         <a asp-route-id="@item.Id"

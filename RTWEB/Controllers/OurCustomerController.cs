@@ -18,12 +18,12 @@ namespace RTWEB.Controllers
             _unitofWork = unitofwork;
         }
 
-        public IActionResult Index(int page=1, int pageSize= 10)
+        public IActionResult Index()
         {
-            var data =_unitofWork.OurCustomerRepository.GetAll()
+            var data = _unitofWork.OurCustomerRepository.GetAll()
                     .OrderByDescending(d => d.Id)
-                    .AsQueryable()
-                    .ToPagedList(page, pageSize); ;
+                    .AsQueryable();
+                    
             return View(data);
         }
 
