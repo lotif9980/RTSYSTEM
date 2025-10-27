@@ -20,7 +20,7 @@ namespace RTWEB.Controllers
         public IActionResult Index()
         {
             var data = _unitofWork.ProjectRepository.GetProjects()
-                .OrderByDescending(d => d.Id)
+                .OrderBy(d => d.Id)
                 .AsQueryable();
                 
             return View(data);
@@ -64,6 +64,41 @@ namespace RTWEB.Controllers
 
             return View(project);
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var data =_unitofWork.ProjectRepository.Find(id);
+            return View(data);
+        }
+
+        [HttpPost]
+        public IActionResult Update(Project project)
+        {
+            if (_unitofWork.ProjectRepository.ExestingProject(project.ProjectName,project.Id))
+            {
+                TempData["Message"] = "❌ Already Added";
+                TempData["MessageType"] = "danger";
+                return View("Edit",project);
+            }
+
+            _unitofWork.ProjectRepository.EditUpdate(project);
+            var result = _unitofWork.Complete();
+
+            if (result > 0)
+            {
+                TempData["Message"] = "✅ Update Successful";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Update Failed";
+                TempData["MessageType"] = "danger";
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
 
         public async Task<IActionResult> Delete(int id)

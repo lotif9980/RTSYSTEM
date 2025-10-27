@@ -20,7 +20,7 @@ namespace RTWEB.Controllers
         public IActionResult Index()
         {
             var data = _unitofWork.TeamRepository.GetTeams()
-                .OrderByDescending(d => d.Id)
+                .OrderBy(d => d.Id)
                 .AsQueryable();
             return View(data);
         }
@@ -34,12 +34,6 @@ namespace RTWEB.Controllers
         [HttpPost]
         public IActionResult Save(Team team)
         {
-            //if (_unitofWork.TeamRepository.ExestingTeam(team.Name))
-            //{
-            //    TempData["Message"] = "❌ Already Added";
-            //    TempData["MessageType"] = "danger";
-            //}
-
             var exesting=_unitofWork.TeamRepository.ExestingTeam(team.Name);
             if (exesting)
             {
@@ -67,6 +61,40 @@ namespace RTWEB.Controllers
                 return RedirectToAction("Save");
             }
             return View(team);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var data =_unitofWork.TeamRepository.GetById(id);
+            return View(data);
+        }
+
+        [HttpPost]
+        public IActionResult Update(Team team)
+        {
+            var exesting = _unitofWork.TeamRepository.ExestingTeam(team.Name, team.Id);
+            if (exesting)
+            {
+                TempData["Message"] = "❌ Already Added";
+                TempData["MessageType"] = "danger";
+                return View("Edit",team);
+            }
+
+            _unitofWork.TeamRepository.Update(team);
+            var result=_unitofWork.Complete();
+            if (result > 0)
+            {
+                TempData["Message"] = "✅ Update Successful";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Update Failed";
+                TempData["MessageType"] = "danger";
+            }
+
+            return  RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Delete(int id)

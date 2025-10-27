@@ -53,9 +53,27 @@ namespace RTWEB.Repository
             return _db.Updates.AnyAsync(p=>p.TesterId == id || p.DeveloperId==id);
         }
 
-        public bool ExestingTeam(string name)
+        public bool ExestingTeam(string name, int? id = null)
         {
-            return _db.Teams.Any(x=>x.Name == name);
+            if(id == null)
+            {
+                return _db.Teams.Any(x => x.Name == name);
+            }
+            else
+            {
+                return _db.Teams.Any(x => x.Name == name && x.Id !=id);
+            }
+           
+        }
+
+        public Team GetById(int id)
+        {
+            return _db.Teams.Find(id);
+        }
+
+        public void Update(Team team)
+        {
+           _db.Teams.Update(team);
         }
     }
 }

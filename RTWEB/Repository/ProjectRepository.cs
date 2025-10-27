@@ -41,7 +41,7 @@ namespace RTWEB.Repository
 
         public void Update(Project project)
         {
-            //var data = _db.Projects.Where(p => p.Id == project.Id);
+            
             var data =_db.Projects.FirstOrDefault(p=>p.Id==project.Id);
             if(data != null)
             {
@@ -50,9 +50,28 @@ namespace RTWEB.Repository
             }
         }
 
-        public bool ExestingProject(string name)
+        public bool ExestingProject(string name,int?id=null)
         {
-           return _db.Projects.Any(x=>x.ProjectName==name);
+            if (id == null)
+            {
+                return _db.Projects.Any(x => x.ProjectName == name);
+            }
+            else
+            {
+                return _db.Projects.Any(x => x.ProjectName == name && x.Id!=id);
+            }
+          
+        }
+
+        public void EditUpdate(Project project)
+        {
+            var data = _db.Projects.FirstOrDefault(p => p.Id == project.Id);
+            if (data != null)
+            {
+                data.ProjectName = project.ProjectName;
+              
+            }
+           
         }
     }
 }
