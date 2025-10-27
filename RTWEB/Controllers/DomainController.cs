@@ -67,6 +67,44 @@ namespace RTWEB.Controllers
             return View(domain);
         }
 
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var data = _unitofWork.DomainRepository.Find(id);
+            var parentProjects = _unitofWork.ParentProjectsRepository.GetAll();
+            ViewBag.PProject = parentProjects;
+            return View(data);
+        }
+
+        [HttpPost]
+        public IActionResult Update(Domain domain)
+        {
+            if (_unitofWork.DomainRepository.ExestingName(domain.DomainName,domain.Id))
+            {
+                TempData["Message"] = "✅ Already Added";
+                TempData["MessageType"] = "danger";
+                var data = _unitofWork.ParentProjectsRepository.GetAll();
+                ViewBag.PProject = data;
+
+                return View(domain);
+            }
+
+            _unitofWork.DomainRepository.EditUpdate(domain);
+             var result=_unitofWork.Complete();
+            if (result > 0)
+            {
+                TempData["Message"] = "✅Update Successfull";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "✅ Update Faild";
+                TempData["MessageType"] = "danger";
+            }
+
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> Delete(int id)
         {
             var isUsed=await _unitofWork.DomainRepository.IsDomainUseAsync(id);

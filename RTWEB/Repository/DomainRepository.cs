@@ -19,7 +19,8 @@ namespace RTWEB.Repository
 
         public void Save(Domain domain)
         {
-           _db.Add(domain);
+                _db.Add(domain);
+           
         }
 
         public void Delete(int id)
@@ -35,7 +36,7 @@ namespace RTWEB.Repository
         }
 
         public void Update(Domain domain)
-            {
+        {
             var data =_db.Domains.FirstOrDefault(p=>p.Id== domain.Id);
 
             if (data != null)
@@ -50,9 +51,21 @@ namespace RTWEB.Repository
             return _db.Domains.FirstOrDefault(p=>p.Id==id);
         }
 
-        public bool ExestingName(string name)
+        public bool ExestingName(string name, int? id=null)
         {
-            return _db.Domains.Any(x=>x.DomainName== name);
+            if (id == null)
+            {
+                return _db.Domains.Any(x => x.DomainName == name);
+            }
+            else
+            {
+                return _db.Domains.Any(x => x.DomainName == name && x.Id != id);
+            }
+        }
+
+        public void EditUpdate(Domain domain)
+        {
+            _db.Domains.Update(domain);
         }
     }
 }

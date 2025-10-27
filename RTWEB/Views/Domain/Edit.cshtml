@@ -1,0 +1,99 @@
+﻿@model Domain
+@using RTWEB.Enum
+
+@{
+    ViewData["Title"] = "Domain Edit";
+}
+@{
+    var domainType = Enum.GetValues(typeof(DomainEnum)).Cast<DomainEnum>();
+    var pproject = ViewBag.PProject;
+}
+
+<div class="d-flex justify-content-center mt-3">
+    <div class="col-md-6">
+
+        <!--begin::Horizontal Form-->
+        <div class="card card-warning card-outline mb-4">
+            <!--begin::Header-->
+            <div class="btn-group-sm">
+                <a class="btn btn-primary" asp-route-id="" asp-controller="Domain" asp-action="Index">
+                    <i class="fa fa-list"></i>
+                    Domain List
+                </a>
+            </div>
+            <div class="card-header"><div class="card-title">Domain Information</div></div>
+            <!--end::Header-->
+            <!--begin::Form-->
+            <form asp-action="Update" id="myForm" method="post">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <input hidden asp-for="Id" class="form-control" id="domainName">
+                    <div class="row mb-3">
+                        <label asp-for="DomainName" class="col-sm-3 col-form-label">Domain Name</label>
+                        <div class="col-sm-9">
+                            <input asp-for="DomainName" class="form-control" id="domainName">
+                            <span asp-validation-for="DomainName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <label asp-for="ProjectId" class="col-sm-3 col-form-label">Praent Project</label>
+                        <div class="col-sm-9">
+                            <select id="projectId" asp-for="ProjectId" class="form-select project-dropdown"
+                                    asp-items="@(new SelectList(pproject, "Id", "Name"))">
+                                <option value="">---Select Domain---</option>
+                            </select>
+                            <span asp-validation-for="ProjectId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label asp-for="DomainType" class="col-sm-3 col-form-label">Type</label>
+                        <div class="col-sm-9">
+                            <select asp-for="DomainType" class="form-select role-dropdown" id="type">
+                                <option value="">-- Select Domain Type --</option>
+                                @foreach (var type in domainType)
+                                {
+                                    <option value="@(Convert.ToInt32(type))">@type</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!--end::Body-->
+                <!--begin::Footer-->
+                <div class="card-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-warning me-2">Save</button>
+                    <button type="reset" class="btn btn-danger me-2">Reset</button>
+                </div>
+                <!--end::Footer-->
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Horizontal Form-->
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+           $("#myForm").on('submit',function(){
+                  var name=$("#domainName").val().trim();
+                     var type=$("#type").val().trim();
+
+                     var offset=20;
+                     var container=$("body");
+
+                  if(name==="")offset=createAlert("❌ Domain is Required",container,offset);
+                     if(type==="")offset=createAlert("❌ Type is Required", container,offset);
+                  if($(".field-alert").length >0) return false;
+
+                  this.submit();
+           })
+
+            $(".project-dropdown").select2({ placeholder: "--Select Parent Project--", allowClear: true, width: '100%' });
+    })
+
+</script>
