@@ -65,7 +65,13 @@ namespace RTWEB.Repository
 
         public void EditUpdate(Domain domain)
         {
-            _db.Domains.Update(domain);
+            var data = _db.Domains.FirstOrDefault(x=>x.Id==domain.Id);
+            if(data != null)
+            {
+                data.DomainName = domain.DomainName;
+                data.DomainType = domain.DomainType;
+                data.ProjectId = domain.ProjectId;
+            }
         }
     }
 }
