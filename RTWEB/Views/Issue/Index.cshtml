@@ -1,6 +1,28 @@
 ﻿@using RTWEB.ViewModel
 @model IEnumerable<IssueVM>
 
+    <style>
+
+    #issueTable th, #issueTable td {
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+
+        #issueTable th:nth-child(2),
+        #issueTable td:nth-child(2) {
+            width: 80px; 
+            text-align: center;
+        }
+
+      
+        #issueTable th:nth-child(3),
+        #issueTable td:nth-child(3) {
+            white-space: normal;
+            word-wrap: break-word;
+        
+        }
+    </style>
 
 @{
     ViewData["Title"] = "Issue"; 

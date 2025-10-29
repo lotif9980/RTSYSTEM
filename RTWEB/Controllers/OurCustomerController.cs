@@ -1,9 +1,11 @@
 ﻿using HMSYSTEM.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RTWEB.Models;
 using RTWEB.Repository;
 using RTWEB.ViewModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace RTWEB.Controllers
@@ -64,7 +66,7 @@ namespace RTWEB.Controllers
             }
 
            
-            bool exestingName= _unitofWork.OurCustomerRepository.ExestingName(model.CustomerName, model.DoaminId);
+            bool exestingName= _unitofWork.OurCustomerRepository.ExestingName(model.ContactNo);
             if (exestingName)
             {
                 TempData["Message"] = "❌ Already Customer Added";
@@ -109,6 +111,86 @@ namespace RTWEB.Controllers
 
             TempData["Message"] = "✅ Delete Successfully";
             TempData["MessageType"] = "success";
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var data = _unitofWork.OurCustomerRepository.GetById(id);
+            var ourCustomer = new OurCustomerVM
+            {
+                Id=data.Id,
+                Code=data.Code,
+                CustomerName=data.CustomerName,
+                Address=data.Address,
+                ContactNo=data.ContactNo,
+                //CreateDate=data.CreateDate,
+                DoaminId=data.DomainId
+            };
+
+
+            ViewBag.DomainList = _unitofWork.DomainRepository.GetAll()
+                          .Select(x => new SelectListItem
+                          {
+                              Value = x.Id.ToString(),
+                              Text = x.DomainName
+                          }).ToList();
+
+            return View(ourCustomer);
+        }
+
+        [HttpPost]
+        public IActionResult Update(OurCustomerVM model)
+        {
+            if (model.DoaminId == null || model.CustomerName == null || model.ContactNo == null)
+            {
+                TempData["Message"] = "❌ Please Input Valid data";
+                TempData["MessageType"] = "danger";
+
+
+
+                ViewBag.DomainList = _unitofWork.DomainRepository.GetAll()
+                              .Select(x => new SelectListItem
+                              {
+                                  Value = x.Id.ToString(),
+                                  Text = x.DomainName
+                              }).ToList();
+
+                return View("Edit",model);
+            }
+
+
+            bool exestingName = _unitofWork.OurCustomerRepository.ExestingName(model.ContactNo);
+            if (exestingName)
+            {
+                TempData["Message"] = "❌ Already Customer Added";
+                TempData["MessageType"] = "danger";
+
+                var vm = _unitofWork.DomainRepository.GetAll();
+                ViewBag.Domains = vm;
+
+                return View("Edit",model);
+            }
+
+            var entity = new OurCustomer
+            {
+                Id = model.Id,
+                Code = model.Code,
+                CustomerName = model.CustomerName,
+                ContactNo = model.ContactNo,
+                Address = model.Address,
+                DomainId = model.DoaminId
+            };
+
+
+            _unitofWork.OurCustomerRepository.Update(entity);
+            _unitofWork.Complete();
+
+            TempData["Message"] = "✅ Saved Successfully";
+            TempData["MessageType"] = "success";
+
             return RedirectToAction("Index");
         }
 

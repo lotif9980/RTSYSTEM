@@ -13,6 +13,8 @@ namespace RTWEB.Repository
         public string GenerateNewCode();
         public void Delete(int id);
         public Task<bool>IsUsedCustomer(int id);
-        public bool ExestingName(string name , int domainId);
+        public bool ExestingName(string contactNo);
+        public OurCustomer GetById(int id);
+        public void Update(OurCustomer customer);
     }
 }

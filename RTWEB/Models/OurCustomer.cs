@@ -15,7 +15,7 @@ namespace RTWEB.Models
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreateDate {  get; set; }
-        public int? DomainId { get; set; }
+        public int DomainId { get; set; }
         //public int? Status { get; set; } = 1;
         public OurCustomerStatus Status{ get; set; }= OurCustomerStatus.Active;
     }

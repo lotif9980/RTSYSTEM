@@ -72,9 +72,28 @@ namespace RTWEB.Repository
             return _db.CustomerIssues.AnyAsync(d => d.CustomerId == id);
         }
 
-        public bool ExestingName(string name,int domainId)
+        public bool ExestingName(string contactNo)
         {
-            return _db.OurCustomers.Any(x=>x.CustomerName==name && x.DomainId==domainId);
+            return _db.OurCustomers.Any(x=>x.ContactNo== contactNo);
+        }
+
+        public OurCustomer GetById(int id)
+        {
+            return _db.OurCustomers.Find(id);
+        }
+
+        public void Update(OurCustomer customer)
+        {
+            var data =_db.OurCustomers.FirstOrDefault(x=>x.Id== customer.Id);
+           
+            if (data.ContactNo != null)
+            {
+                data.CustomerName = customer.CustomerName;
+                data.ContactNo= customer.ContactNo;
+                data.Address = customer.Address;
+                data.DomainId=customer.DomainId;
+            }
+
         }
     }
 }

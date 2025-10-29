@@ -37,7 +37,8 @@ namespace RTWEB.Repository
         {
             var data = (from issue in _db.Issues
                         join project in _db.Projects on issue.ProjectId equals project.Id
-                        join si in _db.SolvedIssues on issue.Id equals si.Id
+                        join ud in _db.UpdateDetails on issue.Id equals ud.IssueId
+                        join u in _db.Updates on ud.UpdateId equals u.Id
                         where issue.Status == Enum.IssueStatus.solved
                         select new IssueVM
                         {
@@ -45,10 +46,9 @@ namespace RTWEB.Repository
                             Title = issue.Title,
                             Description = issue.Description,
                             ProjectName = project.ProjectName,
-                            Status=Enum.IssueStatus.solved,
-                            CreateDate=issue.CreateDate,
-                            SolvedDate=si.SolvedDate,
-                           
+                            Status = issue.Status,
+                            CreateDate = issue.CreateDate,
+                            SolvedDate =u.UpdateDate  
                         }).ToList();
 
             return data;

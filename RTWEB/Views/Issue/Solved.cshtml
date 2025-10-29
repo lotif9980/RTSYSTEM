@@ -4,6 +4,39 @@
 @{
     ViewData["Title"] = "Issue";
 }
+<style>
+    #solvedIssueTable th, #solvedIssueTable td {
+        vertical-align: middle;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+        /* Fixed Create Date column */
+        #solvedIssueTable th:nth-child(2),
+        #solvedIssueTable td:nth-child(2) {
+            width: 80px;
+            text-align: center;
+        }
+
+        /* Fixed Solved Date column */
+        #solvedIssueTable th:nth-child(3),
+        #solvedIssueTable td:nth-child(3) {
+            width: 80px;
+            text-align: center;
+        }
+
+        /* Issue column — fixed width but allows wrapping */
+        #solvedIssueTable th:nth-child(4),
+        #solvedIssueTable td:nth-child(4) {
+            white-space: normal;
+            word-wrap: break-word;
+            max-width: 500px; /* প্রয়োজন মতো পরিবর্তন করতে পারো */
+            text-align: left; /* টেক্সট বামদিকে সুন্দর দেখায় */
+        }
+
+    
+</style>
+
 
 <div class="container-fluid mt-3">
 
