@@ -8,32 +8,36 @@
     ViewData["Title"] = "Update";
 }
 <style>
-    /* Domain badge styling */
     .domain-item {
         display: inline-flex;
         align-items: center;
-        background-color: #e7f3ff;
-        color: #0a58ca;
-        border: 1px solid #b6d4fe;
-        border-radius: 20px;
-        padding: 5px 10px;
-        margin: 3px;
+        background-color: #0d6efd1a; /* হালকা নীল */
+        color: #0d6efd;
+        border-radius: 25px;
+        padding: 6px 12px;
+        margin: 4px;
         font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
     }
+
+        .domain-item:hover {
+            background-color: #0d6efd33;
+        }
 
         .domain-item button {
             background-color: transparent;
             border: none;
-            color: #dc3545;
-            font-weight: bold;
+            color: #ff4d4d;
+            font-size: 18px;
             margin-left: 8px;
-            font-size: 16px;
             line-height: 1;
             cursor: pointer;
+            transition: 0.2s;
         }
 
             .domain-item button:hover {
-                color: #a71d2a;
+                color: #b30000;
             }
 </style>
 
@@ -195,36 +199,30 @@
             width: '100%'
         });
 
-      $('.domain-dropdown').on('change', function () {
-            var selectedOptions = $(this).find('option:selected');
+         $('.domain-dropdown').on('select2:select', function (e) {
+            var selectedOption = e.params.data;
+            var domainId = selectedOption.id;
+            var domainName = selectedOption.text;
             var $list = $('#selectedDomainsList');
 
-            selectedOptions.each(function () {
-                var domainName = $(this).text();
-                var domainId = $(this).val();
+            // Duplicate check
+            if ($list.find('input[value="' + domainId + '"]').length === 0) {
+                $list.append(
+                    '<li class="domain-item">' +
+                        domainName +
+                        '<input type="hidden" name="SelectedDomainIds" value="' + domainId + '"/>' +
+                        '<button type="button" class="remove-domain" data-id="' + domainId + '">×</button>' +
+                    '</li>'
+                );
+            }
 
-                // Duplicate check
-                if ($list.find('input[value="' + domainId + '"]').length === 0) {
-                    $list.append(
-                        '<li class="domain-item">' +
-                            domainName +
-                            '<input type="hidden" name="SelectedDomainIds" value="' + domainId + '"/>' +
-                            '<button type="button" class="remove-domain" data-id="' + domainId + '">×</button>' +
-                        '</li>'
-                    );
-                }
-            });
-
-            // Select box ফাঁকা করে দেবে যেন আবার নতুন select করা যায়
-            $(this).val(null).trigger('change');
-      });
-
-            // Remove button event
-            $(document).on('click', '.remove-domain', function () {
-                $(this).closest('li').remove();
-            });
-
-        
+            // select করা আইটেম deselect হবে কিন্তু dropdown খোলা থাকবে
+            var $select = $(this);
+            setTimeout(() => {
+                $select.val(null).trigger('change.select2');
+                $select.select2('open');
+            }, 0);
+         });
 
          //
         

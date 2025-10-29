@@ -1,4 +1,5 @@
 ﻿using RTWEB.Enum;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RTWEB.Models
 {
@@ -10,7 +11,9 @@ namespace RTWEB.Models
         //public int AssignedTo { get; set; }
         public int ProjectId {  get; set; }
         //public int Status { get; set; } = 1;
-        public IssueStatus Status { get; set; } 
+        public IssueStatus Status { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreateDate { get; set; }
 
     }
 }

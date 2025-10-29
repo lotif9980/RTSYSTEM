@@ -1,4 +1,6 @@
 ﻿@using RTWEB.ViewModel
+@model IEnumerable<IssueVM>
+
 
 @{
     ViewData["Title"] = "Issue"; 
@@ -18,14 +20,18 @@
                         </div>
 
                        
-                        <a asp-controller="Issue" asp-action="Save" class="btn btn-primary ">Add Issue</a>
+                        <div>
+                            <a asp-controller="Issue" asp-action="Save" class="btn btn-primary ">Add Issue</a>
+                            <a asp-controller="Issue" asp-action="Solved" class="btn btn-success ">Solved List</a>
+                        </div>
                     </div>
 
                     <table id="issueTable" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th style="width: 10px">Sl</th>
-                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Issue</th>
                                 <th>Project Name</th>
                                 <th>Status</th>
                                 <th style="width:20px;text-align:center">Action</th>
@@ -39,6 +45,7 @@
                             {
                                 <tr>
                                     <td>@count</td>
+                                    <td>@(item.CreateDate.ToString("dd-MM-yyyy"))</td>
                                     <td>@item.Title</td>
                                     <td>@item.ProjectName</td>
                                     <td>@item.Status</td>

@@ -28,12 +28,11 @@ namespace RTWEB.Controllers
         }
 
         [Authorize]
-        public IActionResult Solved(int page = 1, int pageSize = 10)
+        public IActionResult Solved()
         {
             var data = _unitofWork.IssueRepository.GetSolved()
                 .OrderByDescending(d => d.Id)
-                .AsQueryable()
-                .ToPagedList(page, pageSize);
+                .AsQueryable();
             return View(data);
         }
 

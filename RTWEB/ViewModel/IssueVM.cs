@@ -11,6 +11,8 @@ namespace RTWEB.ViewModel
         public string AssignPersion { get; set; }
         public string ProjectName { get; set; }
         public IssueStatus Status { get; set; }
+        public DateTime CreateDate {  get; set; }
+        public DateTime? SolvedDate { get; set; }
 
 
     }

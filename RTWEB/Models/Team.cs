@@ -1,4 +1,5 @@
 ﻿using RTWEB.Enum;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RTWEB.Models
 {
@@ -8,5 +9,6 @@ namespace RTWEB.Models
         public string Name { get; set; }
         //public int Status { get; set; }
         public TeamType Status {  get; set; }
+      
     }
 }
