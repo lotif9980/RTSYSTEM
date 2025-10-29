@@ -16,7 +16,7 @@
             <!-- compact row spacing -->
             <!-- Left Column -->
             <div class="col-md-5">
-                            <input hidden asp-for="Input.Id">
+                           
 
                 <!-- smaller width -->
                 <div class="card mb-3">
@@ -26,6 +26,7 @@
                     </div>
                     <div class="card-body p-2">
                         <!-- less padding -->
+                        <input hidden id="id" asp-for="Input.Id">
                         <div class="mb-2">
                             <label asp-for="Input.DomainId">Domain</label>
                             <select id="domainId" asp-for="Input.DomainId" class="form-control domain-dropdown"
@@ -106,7 +107,9 @@
         $('#addProblemBtn').click(function () {
             var domainId = $('#domainId').val();
             var customerId = $('#customerId').val();
+            var id = $('#id').val();
             var problemText = $('#problemText').val().trim();
+          
 
             if (!domainId) { alert("Please select Domain"); return; }
             if (!customerId) { alert("Please select Customer"); return; }
@@ -121,6 +124,7 @@
             $('#issueTable tbody').append(
                 '<tr>' +
                 '<td>' + problemText +
+                '<input type="hidden" name="CustomerIssue[' + index + '].Id" value="' + id + '" />' +
                 '<input type="hidden" name="CustomerIssue[' + index + '].DomainId" value="' + domainId + '" />' +
                 '<input type="hidden" name="CustomerIssue[' + index + '].CustomerId" value="' + customerId + '" />' +
                 '<input type="hidden" name="CustomerIssue[' + index + '].Problem" value="' + problemText + '" />' +
