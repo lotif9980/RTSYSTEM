@@ -84,5 +84,10 @@ namespace RTWEB.Repository
         {
             return _db.CustomerIssues.FirstOrDefault(x => x.Id == id);
         }
+
+        public void Update(CustomerIssue vm)
+        {
+            _db.CustomerIssues.Update(vm);
+        }
     }
 }

@@ -13,5 +13,6 @@ namespace RTWEB.Repository
         public void UpdateStatus(int id, CustomerIssueStatus status);
         public Task<bool> IsUsedIssue(int id);
         public CustomerIssue GetByid(int id);
+        public void Update(CustomerIssue vm);
     }
 }

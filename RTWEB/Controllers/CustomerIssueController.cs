@@ -72,7 +72,6 @@ namespace RTWEB.Controllers
 
                 var data = new CustomerIssueSaveVM
                 {
-
                     CustomerIssue = new List<CustomerIssue> { new CustomerIssue() },
                     Domain = _unitofWork.DomainRepository.GetAll(),
                     OurCustomer = _unitofWork.OurCustomerRepository.GetAll(),
@@ -98,8 +97,63 @@ namespace RTWEB.Controllers
             TempData["Message"] = "✅ Issues Saved Successfully";
             TempData["MessageType"] = "success";
             return RedirectToAction("Save");
-
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var data =_unitofWork.CustomerIssueRepository.GetByid(id);
+            var model = new CustomerIssueSaveVM
+            {
+                Input = data,
+                Domain = _unitofWork.DomainRepository.GetAll(),
+                OurCustomer = _unitofWork.OurCustomerRepository.GetAll(),
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(CustomerIssueSaveVM model)
+        {
+            if (model.CustomerIssue == null || !model.CustomerIssue.Any())
+            {
+                TempData["Message"] = "❌ Please select Domain and add at least one Problem";
+                TempData["MessageType"] = "danger";
+
+                model.Domain = _unitofWork.DomainRepository.GetAll();
+                model.OurCustomer = _unitofWork.OurCustomerRepository.GetAll();
+                return View(model);
+            }
+
+            foreach (var item in model.CustomerIssue)
+            {
+                if (!string.IsNullOrWhiteSpace(item.Problem))
+                {
+                   
+                    var existing = _unitofWork.CustomerIssueRepository.GetByid(item.Id);
+
+                    if (existing != null)
+                    {
+                       
+                        existing.DomainId = item.DomainId;
+                        existing.CustomerId = item.CustomerId;
+                        existing.Problem = item.Problem;
+                        existing.Status = Enum.CustomerIssueStatus.pending;
+
+                        _unitofWork.CustomerIssueRepository.Update(existing);
+                    }
+                    
+                }
+            }
+
+            _unitofWork.Complete();
+
+            TempData["Message"] = "✅ Issues Updated Successfully";
+            TempData["MessageType"] = "success";
+
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         public IActionResult SearchCustomerName(string name)
         {

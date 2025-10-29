@@ -162,15 +162,19 @@ namespace RTWEB.Controllers
             }
 
 
-            bool exestingName = _unitofWork.OurCustomerRepository.ExestingName(model.ContactNo);
+            bool exestingName = _unitofWork.OurCustomerRepository.ExestingName(model.ContactNo,model.Id);
             if (exestingName)
             {
                 TempData["Message"] = "❌ Already Customer Added";
                 TempData["MessageType"] = "danger";
 
-                var vm = _unitofWork.DomainRepository.GetAll();
-                ViewBag.Domains = vm;
-
+                ViewBag.DomainList = _unitofWork.DomainRepository.GetAll()
+                              .Select(x => new SelectListItem
+                              {
+                                  Value = x.Id.ToString(),
+                                  Text = x.DomainName
+                              }).ToList();
+                
                 return View("Edit",model);
             }
 
