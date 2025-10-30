@@ -31,20 +31,31 @@ namespace RTWEB.Repository
             db.Dispose();
         }
 
-        public UnitOfWork(Db db)
+        public UnitOfWork(Db db,IDomainRepository domainRepository,
+                               IIssueRepository issueRepository,
+                               ITeamRepository teamRepository,
+                               IProjectRepository projectRepository,
+                               IUpdateRepository updateRepository,
+                               IReportRepository reportRepository,
+                               IOurCustomerRepository ourCustomerRepository,
+                               ICustomerIssueRepository customerIssueRepository,
+                               ISolvedIssueRepository solvedIssueRepository,
+                               ISolvedDetailRepository solvedDetailRepository,
+                               IParentProjectsRepository parentProjectsRepository
+                         )
         {
             this.db = db;
-            DomainRepository = new DomainRepository(db);
-            IssueRepository= new IssueRepository(db);
-            TeamRepository= new TeamRepository(db);
-            ProjectRepository = new ProjectRepository(db);
-            UpdateRepository = new UpdateRepository(db);
-            ReportRepository = new ReportRepository(db);
-            OurCustomerRepository = new OurCustomerRepository(db);
-            CustomerIssueRepository = new CustomerIssueRepository(db);
-            SolvedIssueRepository = new SolvedIssueRepository(db);
-            SolvedDetailRepository = new SolvedDetailRepository(db);
-            ParentProjectsRepository = new ParentProjectsRepository(db);
+            DomainRepository =domainRepository;
+            IssueRepository =issueRepository;
+            TeamRepository =teamRepository;
+            ProjectRepository =projectRepository;
+            UpdateRepository =updateRepository;
+            ReportRepository =reportRepository;
+            OurCustomerRepository =ourCustomerRepository;
+            CustomerIssueRepository =customerIssueRepository;
+            SolvedIssueRepository=solvedIssueRepository;
+            SolvedDetailRepository=solvedDetailRepository;
+            ParentProjectsRepository =parentProjectsRepository;
 
         }
       

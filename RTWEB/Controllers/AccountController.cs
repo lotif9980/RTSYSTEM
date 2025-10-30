@@ -9,7 +9,7 @@ namespace RTWEB.Controllers
     {
         private const string DefaultUsername = "admin";
         private const string DefaultPassword = "1234";
-        private const string UName = "supp";
+        private const string UName = "support";
         private const string UPassword = "Test12";
 
 

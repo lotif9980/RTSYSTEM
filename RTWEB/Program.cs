@@ -10,6 +10,17 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<Db>(options => options.UseSqlServer(Db.ConnectionString));
 builder.Services.AddScoped<IUnitofWork, UnitOfWork>();
+builder.Services.AddScoped<IDomainRepository, DomainRepository>();
+builder.Services.AddScoped<IIssueRepository, IssueRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IUpdateRepository, UpdateRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
+builder.Services.AddScoped<IOurCustomerRepository, OurCustomerRepository>();
+builder.Services.AddScoped<ICustomerIssueRepository, CustomerIssueRepository>();
+builder.Services.AddScoped<ISolvedIssueRepository, SolvedIssueRepository>();
+builder.Services.AddScoped<ISolvedDetailRepository, SolvedDetailRepository>();
+builder.Services.AddScoped<IParentProjectsRepository, ParentProjectsRepository>();
 
 // 🔹 Add distributed memory cache (required for session)
 builder.Services.AddDistributedMemoryCache();
