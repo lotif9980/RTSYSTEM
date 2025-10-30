@@ -144,6 +144,23 @@ namespace RTWEB.Controllers
             return RedirectToAction("Index");
         }
 
-     
+        public IActionResult btnUpdateStatus(int id)
+        {
+            _unitofWork.IssueRepository.UpdateStatus(id,Enum.IssueStatus.TestSolved);
+            var result= _unitofWork.Complete();
+
+            if (result>0)
+            {
+                TempData["Message"] = "✅ Successfully Update!";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Update Faild";
+                TempData["MessageType"] = "danger";
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

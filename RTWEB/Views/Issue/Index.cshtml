@@ -74,7 +74,10 @@
                                     <td>
                                         <div class="d-flex justify-content-center btn-group-sm ">
 
-                                            <a class="btn btn-primary ms-2" asp-route-id="@item.Id" asp- controller="Appointment" asp-action="Edit">
+                                            <a class="btn btn-success ms-2" asp-action="btnUpdateStatus" asp-route-id="@item.Id">
+                                                <i class="fa fa-rotate-right"></i>
+                                            </a>
+                                            <a class="btn btn-primary ms-2" asp-route-id="@item.Id"  asp-action="Edit">
                                                 <i class="fa fa-edit"></i>
                                             </a>
 
@@ -92,12 +95,10 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- /.card-body -->
-                <div class="card-footer clearfix">
-                    @* @await Html.PartialAsync("_Pagination", Model)  *@
-                </div>
+               
+                
             </div>
-            <!-- /.card -->
+
         </div>
     </div>
 </div>
