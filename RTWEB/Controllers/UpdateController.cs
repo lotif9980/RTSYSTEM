@@ -62,7 +62,7 @@ namespace RTWEB.Controllers
         public IActionResult GetProjectByIssue(int projectId)
         {
             var project = _unitofwork.IssueRepository.GetAll()
-                .Where(p => p.ProjectId == projectId && p.Status==Enum.IssueStatus.Pending)
+                .Where(p => p.ProjectId == projectId && p.Status==Enum.IssueStatus.TestSolved)
                 .Select(b=> new
                 {
                     b.Id,

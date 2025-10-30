@@ -11,7 +11,7 @@
     .domain-item {
         display: inline-flex;
         align-items: center;
-        background-color: #0d6efd1a; /* হালকা নীল */
+        background-color: #0d6efd1a;
         color: #0d6efd;
         border-radius: 25px;
         padding: 6px 12px;
@@ -270,12 +270,11 @@
     // ================= Project & Issue Handling =================
     $(document).ready(function () {
 
-        // Project Change
+        
         $('#projectId').on('change', function () {
             var projectId = $(this).val();
 
             if (projectId) {
-                // শুধু তখনই disable করবো যদি issue select করা হয়ে থাকে
                 if ($('#issueTable tbody tr').length > 0) {
                     $(this).prop('disabled', true);
                 }
