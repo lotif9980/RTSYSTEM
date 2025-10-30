@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Edit";
+}
+
+<style>
+    h1 {
+        position: relative;
+        transition: all 0.5s ease;
+        cursor: pointer;
+    }
+</style>
+
+<div class="d-flex justify-content-center align-items-center" style="height:80vh;">
+    <h1 class="text-bg-danger p-3 rounded" id="movingText">
+        Edit not working
+    </h1>
+</div>
+
+<script>
+    const h1 = document.getElementById("movingText");
+    h1.addEventListener("mouseenter", () => {
+      const randomX = Math.random() * 400 - 200; 
+      const randomY = Math.random() * 200 - 100;
+      h1.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    });
+</script>

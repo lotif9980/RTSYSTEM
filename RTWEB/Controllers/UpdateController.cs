@@ -229,7 +229,10 @@ namespace RTWEB.Controllers
             return RedirectToAction("Save");
         }
 
-
+        public IActionResult Edit(int id)
+        {
+            return View();
+        }
 
         public IActionResult Delete(int id)
         {

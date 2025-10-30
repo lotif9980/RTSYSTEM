@@ -8,7 +8,30 @@
     ViewData["Title"] = "Update";
 }
 <style>
+
+    #selectedDomainsList {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 12px; /* row-gap | column-gap */
+        padding: 0;
+        margin: 0;
+    }
+
     .domain-item {
+        flex: 0 0 calc(50% - 12px); /* প্রতি লাইনে 2টা item */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #0d6efd1a;
+        color: #0d6efd;
+        border-radius: 25px;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+    /* .domain-item {
         display: inline-flex;
         align-items: center;
         background-color: #0d6efd1a;
@@ -19,7 +42,7 @@
         font-size: 14px;
         font-weight: 500;
         transition: all 0.2s ease;
-    }
+    } */
 
         .domain-item:hover {
             background-color: #0d6efd33;
@@ -50,13 +73,13 @@
             <!-- Left Column: Fixed Info -->
             <div class="col-md-6">
                 <div class="card mb-3">
-                    
                     <div class="card-header d-flex justify-content-between">
                         <div>
                             <strong>Update Information</strong>
                         </div>
                         <div>
                             <a class="btn btn-primary" asp-action="Index">Update List</a>
+                            <a class="btn btn-primary ms-2" asp-controller="Issue" asp-action="Save">Add Issue</a>
                         </div>
                         
                     </div>
@@ -160,21 +183,11 @@
                     <div class="card-header bg-light"><strong>Selected Issues</strong></div>
                     
                     <div class="card-body">
-                        <div class="row mb-3">
-                            <label class="col-sm-4 col-form-label">Select Issue</label>
-                            <div class="col-sm-8">
-                                <select id="issueId" class="form-select issue-dropdown">
-                                    <option value="">--Select Issue--</option>
-                                </select>
-                            </div>
-                        </div>
-                       
-
                         <table class="table table-bordered mt-3" id="issueTable">
                             <thead>
                                 <tr>
+                                    <th style="width:5%">#</th>
                                     <th>Issue</th>
-                                    <th style="width: 10%;">Action</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -185,13 +198,19 @@
             </div>
         </div>
 
-        
+        <div id="hiddenIssues"></div>
     </form>
+
+
 </div>
 
 <script>
 
      $(document).ready(function () {
+
+            $(document).on('click', '.remove-domain', function () {
+                $(this).closest('li').remove();
+            });
 
         $(".domain-dropdown").select2({
             placeholder: "--Select Domain(s)--",
@@ -279,20 +298,29 @@
                     $(this).prop('disabled', true);
                 }
 
-                $.ajax({
+                    $.ajax({
                     url: '/Update/GetProjectByIssue',
                     type: 'GET',
                     data: { projectId: projectId },
                     dataType: 'json',
                     success: function (data) {
-                        var $issueDropdown = $('#issueId');
-                        $issueDropdown.empty();
-                        $issueDropdown.append('<option value="">-- Select Issue --</option>');
+                        var $tableBody = $('#issueTable tbody');
+                        $tableBody.empty();
+
+                        if (data.length === 0) {
+                            $tableBody.append('<tr><td colspan="2" class="text-center text-muted">No issues found.</td></tr>');
+                            return;
+                        }
+
                         $.each(data, function (index, issue) {
-                            $issueDropdown.append($('<option>', {
-                                value: issue.id,
-                                text: issue.title
-                            }));
+                            $tableBody.append(`
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" class="issue-checkbox" value="${issue.id}" />
+                                    </td>
+                                    <td>${issue.title}</td>
+                                </tr>
+                            `);
                         });
                     },
                     error: function (xhr, status, error) {
@@ -301,6 +329,19 @@
                 });
             }
         });
+
+          $(document).on('change', '.issue-checkbox', function () {
+            var issueId = $(this).val();
+            var index = $('#hiddenIssues input').length; // count hidden input
+
+            if ($(this).is(':checked')) {
+                $('#hiddenIssues').append(
+                    `<input type="hidden" name="UpdateDetails[${index}].IssueId" value="${issueId}" />`
+                );
+            } else {
+                $('#hiddenIssues input[value="' + issueId + '"]').remove();
+            }
+           });
 
         // Issue Select → Auto Add
         $('#issueId').on('change', function () {
