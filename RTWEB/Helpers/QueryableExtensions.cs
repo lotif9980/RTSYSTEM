@@ -1,7 +1,11 @@
-﻿using HMSYSTEM.ViewModels;
+﻿using RTWEB.ViewModel;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Security.Claims;
+using System;
+using RTWEB.ViewModels;
 
-namespace HMSYSTEM.Helpers
+namespace RTWEB.Helpers
 {
     public static class QueryableExtensions
     {
@@ -19,7 +23,7 @@ namespace HMSYSTEM.Helpers
             };
         }
 
-
+      
         public static string TakaInWords(decimal amount)
         {
             // শুধু integer part consider করছি, ছোট amount-এর জন্য ঠিক থাকে

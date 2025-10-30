@@ -1,4 +1,4 @@
-﻿@* @model IEnumerable<Project> *@
+﻿@model IEnumerable<Project>
 @* @model HMSYSTEM.ViewModels.PagedResult<Project> *@
 @using RTWEB.Enum
 @{
@@ -42,7 +42,7 @@
                             {
                                 <tr>
                                     <td>@count</td>
-                                    <td>@item.ProjectName</td>
+                                    <td>@item.ProjectName (<span>@(item.SourceName?? "N/A")</span>)</td>
                                     <td>@(item.UpdateBranch ?? "N/A")</td>
                                     <td>@(item.LastUpdateDate?.ToString("dd-MM-yyyy") ?? "N/A")</td>
                                     <td>

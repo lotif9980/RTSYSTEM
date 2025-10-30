@@ -36,6 +36,14 @@
                         </div>
                     </div>
 
+                    <div class="row mb-3">
+                        <label asp-for="DbName" class="col-sm-3 col-form-label">DB Name</label>
+                        <div class="col-sm-9">
+                            <input asp-for="DbName" class="form-control" id="dbName">
+                            <span asp-validation-for="DbName" class="text-danger"></span>
+                        </div>
+                    </div>
+
 
                     <div class="row mb-3">
                         <label asp-for="ProjectId" class="col-sm-3 col-form-label">Praent Project</label>
@@ -81,13 +89,15 @@
     $(document).ready(function(){
            $("#myForm").on('submit',function(){
                   var name=$("#domainName").val().trim();
-                     var type=$("#type").val().trim();
+                  var type=$("#type").val().trim();
+                  var type=$("#dbName").val().trim();
 
                      var offset=20;
                      var container=$("body");
 
                   if(name==="")offset=createAlert("❌ Domain is Required",container,offset);
-                     if(type==="")offset=createAlert("❌ Type is Required", container,offset);
+                  if(type==="")offset=createAlert("❌ Type is Required", container,offset);
+                  if(dbName==="")offset=createAlert("❌ Db Name is Required", container,offset);
                   if($(".field-alert").length >0) return false;
 
                   this.submit();

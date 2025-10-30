@@ -1,4 +1,4 @@
-﻿using HMSYSTEM.Helpers;
+﻿using RTWEB.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RTWEB.Models;
@@ -113,7 +113,7 @@ namespace RTWEB.Controllers
                     {
                         ProjectId = vm.ProjectId,
                         Title = issue.Title,
-                        Status = Enum.IssueStatus.pending
+                        Status = Enum.IssueStatus.Pending
                     };
                     _unitofWork.IssueRepository.Save(data);
                 }

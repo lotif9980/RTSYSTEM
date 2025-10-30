@@ -1,4 +1,4 @@
-﻿using HMSYSTEM.Helpers;
+﻿using RTWEB.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RTWEB.Enum;
@@ -23,7 +23,7 @@ namespace RTWEB.Controllers
         public IActionResult Index()
         {
             var data = _unitofWork.DomainRepository.GetAll()
-                .OrderByDescending(d => d.Id)
+                .OrderBy(d => d.Id)
                 .AsQueryable();
                 
 

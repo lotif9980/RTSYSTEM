@@ -1,4 +1,4 @@
-﻿using HMSYSTEM.Helpers;
+﻿using RTWEB.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RTWEB.Data;
@@ -62,7 +62,7 @@ namespace RTWEB.Controllers
         public IActionResult GetProjectByIssue(int projectId)
         {
             var project = _unitofwork.IssueRepository.GetAll()
-                .Where(p => p.ProjectId == projectId && p.Status==Enum.IssueStatus.pending)
+                .Where(p => p.ProjectId == projectId && p.Status==Enum.IssueStatus.Pending)
                 .Select(b=> new
                 {
                     b.Id,
@@ -106,7 +106,7 @@ namespace RTWEB.Controllers
                 {
                     foreach (var detail in model.UpdateDetails)
                     {
-                        _unitofwork.IssueRepository.UpdateStatus(detail.IssueId, Enum.IssueStatus.solved);
+                        _unitofwork.IssueRepository.UpdateStatus(detail.IssueId, Enum.IssueStatus.Solved);
                     }
                 }
             }
@@ -210,7 +210,7 @@ namespace RTWEB.Controllers
             {
                 foreach (var detail in model.UpdateDetails)
                 {
-                    _unitofwork.IssueRepository.UpdateStatus(detail.IssueId, Enum.IssueStatus.solved);
+                    _unitofwork.IssueRepository.UpdateStatus(detail.IssueId, Enum.IssueStatus.Solved);
                 }
             }
 
@@ -240,7 +240,7 @@ namespace RTWEB.Controllers
             {
                 foreach(var d in updateDetails)
                 {
-                    _unitofwork.IssueRepository.UpdateStatus(d.IssueId, Enum.IssueStatus.pending);
+                    _unitofwork.IssueRepository.UpdateStatus(d.IssueId, Enum.IssueStatus.Pending);
                 }
             }
 

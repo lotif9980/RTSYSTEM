@@ -71,6 +71,7 @@ namespace RTWEB.Repository
                 data.DomainName = domain.DomainName;
                 data.DomainType = domain.DomainType;
                 data.ProjectId = domain.ProjectId;
+                data.DbName = domain.DbName;
             }
         }
     }

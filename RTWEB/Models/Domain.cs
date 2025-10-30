@@ -13,6 +13,6 @@ namespace RTWEB.Models
         public string? UpdateBranch {  get; set; }
         public DateTime? LastUpdateDate { get; set; }
         public int? ProjectId {  get; set; }
-   
+        public string ? DbName { get; set; }
     }
 }

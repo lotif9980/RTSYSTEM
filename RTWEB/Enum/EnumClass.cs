@@ -21,8 +21,10 @@ namespace RTWEB.Enum
 
     public enum IssueStatus
     {
-        pending=1,
-        solved=2
+        Pending=1,
+        Solved=2,
+        [Display(Name = "Test Solved")]
+        TestSolved = 3
     }
 
     public enum CustomerIssueStatus

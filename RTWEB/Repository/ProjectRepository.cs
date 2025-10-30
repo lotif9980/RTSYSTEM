@@ -69,9 +69,8 @@ namespace RTWEB.Repository
             if (data != null)
             {
                 data.ProjectName = project.ProjectName;
-              
+                data.SourceName = project.SourceName;
             }
-           
         }
     }
 }

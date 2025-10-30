@@ -1,4 +1,4 @@
-﻿namespace HMSYSTEM.ViewModels
+﻿namespace RTWEB.ViewModels
 {
     public interface IPagedResult
     {

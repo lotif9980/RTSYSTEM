@@ -20,12 +20,12 @@ namespace RTWEB.Repository
            var data =(from issue in _db.Issues
                       where !projectId.HasValue || issue.ProjectId== projectId.Value
                       join pro in _db.Projects on issue.ProjectId equals pro.Id
-                      where  issue.Status==Enum.IssueStatus.pending
+                      where  issue.Status==Enum.IssueStatus.Pending
                       select new IssueVM
                       {
                           Title=issue.Title,
                           ProjectName=pro.ProjectName,
-                          Status=Enum.IssueStatus.pending
+                          Status=Enum.IssueStatus.Pending
                       }).ToList();
 
             return data;
