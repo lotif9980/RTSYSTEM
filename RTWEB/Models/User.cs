@@ -14,7 +14,7 @@ namespace RTWEB.Models
         public string? Password { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string CreateDate {  get; set; }
+        public DateTime CreateDate {  get; set; }
         public bool Status { get; set; }
     }
 }

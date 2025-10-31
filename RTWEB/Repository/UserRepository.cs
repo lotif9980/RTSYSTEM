@@ -1,4 +1,5 @@
 ﻿using RTWEB.Data;
+using RTWEB.Models;
 using RTWEB.ViewModel;
 
 namespace RTWEB.Repository
@@ -11,6 +12,8 @@ namespace RTWEB.Repository
         {
             _db = db;
         }
+
+      
 
         public IEnumerable<UserVM> GetAll()
         {
@@ -29,8 +32,14 @@ namespace RTWEB.Repository
 
             return data;
         }
+        public bool ExestingCheck(string userName)
+        {
+            return _db.Users.Any(u => u.UserName == userName);
+        }
 
-
-
+        public void Save(User user)
+        {
+            _db.Add(user);
+        }
     }
 }
