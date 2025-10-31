@@ -20,6 +20,11 @@ namespace RTWEB.Repository
         public ISolvedIssueRepository SolvedIssueRepository {  get; set; }
         public ISolvedDetailRepository SolvedDetailRepository {  get; set; }
         public IParentProjectsRepository ParentProjectsRepository { get; set; }
+        public IUserRepository UserRepository { get;set; }
+        public IRoleRepository RoleRepository { get; set; }
+
+
+
 
         public int Complete()
         {
@@ -41,7 +46,9 @@ namespace RTWEB.Repository
                                ICustomerIssueRepository customerIssueRepository,
                                ISolvedIssueRepository solvedIssueRepository,
                                ISolvedDetailRepository solvedDetailRepository,
-                               IParentProjectsRepository parentProjectsRepository
+                               IParentProjectsRepository parentProjectsRepository,
+                               IUserRepository userRepository,
+                               IRoleRepository roleRepository
                          )
         {
             this.db = db;
@@ -56,6 +63,8 @@ namespace RTWEB.Repository
             SolvedIssueRepository=solvedIssueRepository;
             SolvedDetailRepository=solvedDetailRepository;
             ParentProjectsRepository =parentProjectsRepository;
+            UserRepository =userRepository;
+            RoleRepository =roleRepository;
 
         }
       

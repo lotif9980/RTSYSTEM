@@ -1,0 +1,134 @@
+﻿@using RTWEB.ViewModel
+@model IEnumerable<UserVM>
+
+<style>
+
+    #issueTable th, #issueTable td {
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+
+        #issueTable th:nth-child(2),
+        #issueTable td:nth-child(2) {
+            width: 80px;
+            text-align: center;
+        }
+
+
+        #issueTable th:nth-child(3),
+        #issueTable td:nth-child(3) {
+            white-space: normal;
+            word-wrap: break-word;
+        }
+</style>
+
+@{
+    ViewData["Title"] = "User";
+}
+
+<div class="container-fluid mt-3">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+
+                <div class="card-body">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+                        <!-- Search Box -->
+                        <div class="flex-grow-1 me-2" style="max-width: 250px;">
+                            <input type="text" id="customSearchBox" class="form-control " placeholder="Search">
+                        </div>
+
+
+                        <div>
+                            <a asp-controller="User" asp-action="Save" class="btn btn-primary ">Add User</a>
+                         
+                        </div>
+                    </div>
+
+                    <table id="userTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">Sl</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>User Name</th>
+                                <th>Status</th>
+                                <th style="width:20px;text-align:center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int count = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@count</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.PhoneNo</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.UserName</td>
+                                    <td>@item.Status</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center btn-group-sm ">
+
+                                            <a class="btn btn-success ms-2" asp-action="btnUpdateStatus" asp-route-id="@item.Id">
+                                                <i class="fa fa-rotate-right"></i>
+                                            </a>
+
+                                            <a class="btn btn-primary ms-2" asp-route-id="@item.Id" asp-action="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                            <a class="btn btn-danger ms-2"
+                                               asp-route-id="@item.Id"
+                                               asp-controller="Issue" asp-action="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                count++;
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#userTable').DataTable({
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 20, 50],
+            "ordering": true,
+            "paging": true,
+            "info": true,
+            "language": {
+                "search": "",
+                "searchPlaceholder": "Search",
+                "lengthMenu": "_MENU_ rows",
+                "info": "_TOTAL_ রেকর্ডের মধ্যে _START_ থেকে _END_ দেখানো হচ্ছে",
+                "paginate": {
+                    "previous": "⬅️ Previous",
+                    "next": "Next ➡️"
+                }
+            },
+            "dom": 'rt<"d-flex justify-content-between align-items-center p-2"<"p-0"l><"p-0"p>>'
+        });
+
+
+        $('#customSearchBox').on('keyup', function () {
+            table.search(this.value).draw();
+        });
+    });
+</script>

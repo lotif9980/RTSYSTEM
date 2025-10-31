@@ -41,5 +41,7 @@ namespace RTWEB.Data
         public DbSet<SolvedIssue> SolvedIssues { get; set; }
         public DbSet<SolvedDetail> SolvedDetails { get; set; }
         public DbSet<ParentProject> ParentProjects {  get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

@@ -21,6 +21,9 @@ builder.Services.AddScoped<ICustomerIssueRepository, CustomerIssueRepository>();
 builder.Services.AddScoped<ISolvedIssueRepository, SolvedIssueRepository>();
 builder.Services.AddScoped<ISolvedDetailRepository, SolvedDetailRepository>();
 builder.Services.AddScoped<IParentProjectsRepository, ParentProjectsRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
 
 // 🔹 Add distributed memory cache (required for session)
 builder.Services.AddDistributedMemoryCache();

@@ -13,6 +13,8 @@
         ISolvedIssueRepository SolvedIssueRepository { get; }
         ISolvedDetailRepository SolvedDetailRepository { get; }
         IParentProjectsRepository ParentProjectsRepository { get; }
+        IUserRepository UserRepository { get; }
+        IRoleRepository RoleRepository {  get; }
 
         int Complete();
     }
