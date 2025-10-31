@@ -41,5 +41,10 @@ namespace RTWEB.Repository
         {
             _db.Add(user);
         }
+
+        public User GetFirstOrDefault(string userName, string password)
+        {
+            return _db.Users.FirstOrDefault(x=>x.UserName==userName && x.Password==password);
+        }
     }
 }

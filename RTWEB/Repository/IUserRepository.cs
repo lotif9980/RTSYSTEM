@@ -9,6 +9,7 @@ namespace RTWEB.Repository
         public IEnumerable <UserVM> GetAll();
         public bool ExestingCheck(string userName);
         public void Save(User user);
+        public User GetFirstOrDefault(string userName,string password);
 
     }
 }
