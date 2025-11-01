@@ -1,0 +1,132 @@
+﻿@using RTWEB.ViewModel
+@model UserSaveVM
+@{
+    ViewData["Title"] = "User Add";
+}
+
+<style>
+
+    body, html {
+        height: 100%;
+        margin: 0;
+    }
+
+    .center-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+        background-color: #f8f9fa;
+    }
+
+    .card {
+        width: 600px;
+        border-radius: 15px;
+    }
+</style>
+
+<div class="center-container">
+    <form asp-action="Edit" id="myForm" method="post" class="w-100" style="max-width: 600px;">
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+                <!-- Name -->
+
+                <input hidden asp-for="User.Id" class="form-control" >
+                <div class="mb-3 row">
+                    <label asp-for="User.Name" class="col-sm-3 col-form-label">Name</label>
+                    <div class="col-sm-9">
+                        <input asp-for="User.Name" class="form-control" id="name">
+                        <span asp-validation-for="User.Name" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Phone -->
+                <div class="mb-3 row">
+                    <label asp-for="User.PhoneNo" class="col-sm-3 col-form-label">Phone</label>
+                    <div class="col-sm-9">
+                        <input asp-for="User.PhoneNo" class="form-control" id="phoneNo">
+                        <span asp-validation-for="User.PhoneNo" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3 row">
+                    <label asp-for="User.Email" class="col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-9">
+                        <input asp-for="User.Email" class="form-control" id="email">
+                        <span asp-validation-for="User.Email" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- User Name -->
+                <div class="mb-3 row">
+                    <label asp-for="User.UserName" class="col-sm-3 col-form-label">User Name</label>
+                    <div class="col-sm-9">
+                        <input asp-for="User.UserName" class="form-control" id="userName">
+                        <span asp-validation-for="User.UserName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3 row">
+                    <label asp-for="User.Password" class="col-sm-3 col-form-label">Password</label>
+                    <div class="col-sm-9">
+                        <input asp-for="User.Password"  class="form-control" id="password">
+                        <span asp-validation-for="User.Password" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Role -->
+                <div class="mb-3 row">
+                    <label asp-for="User.RoleId" class="col-sm-3 col-form-label">Role</label>
+                    <div class="col-sm-9">
+                        <select id="roleId" asp-for="User.RoleId" class="form-select role-dropdown"
+                                asp-items="@(new SelectList(Model.Role, "Id", "Name"))">
+                            <option value="">---Select Role---</option>
+                        </select>
+                        <span asp-validation-for="User.RoleId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="reset" class="btn btn-danger">Reset</button>
+                    <button type="submit" class="btn btn-warning">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".role-dropdown").select2({ placeholder: "--Select Role--", allowClear: true, width: '100%' });
+
+
+        $(document).ready(function(){
+        $("#myForm").on('submit',function(){
+            var name=$("#name").val().trim();
+            var phoneNo=$("#phoneNo").val().trim();
+            var email=$("#email").val().trim();
+            var userName=$("#userName").val().trim();
+            var password=$("#password").val().trim();
+            var roleIdassword=$("#roleId").val().trim();
+
+              var offset=20;
+              var container=$("body");
+
+              if(name==="")offset=createAlert("❌ Name is Required",container,offset);
+              if(phoneNo==="")offset=createAlert("❌ Phone is Required",container,offset);
+              if(email==="")offset=createAlert("❌ Email is Required",container,offset);
+              if(userName==="")offset=createAlert("❌ User Name is Required",container,offset);
+              if(password==="")offset=createAlert("❌ Password is Required",container,offset);
+              if(roleIdassword==="")offset=createAlert("❌ Role is Required",container,offset);
+
+                if($(".field-alert").length >0) return false;
+
+                this.submit();
+        })
+    })
+    });
+</script>

@@ -7,9 +7,10 @@ namespace RTWEB.Repository
     public interface IUserRepository
     {
         public IEnumerable <UserVM> GetAll();
-        public bool ExestingCheck(string userName);
+        public bool ExestingCheck(string userName, int?id=null);
         public void Save(User user);
         public User GetFirstOrDefault(string userName,string password);
-
+        public User GetById(int id);
+        public void Update(User user);
     }
 }

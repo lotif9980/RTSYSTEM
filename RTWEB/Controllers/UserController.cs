@@ -100,7 +100,73 @@ namespace RTWEB.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var user =_unitofWork.UserRepository.GetById(id);
 
+            var data = new UserSaveVM
+            {
+                User = user,
+                Role = _unitofWork.RoleRepository.GetAll()
+            };
+
+            return View(data);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(UserSaveVM model)
+        {
+            if (model.User.RoleId == null ||
+                string.IsNullOrEmpty(model.User.UserName) ||
+                string.IsNullOrEmpty(model.User.Password))
+            {
+                TempData["Message"] = "❌ Please input valid data";
+                TempData["MessageType"] = "danger";
+
+                var vm = new UserSaveVM
+                {
+                    User = new Models.User(),
+                    Role = _unitofWork.RoleRepository.GetAll(),
+                };
+
+                return View(vm);
+            }
+
+
+            bool existingName = _unitofWork.UserRepository.ExestingCheck(model.User.UserName,model.User.Id);
+            if (existingName)
+            {
+                TempData["Message"] = "❌ Username already exists";
+                TempData["MessageType"] = "danger";
+
+                var vm = new UserSaveVM
+                {
+                    User = new Models.User(),
+                    Role = _unitofWork.RoleRepository.GetAll(),
+                };
+
+                return View(vm);
+            }
+
+
+            _unitofWork.UserRepository.Update(model.User);
+            var result = _unitofWork.Complete();
+
+            if (result > 0)
+            {
+                TempData["Message"] = "✅ Update successfully";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Update Faild";
+                TempData["MessageType"] = "success";
+            }
+
+
+            return RedirectToAction("Index");
+        }
        
 
     }

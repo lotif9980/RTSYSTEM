@@ -32,9 +32,17 @@ namespace RTWEB.Repository
 
             return data;
         }
-        public bool ExestingCheck(string userName)
+        public bool ExestingCheck(string userName , int? id=null)
         {
-            return _db.Users.Any(u => u.UserName == userName);
+            if (id == null)
+            {
+                return _db.Users.Any(u => u.UserName == userName);
+            }
+            else
+            {
+                return _db.Users.Any(u=>u.UserName==userName && u.Id !=id);
+            }
+            
         }
 
         public void Save(User user)
@@ -45,6 +53,26 @@ namespace RTWEB.Repository
         public User GetFirstOrDefault(string userName, string password)
         {
             return _db.Users.FirstOrDefault(x=>x.UserName==userName && x.Password==password);
+        }
+
+        public User GetById(int id)
+        {
+            return _db.Users.FirstOrDefault(x => x.Id == id);
+        }
+
+        public void Update(User user)
+        {
+            var data = _db.Users.Find(user.Id);
+            if(data != null)
+            {
+                data.Name=user.Name;
+                data.PhoneNo=user.PhoneNo;
+                data.Email = user.Email;
+                data.RoleId=user.RoleId;
+                data.UserName = user.UserName;
+                data.Password = user.Password;
+            }
+            
         }
     }
 }
