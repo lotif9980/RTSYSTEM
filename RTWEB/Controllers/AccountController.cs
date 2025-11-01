@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RTWEB.Models;
 using RTWEB.Repository;
+using RTWEB.ViewModel;
 using System.Security.Claims;
 
 namespace RTWEB.Controllers
@@ -34,6 +36,7 @@ namespace RTWEB.Controllers
             return View();
         }
 
+        #region Old Version
 
         //[HttpPost]
         //public IActionResult Login(string username, string password)
@@ -81,20 +84,28 @@ namespace RTWEB.Controllers
         //    return View();
         //}
 
+        #endregion End old version
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string username, string password)
         {
-            // Database থেকে ইউজার খোঁজা
+           
             var user = _unitofWork.UserRepository
                         .GetFirstOrDefault(username, password);
 
             if (user != null)
             {
+                if (user.Status ==false)
+                {
+                    ModelState.AddModelError("", "⚠️ Your account is inactive. Please contact the admin.");
+                    return View();
+                }
+
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim("RoleId", user.RoleId.ToString()) // চাইলে Role claim ও যোগ করতে পারো
+                    new Claim("RoleId", user.RoleId.ToString()) 
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, "MyCookieAuth");
@@ -122,5 +133,88 @@ namespace RTWEB.Controllers
             await HttpContext.SignOutAsync("MyCookieAuth");
             return RedirectToAction("Login", "Account");
         }
+
+
+        #region login before user create
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult SaveUser()
+        {
+            var data = new UserSaveVM
+            {
+                User = new Models.User(),
+                Role = _unitofWork.RoleRepository.GetAll(),
+            };
+            return View(data);
+        }
+
+
+        [HttpPost]
+        public IActionResult SaveUser(UserSaveVM model)
+        {
+
+            if (model.User.RoleId == null ||
+                string.IsNullOrEmpty(model.User.UserName) ||
+                string.IsNullOrEmpty(model.User.Password))
+            {
+                TempData["Message"] = "❌ Please input valid data";
+                TempData["MessageType"] = "danger";
+
+                var vm = new UserSaveVM
+                {
+                    User = new Models.User(),
+                    Role = _unitofWork.RoleRepository.GetAll(),
+                };
+
+                return View(vm);
+            }
+
+
+            bool existingName = _unitofWork.UserRepository.ExestingCheck(model.User.UserName);
+            if (existingName)
+            {
+                TempData["Message"] = "❌ Username already exists";
+                TempData["MessageType"] = "danger";
+
+                var vm = new UserSaveVM
+                {
+                    User = new Models.User(),
+                    Role = _unitofWork.RoleRepository.GetAll(),
+                };
+
+                return View(vm);
+            }
+
+
+            var save = new User
+            {
+                Name = model.User.Name,
+                PhoneNo = model.User.PhoneNo,
+                Email = model.User.Email,
+                RoleId = model.User.RoleId,
+                UserName = model.User.UserName,
+                Password = model.User.Password,
+                Status = true
+            };
+
+            _unitofWork.UserRepository.Save(save);
+            var result = _unitofWork.Complete();
+
+            if (result > 0)
+            {
+                TempData["Message"] = "✅ Saved successfully";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Saved Faild";
+                TempData["MessageType"] = "success";
+            }
+
+
+            return RedirectToAction("Login");
+        }
+        #endregion
     }
 }

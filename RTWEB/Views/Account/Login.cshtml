@@ -200,25 +200,26 @@ h1 {
     ViewData["Title"] = "LogIn"; 
 }
 
-@* <form class="box" asp-action="Login" method="post">
-    <h1>Login</h1>
-    <input type="text" name="" placeholder="Username">
-    <input type="password" name="" placeholder="Password">
-    @* <a href=""  type="submit">Login</a> 
-    @* <button type="submit">Save</button> 
-</form> *@
 
 <form class="box" asp-controller="Account" asp-action="Login" method="post">
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger text-center">
+            @Html.ValidationSummary(true)
+        </div>
+    }
     <h1>Login</h1>
     <input type="text" name="username" placeholder="Username" />
     <input type="password" name="password" placeholder="Password" />
-    <button id="loginbtn" type="submit">Login</button>
+   
+    <div class="d-flex">
+        <button id="loginbtn" type="submit">Login</button>
+        
+    </div>
 
-    @if (ViewBag.Error != null)
-    {
-        <p style="color:red">@ViewBag.Error</p>
-    }
 </form>
+<a asp-controller="Account" asp-action="SaveUser">New User</a>
 
 
 <div class="lines">

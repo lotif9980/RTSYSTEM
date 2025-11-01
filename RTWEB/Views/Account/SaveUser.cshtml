@@ -5,7 +5,7 @@
 }
 
 <style>
-  
+
     body, html {
         height: 100%;
         margin: 0;
@@ -13,10 +13,10 @@
 
     .center-container {
         display: flex;
-        justify-content: center; 
-        align-items: center; 
-        height: 80vh; 
-        background-color: #f8f9fa; 
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+        background-color: #f8f9fa;
     }
 
     .card {
@@ -26,9 +26,9 @@
 </style>
 
 <div class="center-container">
-    <form asp-action="Save" id="myForm" method="post" class="w-100" style="max-width: 600px;">
+    <form asp-action="SaveUser" id="myForm" method="post" class="w-100" style="max-width: 600px;">
         <div class="card shadow-sm">
-            
+
             <div class="card-body">
                 <!-- Name -->
                 <div class="mb-3 row">
@@ -100,7 +100,7 @@
 <script>
     $(document).ready(function () {
         $(".role-dropdown").select2({ placeholder: "--Select Role--", allowClear: true, width: '100%' });
-       
+
 
         $(document).ready(function(){
         $("#myForm").on('submit',function(){

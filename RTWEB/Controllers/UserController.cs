@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RTWEB.Models;
 using RTWEB.Repository;
 using RTWEB.ViewModel;
 
 namespace RTWEB.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         protected readonly IUnitofWork _unitofWork;
@@ -97,6 +99,9 @@ namespace RTWEB.Controllers
             return RedirectToAction("Save");
         }
 
+
+
+       
 
     }
 }
