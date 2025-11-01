@@ -6,5 +6,6 @@ namespace RTWEB.ViewModel
     {
         public User User { get; set; }
         public IEnumerable<Role> Role { get; set; }
+        public IEnumerable<Team> Team { get; set; }
     }
 }

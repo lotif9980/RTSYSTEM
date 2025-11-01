@@ -105,7 +105,8 @@ namespace RTWEB.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim("RoleId", user.RoleId.ToString()) 
+                    new Claim("RoleId", user.RoleId.ToString()),
+                    new Claim("EmployeeId", user.EmployeeId.ToString())
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, "MyCookieAuth");

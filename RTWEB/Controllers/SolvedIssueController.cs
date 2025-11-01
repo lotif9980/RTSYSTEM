@@ -155,10 +155,20 @@ namespace RTWEB.Controllers
         {
             var issue =_unitofWork.CustomerIssueRepository.GetByid(id);
 
+            var employeeIdClaim = User.Claims.FirstOrDefault(c => c.Type == "EmployeeId");
+            if (employeeIdClaim == null || !int.TryParse(employeeIdClaim.Value, out int solvedBy))
+            {
+                TempData["Message"] = "❌ EmployeeId claim not found or invalid. Please login again.";
+                TempData["MessageType"] = "danger";
+                return RedirectToAction("Index", "CustomerIssue");
+            }
+
+             solvedBy = int.Parse(employeeIdClaim.Value);
+
             var solvedIssue = new SolvedIssue
             {
                 CustomerId =issue.CustomerId,
-                SolvedBy = 2004,
+                SolvedBy = solvedBy,
                 SolvedDate = DateTime.Now.Date,
                 DomainId = issue.DomainId,
                 Status =Enum.CustomerSolvedIssueStatus.Solved

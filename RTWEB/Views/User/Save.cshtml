@@ -87,6 +87,17 @@
                     </div>
                 </div>
 
+                <div class="mb-3 row" id="employeeWrapper" style="display:none;">
+                    <label asp-for="User.EmployeeId" class="col-sm-3 col-form-label">Employee</label>
+                    <div class="col-sm-9">
+                        <select id="employeeId" asp-for="User.EmployeeId" class="form-select employee-dropdown"
+                                asp-items="@(new SelectList(Model.Team, "Id", "Name"))">
+                            <option value="">---Select Team---</option>
+                        </select>
+                        <span asp-validation-for="User.EmployeeId" class="text-danger"></span>
+                    </div>
+                </div>
+
                 <!-- Buttons -->
                 <div class="d-flex justify-content-end gap-2">
                     <button type="reset" class="btn btn-danger">Reset</button>
@@ -99,8 +110,29 @@
 
 <script>
     $(document).ready(function () {
-        $(".role-dropdown").select2({ placeholder: "--Select Role--", allowClear: true, width: '100%' });
-       
+      
+
+
+
+        $(document).ready(function () {
+            $(".role-dropdown").select2({ placeholder: "--Select Role--", allowClear: true, width: '100%' });
+            $(".employee-dropdown").select2({ placeholder: "--Select Employee--", allowClear: true, width: '100%' });
+
+            // Page load - hide Employee
+            $("#employeeWrapper").hide();
+
+            // Role select change
+            $(".role-dropdown").on("change", function () {
+                var selectedText = $(this).find("option:selected").text().trim().toLowerCase();
+
+                if(selectedText === "localadmin") {  // lowercase comparison
+                    $("#employeeWrapper").slideDown(); // show
+                } else {
+                    $("#employeeWrapper").slideUp();   // hide
+                    $("#employeeId").val(null).trigger('change'); // clear select2
+                }
+            });
+        });
 
         $(document).ready(function(){
         $("#myForm").on('submit',function(){

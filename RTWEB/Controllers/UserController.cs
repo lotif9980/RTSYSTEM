@@ -28,6 +28,7 @@ namespace RTWEB.Controllers
             {
                 User=new Models.User(),
                 Role=_unitofWork.RoleRepository.GetAll(),
+                Team = _unitofWork.TeamRepository.GetTeams()
             };
             return View(data);
         }
@@ -48,6 +49,7 @@ namespace RTWEB.Controllers
                 {
                     User = new Models.User(),
                     Role = _unitofWork.RoleRepository.GetAll(),
+                    Team = _unitofWork.TeamRepository.GetTeams()
                 };
 
                 return View(vm);
@@ -64,6 +66,7 @@ namespace RTWEB.Controllers
                 {
                     User = new Models.User(),
                     Role = _unitofWork.RoleRepository.GetAll(),
+                    Team = _unitofWork.TeamRepository.GetTeams()
                 };
 
                 return View(vm);
@@ -78,7 +81,8 @@ namespace RTWEB.Controllers
                 RoleId = model.User.RoleId,
                 UserName = model.User.UserName,
                 Password = model.User.Password,
-                Status = true
+                Status = true,
+                EmployeeId = model.User.EmployeeId,
             };
 
             _unitofWork.UserRepository.Save(save);
@@ -108,7 +112,8 @@ namespace RTWEB.Controllers
             var data = new UserSaveVM
             {
                 User = user,
-                Role = _unitofWork.RoleRepository.GetAll()
+                Role = _unitofWork.RoleRepository.GetAll(),
+                Team=_unitofWork.TeamRepository.GetTeams()
             };
 
             return View(data);
@@ -128,6 +133,7 @@ namespace RTWEB.Controllers
                 {
                     User = new Models.User(),
                     Role = _unitofWork.RoleRepository.GetAll(),
+                    Team = _unitofWork.TeamRepository.GetTeams()
                 };
 
                 return View(vm);
@@ -144,6 +150,7 @@ namespace RTWEB.Controllers
                 {
                     User = new Models.User(),
                     Role = _unitofWork.RoleRepository.GetAll(),
+                    Team=_unitofWork.TeamRepository.GetTeams()
                 };
 
                 return View(vm);

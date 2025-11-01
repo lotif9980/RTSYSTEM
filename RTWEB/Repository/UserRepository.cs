@@ -71,6 +71,7 @@ namespace RTWEB.Repository
                 data.RoleId=user.RoleId;
                 data.UserName = user.UserName;
                 data.Password = user.Password;
+                data.EmployeeId = user.EmployeeId;
             }
             
         }

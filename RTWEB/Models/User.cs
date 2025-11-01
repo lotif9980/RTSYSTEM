@@ -16,5 +16,6 @@ namespace RTWEB.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreateDate {  get; set; }
         public bool Status { get; set; }
+        public int EmployeeId { get; set; }
     }
 }
