@@ -12,5 +12,7 @@ namespace RTWEB.Repository
         public User GetFirstOrDefault(string userName,string password);
         public User GetById(int id);
         public void Update(User user);
+        public void Delete(int id);
+        public void ToggleStatusUpdate(int id);
     }
 }

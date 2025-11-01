@@ -74,5 +74,20 @@ namespace RTWEB.Repository
             }
             
         }
+
+        public void Delete(int id)
+        {
+            var data =_db.Users.Find(id);
+            _db.Users.Remove(data);
+        }
+
+        public void ToggleStatusUpdate(int id)
+        {
+            var user=_db.Users.Find(id);
+            if(user != null)
+            {
+                user.Status= !user.Status;
+            }
+        }
     }
 }

@@ -169,5 +169,41 @@ namespace RTWEB.Controllers
         }
        
 
+        public IActionResult Delete(int id)
+        {
+            _unitofWork.UserRepository.Delete(id);
+            var result=_unitofWork.Complete();
+            if (result > 0)
+            {
+                TempData["Message"] = "✅ Delete successfully";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Delete Faild";
+                TempData["MessageType"] = "danger";
+            }
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult StatusUpdate(int id)
+        {
+            _unitofWork.UserRepository.ToggleStatusUpdate(id);
+            var result= _unitofWork.Complete();
+
+            if (result > 0)
+            {
+                TempData["Message"] = "✅ Update successfully";
+                TempData["MessageType"] = "success";
+            }
+            else
+            {
+                TempData["Message"] = "❌ Update Faild";
+                TempData["MessageType"] = "danger";
+            }
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

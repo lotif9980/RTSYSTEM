@@ -71,12 +71,14 @@
                                     <td>@item.PhoneNo</td>
                                     <td>@item.Email</td>
                                     <td>@item.UserName</td>
-                                    <td>@item.Status</td>
+                                    <td>
+                                        @(item.Status == true ? "Active" : "Inactive")
+                                    </td>
                                     <td>
                                         <div class="d-flex justify-content-center btn-group-sm ">
 
-                                            <a class="btn btn-success ms-2" asp-action="btnUpdateStatus" asp-route-id="@item.Id">
-                                                <i class="fa fa-rotate-right"></i>
+                                            <a class="btn btn-success ms-2" asp-action="StatusUpdate" asp-route-id="@item.Id">
+                                                <i class="bi bi-arrow-clockwise"></i>
                                             </a>
 
                                             <a class="btn btn-primary ms-2" asp-route-id="@item.Id" asp-action="Edit">
@@ -85,7 +87,7 @@
 
                                             <a class="btn btn-danger ms-2"
                                                asp-route-id="@item.Id"
-                                               asp-controller="Issue" asp-action="Delete">
+                                                asp-action="Delete">
                                                 <i class="fa fa-trash"></i>
                                             </a>
                                         </div>
