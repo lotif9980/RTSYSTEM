@@ -7,7 +7,8 @@ namespace RTWEB.Data
     {
         public static string ConnectionString = "Server=localhost;Database=RTSYSTEM;User Id=sa;Password=Test_123;Encrypt=False";
 
-        
+        //public static string ConnectionString = "Server=103.125.252.243;Database=demo;User Id=oct_demo;Password=hbswiplv4czmyjfqdexn;Encrypt=False";
+        //public static string ConnectionString = "Server=103.125.252.243;Database=support;User Id=oct_support;Password=kfmrzeoxacldiwth6gjv;Encrypt=False";
 
         public Db()
         {
