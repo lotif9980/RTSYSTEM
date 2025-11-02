@@ -1,4 +1,4 @@
-USE [RTSYSTEM]
+
 GO
 /****** Object:  Table [dbo].[CustomerIssues]    Script Date: 02-Nov-25 9:59:20 PM ******/
 SET ANSI_NULLS ON
