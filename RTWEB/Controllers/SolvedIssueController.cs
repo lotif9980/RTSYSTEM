@@ -19,7 +19,14 @@ namespace RTWEB.Controllers
 
         public IActionResult Index(DateTime? date)
         {
-            var data = _unitofWork.SolvedIssueRepository.GetSolvedIssue(date)
+            var roleIdClaim = User.FindFirst("RoleId")?.Value;
+            var employeeIdClaim = User.FindFirst("EmployeeId")?.Value;
+
+            int? roleId = roleIdClaim != null ? Convert.ToInt32(roleIdClaim) : (int?)null;
+            int? employeeId = employeeIdClaim != null ? Convert.ToInt32(employeeIdClaim) : (int?)null;
+
+
+            var data = _unitofWork.SolvedIssueRepository.GetSolvedIssue(roleId, employeeId, date)
                         .OrderByDescending(d => d.Id)
                         .AsQueryable();
                         

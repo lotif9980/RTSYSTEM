@@ -13,6 +13,7 @@ namespace RTWEB.ViewModel
         //public int? Status { get; set; }
         public CustomerSolvedIssueStatus Status { get; set; }
         public string? DomainName { get;set; }
+        public int ? solvedEmployeeId { get; set; }
         public List<SolveDetails> SolveDetails { get; set; } = new List<SolveDetails>();
     }
 

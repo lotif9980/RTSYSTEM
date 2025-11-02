@@ -3,6 +3,7 @@ using RTWEB.Data;
 using RTWEB.Enum;
 using RTWEB.Models;
 using RTWEB.ViewModel;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RTWEB.Repository
 {
@@ -17,26 +18,33 @@ namespace RTWEB.Repository
 
       
 
-        public IEnumerable<CustomerSolvedIssueVM> GetSolvedIssue(DateTime? date = null)
+        public IEnumerable<CustomerSolvedIssueVM> GetSolvedIssue(int? roleId, int? employeeId = null, DateTime? date = null)
         {
             var filterDate = date?.Date ?? DateTime.Today;
             var nextDate = filterDate.AddDays(1);
 
 
-            var data=(from s in _db.SolvedIssues
-                      where s.SolvedDate >= filterDate && s.SolvedDate < nextDate
-                      join t in _db.Teams on s.SolvedBy equals t.Id
-                      join oc in _db.OurCustomers on s.CustomerId equals oc.Id
-                      select new CustomerSolvedIssueVM
-                      {
-                          Id=s.Id,
-                          CustomerName=oc.CustomerName,
-                          SolvedBy=t.Name,
-                          SolvedDate=s.SolvedDate,
-                          Status=s.Status
-                      }).ToList();
+            var data = (from s in _db.SolvedIssues
+                        where s.SolvedDate >= filterDate && s.SolvedDate < nextDate
+                        join t in _db.Teams on s.SolvedBy equals t.Id
+                        join oc in _db.OurCustomers on s.CustomerId equals oc.Id
+                        select new CustomerSolvedIssueVM
+                        {
+                            Id = s.Id,
+                            CustomerName = oc.CustomerName,
+                            SolvedBy = t.Name,
+                            SolvedDate = s.SolvedDate,
+                            Status = s.Status,
+                            solvedEmployeeId = s.SolvedBy
+                        });
 
-            return data;
+            if (roleId == 2 && employeeId.HasValue)
+            {
+                data = data.Where(x => x.solvedEmployeeId == employeeId.Value);
+            }
+
+
+            return data.ToList();
         }
 
         public void Save(SolvedIssue vm)
