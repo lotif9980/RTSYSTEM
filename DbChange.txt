@@ -1,128 +1,6 @@
-----------------------------------------------02.11.2025--------------------------------------------------------------------
-
-ALTER TABLE Users ALTER COLUMN Password NVARCHAR(200);
-ALTER TABLE Users ALTER COLUMN UserName NVARCHAR(100);
-
-----------------------------------------------31.10.2025--------------------------------------------------------------------
-
-
-/* To prevent any potential data loss issues, you should review this script in detail before running it outside the context of the database designer.*/
-BEGIN TRANSACTION
-SET QUOTED_IDENTIFIER ON
-SET ARITHABORT ON
-SET NUMERIC_ROUNDABORT OFF
-SET CONCAT_NULL_YIELDS_NULL ON
-SET ANSI_NULLS ON
-SET ANSI_PADDING ON
-SET ANSI_WARNINGS ON
-COMMIT
-BEGIN TRANSACTION
-GO
-ALTER TABLE dbo.Users ADD
-	EmployeeId int NOT NULL CONSTRAINT DF_Users_EmployeeId DEFAULT 0
-GO
-ALTER TABLE dbo.Users SET (LOCK_ESCALATION = TABLE)
-GO
-COMMIT
-
-----------------------------------------------31.10.2025--------------------------------------------------------------------
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[Roles](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [nvarchar](50) NULL,
- CONSTRAINT [PK_Roles] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-
-----------------------------------------------31.10.2025--------------------------------------------------------------------
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[Users](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [nvarchar](250) NULL,
-	[PhoneNo] [nvarchar](50) NULL,
-	[Email] [nvarchar](50) NULL,
-	[RoleId] [int] NULL,
-	[UserName] [nvarchar](50) NULL,
-	[Password] [nvarchar](50) NULL,
-	[CreateDate] [datetime] NOT NULL,
-	[Status] [bit] NULL,
- CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-ALTER TABLE [dbo].[Users] ADD  CONSTRAINT [DF_Users_CreateDate]  DEFAULT (getdate()) FOR [CreateDate]
-GO
-
-
-----------------------------------------------30.10.2025--------------------------------------------------------------------
-
-
-/* To prevent any potential data loss issues, you should review this script in detail before running it outside the context of the database designer.*/
-BEGIN TRANSACTION
-SET QUOTED_IDENTIFIER ON
-SET ARITHABORT ON
-SET NUMERIC_ROUNDABORT OFF
-SET CONCAT_NULL_YIELDS_NULL ON
-SET ANSI_NULLS ON
-SET ANSI_PADDING ON
-SET ANSI_WARNINGS ON
-COMMIT
-BEGIN TRANSACTION
-GO
-ALTER TABLE dbo.Projects ADD
-	SourceName nvarchar(100) NULL
-GO
-ALTER TABLE dbo.Projects SET (LOCK_ESCALATION = TABLE)
-GO
-COMMIT
-
-
-
-----------------------------------------------30.10.2025--------------------------------------------------------------------
-
-/* To prevent any potential data loss issues, you should review this script in detail before running it outside the context of the database designer.*/
-BEGIN TRANSACTION
-SET QUOTED_IDENTIFIER ON
-SET ARITHABORT ON
-SET NUMERIC_ROUNDABORT OFF
-SET CONCAT_NULL_YIELDS_NULL ON
-SET ANSI_NULLS ON
-SET ANSI_PADDING ON
-SET ANSI_WARNINGS ON
-COMMIT
-BEGIN TRANSACTION
-GO
-ALTER TABLE dbo.Domains ADD
-	DbName nvarchar(100) NULL
-GO
-ALTER TABLE dbo.Domains SET (LOCK_ESCALATION = TABLE)
-GO
-COMMIT
-----------------------------------OLDD-----------------------------------------------------
-
- alter table Issues
- add CreateDate DATETIME not null Default GetDate()
---------
 USE [RTSYSTEM]
 GO
-/****** Object:  Table [dbo].[CustomerIssues]    Script Date: 25-Sep-25 9:51:28 AM ******/
+/****** Object:  Table [dbo].[CustomerIssues]    Script Date: 02-Nov-25 9:59:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -140,7 +18,7 @@ CREATE TABLE [dbo].[CustomerIssues](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Domains]    Script Date: 25-Sep-25 9:51:29 AM ******/
+/****** Object:  Table [dbo].[Domains]    Script Date: 02-Nov-25 9:59:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -153,39 +31,14 @@ CREATE TABLE [dbo].[Domains](
 	[UpdateBranch] [nvarchar](50) NULL,
 	[LastUpdateDate] [datetime] NULL,
 	[ProjectId] [int] NULL,
+	[DbName] [nvarchar](100) NULL,
  CONSTRAINT [PK_Domains] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ExeclCustomerList]    Script Date: 25-Sep-25 9:51:29 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[ExeclCustomerList](
-	[Code] [nvarchar](255) NULL,
-	[CustomerName] [nvarchar](255) NULL,
-	[Address] [nvarchar](255) NULL,
-	[ContactNo] [nvarchar](255) NULL,
-	[DomainId] [float] NULL
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[Ezone]    Script Date: 25-Sep-25 9:51:29 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Ezone](
-	[Code] [nvarchar](255) NULL,
-	[CustomerName] [nvarchar](255) NULL,
-	[Address] [nvarchar](255) NULL,
-	[ContactNo] [nvarchar](255) NULL,
-	[DomainId] [float] NULL
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[Issues]    Script Date: 25-Sep-25 9:51:29 AM ******/
+/****** Object:  Table [dbo].[Issues]    Script Date: 02-Nov-25 9:59:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -196,13 +49,14 @@ CREATE TABLE [dbo].[Issues](
 	[Description] [nvarchar](250) NULL,
 	[ProjectId] [int] NULL,
 	[Status] [int] NULL,
+	[CreateDate] [datetime] NOT NULL,
  CONSTRAINT [PK_Issues] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[OurCustomers]    Script Date: 25-Sep-25 9:51:29 AM ******/
+/****** Object:  Table [dbo].[OurCustomers]    Script Date: 02-Nov-25 9:59:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -222,7 +76,7 @@ CREATE TABLE [dbo].[OurCustomers](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ParentProjects]    Script Date: 25-Sep-25 9:51:29 AM ******/
+/****** Object:  Table [dbo].[ParentProjects]    Script Date: 02-Nov-25 9:59:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -236,7 +90,7 @@ CREATE TABLE [dbo].[ParentProjects](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Projects]    Script Date: 25-Sep-25 9:51:29 AM ******/
+/****** Object:  Table [dbo].[Projects]    Script Date: 02-Nov-25 9:59:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -244,15 +98,30 @@ GO
 CREATE TABLE [dbo].[Projects](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[ProjectName] [nvarchar](50) NULL,
+	[UpdateBranch] [nvarchar](50) NULL,
 	[LastUpdateDate] [datetime] NULL,
-	[UpdateBranch] [nvarchar](100) NULL,
+	[SourceName] [nvarchar](100) NULL,
  CONSTRAINT [PK_Projects] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[SolvedDetails]    Script Date: 25-Sep-25 9:51:29 AM ******/
+/****** Object:  Table [dbo].[Roles]    Script Date: 02-Nov-25 9:59:20 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Roles](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](50) NULL,
+ CONSTRAINT [PK_Roles] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SolvedDetails]    Script Date: 02-Nov-25 9:59:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -268,7 +137,7 @@ CREATE TABLE [dbo].[SolvedDetails](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[SolvedIssues]    Script Date: 25-Sep-25 9:51:29 AM ******/
+/****** Object:  Table [dbo].[SolvedIssues]    Script Date: 02-Nov-25 9:59:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -286,7 +155,7 @@ CREATE TABLE [dbo].[SolvedIssues](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Teams]    Script Date: 25-Sep-25 9:51:29 AM ******/
+/****** Object:  Table [dbo].[Teams]    Script Date: 02-Nov-25 9:59:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -301,7 +170,7 @@ CREATE TABLE [dbo].[Teams](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[UpdateDetails]    Script Date: 25-Sep-25 9:51:29 AM ******/
+/****** Object:  Table [dbo].[UpdateDetails]    Script Date: 02-Nov-25 9:59:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -316,7 +185,7 @@ CREATE TABLE [dbo].[UpdateDetails](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Updates]    Script Date: 25-Sep-25 9:51:29 AM ******/
+/****** Object:  Table [dbo].[Updates]    Script Date: 02-Nov-25 9:59:20 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -335,9 +204,298 @@ CREATE TABLE [dbo].[Updates](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+/****** Object:  Table [dbo].[Users]    Script Date: 02-Nov-25 9:59:20 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Users](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](250) NULL,
+	[PhoneNo] [nvarchar](50) NULL,
+	[Email] [nvarchar](50) NULL,
+	[RoleId] [int] NULL,
+	[UserName] [nvarchar](100) NULL,
+	[Password] [nvarchar](200) NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[Status] [bit] NULL,
+	[EmployeeId] [int] NOT NULL,
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[CustomerIssues] ON 
+
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (1, 4, 1, N'Hire Sales Problem , Cash Colleciton Problem ', 2, CAST(N'2025-09-18T21:57:24.070' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (5, 4, 1, N'ab', 2, CAST(N'2025-09-19T00:51:41.343' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (6, 8, 3, N'ab', 2, CAST(N'2025-09-19T00:52:35.200' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (7, 8, 3, N'as', 2, CAST(N'2025-09-19T00:52:35.200' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (8, 8, 3, N'ac', 2, CAST(N'2025-09-19T00:52:35.200' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (9, 8, 3, N'a4', 2, CAST(N'2025-09-19T00:52:35.200' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (10, 4, 1, N'a', 2, CAST(N'2025-09-19T01:01:47.383' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (11, 4, 1, N'b', 2, CAST(N'2025-09-19T01:01:47.383' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (12, 8, 3, N'Test', 2, CAST(N'2025-09-19T01:02:50.290' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (13, 8, 3, N'dfad', 2, CAST(N'2025-09-19T01:02:50.290' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (14, 8, 3, N'dsafdsa', 2, CAST(N'2025-09-19T01:02:50.290' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (18, 4, 1, N'Test', 2, CAST(N'2025-09-20T23:02:41.697' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (19, 4, 1, N'test', 2, CAST(N'2025-09-20T23:02:41.697' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (20, 4, 1, N'Test', 2, CAST(N'2025-09-20T23:07:55.680' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (21, 4, 1, N'sales', 2, CAST(N'2025-09-20T23:07:55.680' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (22, 4, 1, N'abc', 2, CAST(N'2025-09-21T21:45:39.270' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (23, 4, 1, N'Test', 2, CAST(N'2025-09-21T21:45:39.270' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (24, 4, 1, N'abccd', 2, CAST(N'2025-09-21T21:45:39.270' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (25, 4, 2, N'Sales Problem', 2, CAST(N'2025-09-21T22:08:35.983' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (26, 4, 2, N'Hire Sales Problem', 2, CAST(N'2025-09-21T22:08:35.983' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (27, 4, 2, N'Test Report', 2, CAST(N'2025-09-21T22:08:35.983' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (28, 4, 2, N'Customer Due Problem', 2, CAST(N'2025-09-21T22:08:35.983' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (29, 4, 1, N'Test', 2, CAST(N'2025-09-21T22:18:48.267' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (34, 4, 1, N'Test Purpose', 2, CAST(N'2025-10-06T06:10:54.250' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (35, 4, 1, N'Test Abc Test', 2, CAST(N'2025-10-30T22:29:10.287' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (36, 8, 3, N'test', 2, CAST(N'2025-11-01T23:37:33.623' AS DateTime))
+INSERT [dbo].[CustomerIssues] ([Id], [DomainId], [CustomerId], [Problem], [Status], [CreateDate]) VALUES (37, 8, 3, N'tr', 2, CAST(N'2025-11-01T23:37:33.623' AS DateTime))
+SET IDENTITY_INSERT [dbo].[CustomerIssues] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Domains] ON 
+
+INSERT [dbo].[Domains] ([Id], [DomainName], [DomainType], [Status], [UpdateBranch], [LastUpdateDate], [ProjectId], [DbName]) VALUES (4, N'ezone.octimsbd.com', 2, 1, N'Master', CAST(N'2025-11-01T00:00:00.000' AS DateTime), 1, N'ezone a')
+INSERT [dbo].[Domains] ([Id], [DomainName], [DomainType], [Status], [UpdateBranch], [LastUpdateDate], [ProjectId], [DbName]) VALUES (8, N'ard.octimsbd.com', 1, 1, N'Master', CAST(N'2025-10-30T00:00:00.000' AS DateTime), 3, N'ard')
+INSERT [dbo].[Domains] ([Id], [DomainName], [DomainType], [Status], [UpdateBranch], [LastUpdateDate], [ProjectId], [DbName]) VALUES (10, N'kmc.octimsbd.com', 1, 1, N'Master', CAST(N'2025-10-30T00:00:00.000' AS DateTime), 1, N'ezone')
+INSERT [dbo].[Domains] ([Id], [DomainName], [DomainType], [Status], [UpdateBranch], [LastUpdateDate], [ProjectId], [DbName]) VALUES (11, N'beauty.octimsbd.com', 1, 1, N'Master', CAST(N'2025-10-30T00:00:00.000' AS DateTime), 2, N'beauty')
+SET IDENTITY_INSERT [dbo].[Domains] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Issues] ON 
+
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (1, N'Login Problem', NULL, 2, 2, CAST(N'2025-10-29T06:29:26.107' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (2, N'Save Faild', NULL, 2, 2, CAST(N'2025-10-29T06:29:26.107' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (3, N'Data Base Error', NULL, 2, 2, CAST(N'2025-10-29T06:29:26.107' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (4, N'Test3', NULL, 2, 2, CAST(N'2025-10-29T06:29:26.107' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (5, N'Test1', NULL, 2, 2, CAST(N'2025-10-29T06:29:26.107' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (7, N'Test4', NULL, 2, 2, CAST(N'2025-10-29T06:29:26.107' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (8, N'Test5', NULL, 2, 2, CAST(N'2025-10-29T06:29:26.107' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (9, N'Solved Problem', NULL, 1, 3, CAST(N'2025-10-29T06:29:26.107' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (10, N'Ard Test1', NULL, 5, 2, CAST(N'2025-10-29T06:29:26.107' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (11, N'Ard Test2', NULL, 5, 2, CAST(N'2025-10-29T06:29:26.107' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (12, N'Solved Problem', NULL, 1, 2, CAST(N'2025-10-29T06:29:26.107' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (14, N'Add Create Date check', NULL, 1, 3, CAST(N'2025-10-29T06:36:59.557' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (15, N'Save Problem', NULL, 1, 3, CAST(N'2025-10-30T21:49:43.727' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (16, N'Purchase Invoice View problem', NULL, 1, 1, CAST(N'2025-10-30T21:49:43.727' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (17, N'Sales Invoice Problem', NULL, 1, 3, CAST(N'2025-10-30T21:49:43.727' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (18, N'Test Update Problem', NULL, 1, 1, CAST(N'2025-10-30T21:49:43.727' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (19, N'Server problem', NULL, 1, 3, CAST(N'2025-10-30T21:49:43.727' AS DateTime))
+INSERT [dbo].[Issues] ([Id], [Title], [Description], [ProjectId], [Status], [CreateDate]) VALUES (21, N'2. 1. 1 tarikh e purchase 5 pcs , visit 5 pcs , sales 2 pcs , 2 tarikh e retrun 2 pcs , visit 5 pcs , sales 3 pcs , 3 tarikh e retrun 3 pcs1. 1 tarikh e purchase 5 pcs , visit 5 pcs , sales 2 pcs , 2 tarikh e retrun 2 pcs , visit 5 pcs , sales 3 pcs , 3 tarikh e retrun 3 pcs1. 1 tarikh e purchase 5 pcs , visit 5 pcs , sales 2 pcs , 2 tarikh e retrun 2 pcs , visit 5 pcs , sales 3 pcs , 3 tarikh e retrun 3 pcs', NULL, 1, 3, CAST(N'2025-10-30T22:07:06.630' AS DateTime))
+SET IDENTITY_INSERT [dbo].[Issues] OFF
+GO
+SET IDENTITY_INSERT [dbo].[OurCustomers] ON 
+
+INSERT [dbo].[OurCustomers] ([Id], [Code], [CustomerName], [Address], [ContactNo], [CreateDate], [DomainId], [Status]) VALUES (1, N'00001', N'Md Abdul Lotif', N'Rajshahi', N'01791177192', CAST(N'2025-09-18T21:56:06.057' AS DateTime), 4, 1)
+INSERT [dbo].[OurCustomers] ([Id], [Code], [CustomerName], [Address], [ContactNo], [CreateDate], [DomainId], [Status]) VALUES (2, N'00002', N'Md Abdullah', N'Dhaka', N'0178855222', CAST(N'2025-09-18T23:02:09.823' AS DateTime), 4, 1)
+INSERT [dbo].[OurCustomers] ([Id], [Code], [CustomerName], [Address], [ContactNo], [CreateDate], [DomainId], [Status]) VALUES (3, N'00003', N'Md Rajjak', N'Khulna', N'01254545', CAST(N'2025-09-18T23:03:08.640' AS DateTime), 8, 1)
+INSERT [dbo].[OurCustomers] ([Id], [Code], [CustomerName], [Address], [ContactNo], [CreateDate], [DomainId], [Status]) VALUES (4, N'00004', N'Md Rajjak a', N'Test', N'01973272727', CAST(N'2025-09-24T05:39:22.787' AS DateTime), 8, 1)
+SET IDENTITY_INSERT [dbo].[OurCustomers] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ParentProjects] ON 
+
+INSERT [dbo].[ParentProjects] ([Id], [Name]) VALUES (1, N'Ezone')
+INSERT [dbo].[ParentProjects] ([Id], [Name]) VALUES (2, N'New DMS')
+INSERT [dbo].[ParentProjects] ([Id], [Name]) VALUES (3, N'Rems')
+SET IDENTITY_INSERT [dbo].[ParentProjects] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Projects] ON 
+
+INSERT [dbo].[Projects] ([Id], [ProjectName], [UpdateBranch], [LastUpdateDate], [SourceName]) VALUES (1, N'Ezone', N'Master', CAST(N'2025-11-01T00:00:00.000' AS DateTime), N'EzoneImsweb')
+INSERT [dbo].[Projects] ([Id], [ProjectName], [UpdateBranch], [LastUpdateDate], [SourceName]) VALUES (2, N'Eshop', NULL, NULL, NULL)
+INSERT [dbo].[Projects] ([Id], [ProjectName], [UpdateBranch], [LastUpdateDate], [SourceName]) VALUES (5, N'ard', NULL, NULL, NULL)
+SET IDENTITY_INSERT [dbo].[Projects] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Roles] ON 
+
+INSERT [dbo].[Roles] ([Id], [Name]) VALUES (1, N'Admin')
+INSERT [dbo].[Roles] ([Id], [Name]) VALUES (2, N'LocalAdmin')
+SET IDENTITY_INSERT [dbo].[Roles] OFF
+GO
+SET IDENTITY_INSERT [dbo].[SolvedDetails] ON 
+
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (1, 3, 1, NULL)
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (15, 12, 1, NULL)
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (16, 12, 10, NULL)
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (17, 13, 6, NULL)
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (18, 13, 7, NULL)
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (19, 13, 8, NULL)
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (20, 13, 9, NULL)
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (21, 14, 29, NULL)
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (22, 14, 18, NULL)
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (23, 14, 19, NULL)
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (25, 16, 5, NULL)
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (26, 17, 11, NULL)
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (28, 19, 28, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (29, 20, 27, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (30, 21, 26, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (31, 22, 25, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (32, 23, 34, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (33, 24, 24, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (34, 25, 23, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (35, 26, 22, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (36, 27, 20, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (37, 28, 13, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (38, 29, 12, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (39, 30, 21, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (40, 31, 14, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (41, 32, 35, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (42, 33, 37, N'Automatically generated solution')
+INSERT [dbo].[SolvedDetails] ([Id], [SolvedIssueId], [IssueId], [SolutionDetails]) VALUES (43, 34, 36, N'Automatically generated solution')
+SET IDENTITY_INSERT [dbo].[SolvedDetails] OFF
+GO
+SET IDENTITY_INSERT [dbo].[SolvedIssues] ON 
+
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (3, NULL, 1, CAST(N'2025-09-19T00:00:00.000' AS DateTime), 0, NULL)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (12, 1, 1, CAST(N'2025-09-19T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (13, 3, 1, CAST(N'2025-09-21T00:00:00.000' AS DateTime), 1, 8)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (14, 1, 2, CAST(N'2025-09-21T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (16, 1, 1, CAST(N'2025-09-24T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (17, 1, 2, CAST(N'2025-09-24T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (19, 2, 10, CAST(N'2025-10-06T06:14:26.970' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (20, 2, 10, CAST(N'2025-10-06T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (21, 2, 10, CAST(N'2025-10-06T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (22, 2, 10, CAST(N'2025-10-06T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (23, 1, 10, CAST(N'2025-10-06T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (24, 1, 10, CAST(N'2025-10-06T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (25, 1, 10, CAST(N'2025-10-06T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (26, 1, 10, CAST(N'2025-10-06T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (27, 1, 10, CAST(N'2025-10-06T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (28, 3, 10, CAST(N'2025-10-06T00:00:00.000' AS DateTime), 1, 8)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (29, 3, 10, CAST(N'2025-10-06T00:00:00.000' AS DateTime), 1, 8)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (30, 1, 10, CAST(N'2025-10-06T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (31, 3, 10, CAST(N'2025-10-06T00:00:00.000' AS DateTime), 1, 8)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (32, 1, 2004, CAST(N'2025-11-01T00:00:00.000' AS DateTime), 1, 4)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (33, 3, 0, CAST(N'2025-11-01T00:00:00.000' AS DateTime), 1, 8)
+INSERT [dbo].[SolvedIssues] ([Id], [CustomerId], [SolvedBy], [SolvedDate], [Status], [DomainId]) VALUES (34, 3, 1, CAST(N'2025-11-01T00:00:00.000' AS DateTime), 1, 8)
+SET IDENTITY_INSERT [dbo].[SolvedIssues] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Teams] ON 
+
+INSERT [dbo].[Teams] ([Id], [Name], [Status]) VALUES (1, N'Md Abdul Lotif', 1)
+INSERT [dbo].[Teams] ([Id], [Name], [Status]) VALUES (2, N'Nahid', 1)
+INSERT [dbo].[Teams] ([Id], [Name], [Status]) VALUES (5, N'Mr Rohim', 1)
+INSERT [dbo].[Teams] ([Id], [Name], [Status]) VALUES (8, N'Korim', 1)
+INSERT [dbo].[Teams] ([Id], [Name], [Status]) VALUES (10, N'Md Firoz', 2)
+INSERT [dbo].[Teams] ([Id], [Name], [Status]) VALUES (11, N'Md Nahid', 1)
+SET IDENTITY_INSERT [dbo].[Teams] OFF
+GO
+SET IDENTITY_INSERT [dbo].[UpdateDetails] ON 
+
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (1, 1, 8)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (2, 1, 7)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (3, 1, 5)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (4, 1, 1)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (5, 2, 1)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (6, 2, 2)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (9, 4, 1)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (10, 4, 3)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (11, 4, 5)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (12, 5, 2)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (13, 5, 7)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (14, 6, 4)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (15, 7, 8)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (16, 8, 8)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (17, 9, 9)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (18, 10, 10)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (19, 10, 11)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (20, 11, 12)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (21, 12, 9)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (22, 13, 14)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (23, 14, 14)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (24, 15, 14)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (25, 16, 9)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (26, 16, 15)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (27, 16, 19)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (28, 17, 21)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (29, 17, 14)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (30, 17, 9)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (31, 17, 19)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (32, 18, 19)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (33, 18, 21)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (34, 18, 15)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (35, 18, 17)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (36, 18, 9)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (37, 18, 14)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (38, 19, 21)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (39, 19, 19)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (40, 19, 17)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (41, 19, 14)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (42, 19, 9)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (43, 20, 21)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (44, 20, 19)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (45, 20, 17)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (46, 20, 14)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (47, 20, 9)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (48, 21, 21)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (49, 21, 19)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (50, 21, 17)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (51, 21, 14)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (52, 21, 9)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (53, 22, 21)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (54, 22, 19)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (55, 22, 17)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (56, 22, 14)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (57, 22, 9)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (58, 23, 9)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (59, 23, 14)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (60, 23, 15)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (61, 23, 17)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (62, 23, 19)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (63, 24, 21)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (64, 24, 14)
+INSERT [dbo].[UpdateDetails] ([Id], [UpdateId], [IssueId]) VALUES (65, 24, 17)
+SET IDENTITY_INSERT [dbo].[UpdateDetails] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Updates] ON 
+
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (1, 1, CAST(N'2025-09-14T00:00:00.000' AS DateTime), 2, 1, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (2, 4, CAST(N'2025-09-14T00:00:00.000' AS DateTime), 2, 1, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (4, 4, CAST(N'2025-09-15T00:00:00.000' AS DateTime), 2, 1, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (5, 4, CAST(N'2025-09-16T00:00:00.000' AS DateTime), 2, 1, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (6, 4, CAST(N'2025-09-16T00:00:00.000' AS DateTime), 2, 1, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (7, 4, CAST(N'2025-09-16T00:00:00.000' AS DateTime), 2, 1, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (8, 4, CAST(N'2025-09-16T00:00:00.000' AS DateTime), 2, 1, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (9, 4, CAST(N'2025-09-16T00:00:00.000' AS DateTime), 2, 1, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (10, 8, CAST(N'2025-09-17T00:00:00.000' AS DateTime), 5, 1, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (11, 4, CAST(N'2025-09-20T00:00:00.000' AS DateTime), 8, 1, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (12, 4, CAST(N'2025-10-29T00:00:00.000' AS DateTime), 2, 1, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (13, 8, CAST(N'2025-10-29T00:00:00.000' AS DateTime), 1, 10, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (14, 10, CAST(N'2025-10-29T00:00:00.000' AS DateTime), 1, 10, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (15, 11, CAST(N'2025-10-29T00:00:00.000' AS DateTime), 1, 10, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (16, 4, CAST(N'2025-10-30T00:00:00.000' AS DateTime), 1, 10, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (17, 4, CAST(N'2025-10-30T00:00:00.000' AS DateTime), 1, 10, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (18, 4, CAST(N'2025-10-30T00:00:00.000' AS DateTime), 1, 10, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (19, 4, CAST(N'2025-10-30T00:00:00.000' AS DateTime), 1, 10, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (20, 8, CAST(N'2025-10-30T00:00:00.000' AS DateTime), 1, 10, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (21, 10, CAST(N'2025-10-30T00:00:00.000' AS DateTime), 1, 10, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (22, 11, CAST(N'2025-10-30T00:00:00.000' AS DateTime), 1, 10, NULL, N'Master')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (23, 4, CAST(N'2025-10-31T00:00:00.000' AS DateTime), 1, 10, NULL, N'Test')
+INSERT [dbo].[Updates] ([Id], [DomainId], [UpdateDate], [DeveloperId], [TesterId], [Status], [BranchName]) VALUES (24, 4, CAST(N'2025-11-01T00:00:00.000' AS DateTime), 1, 10, NULL, N'Master')
+SET IDENTITY_INSERT [dbo].[Updates] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Users] ON 
+
+INSERT [dbo].[Users] ([Id], [Name], [PhoneNo], [Email], [RoleId], [UserName], [Password], [CreateDate], [Status], [EmployeeId]) VALUES (1, N'Md Abdul Lotif', N'01791177192', N'lotif.oct@gmail.com', 2, N'lotif', N'1122', CAST(N'2025-10-31T21:13:45.710' AS DateTime), 1, 1)
+INSERT [dbo].[Users] ([Id], [Name], [PhoneNo], [Email], [RoleId], [UserName], [Password], [CreateDate], [Status], [EmployeeId]) VALUES (2, N'Mr Mamun', N'01726633315', N'lotif9980@gmail.com', 1, N'mamun', N'113322', CAST(N'2025-10-31T21:43:25.847' AS DateTime), 0, 0)
+INSERT [dbo].[Users] ([Id], [Name], [PhoneNo], [Email], [RoleId], [UserName], [Password], [CreateDate], [Status], [EmployeeId]) VALUES (4, N'mamun', N'2255252', N'mama', 1, N'mamunA', N'111', CAST(N'2025-11-01T22:32:39.590' AS DateTime), 1, 0)
+INSERT [dbo].[Users] ([Id], [Name], [PhoneNo], [Email], [RoleId], [UserName], [Password], [CreateDate], [Status], [EmployeeId]) VALUES (5, N'Mr Korim', N'3322', N'abc', 1, N'a', N'222', CAST(N'2025-11-01T22:46:05.530' AS DateTime), 1, 0)
+INSERT [dbo].[Users] ([Id], [Name], [PhoneNo], [Email], [RoleId], [UserName], [Password], [CreateDate], [Status], [EmployeeId]) VALUES (6, N'mamun', N'Tr', N'tr', 2, N'tr', N'113322', CAST(N'2025-11-01T23:32:36.007' AS DateTime), 1, 2)
+INSERT [dbo].[Users] ([Id], [Name], [PhoneNo], [Email], [RoleId], [UserName], [Password], [CreateDate], [Status], [EmployeeId]) VALUES (7, N'Md Rajjak', N'01791177192', N'rajjak.oct@gmail.com', 1, N'rajjak', N'AQAAAAIAAYagAAAAEKMA8AWD06jn2bTKkwETATHvZbz+CcSiViCpqZI5HG9ayprXx2m0rO7ROdcaCQFMbw==', CAST(N'2025-11-02T21:58:09.020' AS DateTime), 1, 0)
+SET IDENTITY_INSERT [dbo].[Users] OFF
+GO
 ALTER TABLE [dbo].[CustomerIssues] ADD  CONSTRAINT [DF_CustomerIssues_CreateDate]  DEFAULT (getdate()) FOR [CreateDate]
 GO
+ALTER TABLE [dbo].[Issues] ADD  DEFAULT (getdate()) FOR [CreateDate]
+GO
 ALTER TABLE [dbo].[OurCustomers] ADD  CONSTRAINT [DF_OurCustomers_CreateDate]  DEFAULT (getdate()) FOR [CreateDate]
+GO
+ALTER TABLE [dbo].[Users] ADD  CONSTRAINT [DF_Users_CreateDate]  DEFAULT (getdate()) FOR [CreateDate]
+GO
+ALTER TABLE [dbo].[Users] ADD  CONSTRAINT [DF_Users_EmployeeId]  DEFAULT ((0)) FOR [EmployeeId]
 GO
 ALTER TABLE [dbo].[CustomerIssues]  WITH CHECK ADD  CONSTRAINT [FK_Domain_CustomerIssue] FOREIGN KEY([Id])
 REFERENCES [dbo].[CustomerIssues] ([Id])
