@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RTWEB.Models;
 using RTWEB.Repository;
@@ -146,6 +147,7 @@ namespace RTWEB.Controllers
             {
                 User = new Models.User(),
                 Role = _unitofWork.RoleRepository.GetAll(),
+                Team = _unitofWork.TeamRepository.GetTeams()
             };
             return View(data);
         }
@@ -156,8 +158,8 @@ namespace RTWEB.Controllers
         {
 
             if (model.User.RoleId == null ||
-                string.IsNullOrEmpty(model.User.UserName) ||
-                string.IsNullOrEmpty(model.User.Password))
+               string.IsNullOrEmpty(model.User.UserName) ||
+               string.IsNullOrEmpty(model.User.Password))
             {
                 TempData["Message"] = "❌ Please input valid data";
                 TempData["MessageType"] = "danger";
@@ -166,6 +168,7 @@ namespace RTWEB.Controllers
                 {
                     User = new Models.User(),
                     Role = _unitofWork.RoleRepository.GetAll(),
+                    Team = _unitofWork.TeamRepository.GetTeams()
                 };
 
                 return View(vm);
@@ -182,11 +185,14 @@ namespace RTWEB.Controllers
                 {
                     User = new Models.User(),
                     Role = _unitofWork.RoleRepository.GetAll(),
+                    Team = _unitofWork.TeamRepository.GetTeams()
                 };
 
                 return View(vm);
             }
 
+            var passwordHasher = new PasswordHasher<User>();
+            string hashedPassword = passwordHasher.HashPassword(null, model.User.Password);
 
             var save = new User
             {
@@ -195,8 +201,9 @@ namespace RTWEB.Controllers
                 Email = model.User.Email,
                 RoleId = model.User.RoleId,
                 UserName = model.User.UserName,
-                Password = model.User.Password,
-                Status = true
+                Password = hashedPassword,
+                Status = true,
+                EmployeeId = model.User.EmployeeId,
             };
 
             _unitofWork.UserRepository.Save(save);
@@ -212,6 +219,7 @@ namespace RTWEB.Controllers
                 TempData["Message"] = "❌ Saved Faild";
                 TempData["MessageType"] = "success";
             }
+
 
 
             return RedirectToAction("Login");
