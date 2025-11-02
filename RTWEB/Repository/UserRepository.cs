@@ -1,4 +1,5 @@
-﻿using RTWEB.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using RTWEB.Data;
 using RTWEB.Models;
 using RTWEB.ViewModel;
 
@@ -50,9 +51,27 @@ namespace RTWEB.Repository
             _db.Add(user);
         }
 
+        //public User GetFirstOrDefault(string userName, string password)
+        //{
+        //    return _db.Users.FirstOrDefault(x=>x.UserName==userName && x.Password==password);
+        //}
+
         public User GetFirstOrDefault(string userName, string password)
         {
-            return _db.Users.FirstOrDefault(x=>x.UserName==userName && x.Password==password);
+            var user = _db.Users.FirstOrDefault(x => x.UserName == userName);
+
+            if (user == null)
+                return null;
+
+            var passwordHasher = new PasswordHasher<User>();
+            var result = passwordHasher.VerifyHashedPassword(null, user.Password, password);
+
+            if (result == PasswordVerificationResult.Success)
+            {
+                return user; 
+            }
+
+            return null; 
         }
 
         public User GetById(int id)

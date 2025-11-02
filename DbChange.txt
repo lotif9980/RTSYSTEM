@@ -1,3 +1,11 @@
+----------------------------------------------02.11.2025--------------------------------------------------------------------
+
+ALTER TABLE Users ALTER COLUMN Password NVARCHAR(200);
+ALTER TABLE Users ALTER COLUMN UserName NVARCHAR(100);
+
+----------------------------------------------31.10.2025--------------------------------------------------------------------
+
+
 /* To prevent any potential data loss issues, you should review this script in detail before running it outside the context of the database designer.*/
 BEGIN TRANSACTION
 SET QUOTED_IDENTIFIER ON

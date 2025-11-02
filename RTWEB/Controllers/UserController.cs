@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RTWEB.Models;
 using RTWEB.Repository;
 using RTWEB.ViewModel;
+using Microsoft.AspNetCore.Identity;
 
 namespace RTWEB.Controllers
 {
@@ -72,7 +73,9 @@ namespace RTWEB.Controllers
                 return View(vm);
             }
 
-        
+            var passwordHasher = new PasswordHasher<User>();
+            string hashedPassword = passwordHasher.HashPassword(null, model.User.Password);
+
             var save = new User
             {
                 Name = model.User.Name,
@@ -80,7 +83,7 @@ namespace RTWEB.Controllers
                 Email = model.User.Email,
                 RoleId = model.User.RoleId,
                 UserName = model.User.UserName,
-                Password = model.User.Password,
+                Password = hashedPassword,
                 Status = true,
                 EmployeeId = model.User.EmployeeId,
             };
